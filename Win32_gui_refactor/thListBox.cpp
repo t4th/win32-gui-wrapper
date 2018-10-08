@@ -1,0 +1,148 @@
+#include "thListBox.h"
+
+/* Defines */
+#define CLASS_NAME L"thListBox"
+#define WIN32_CLASS_NAME L"LISTBOX"
+#define DEFAULT_TEXT L"Caption"
+
+#define DEFAULT_WIDTH  75
+#define DEFAULT_HEIGHT 25
+
+/* Local Memory */
+int thListBox::m_indexPool = 1;
+
+/* Prototypes */
+
+thListBox::thListBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+{
+    TH_ENTER_FUNCTION;
+    TH_LEAVE_FUNCTION;
+}
+
+thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+{
+    TH_ENTER_FUNCTION;
+    BOOL fResult = FALSE;
+
+    Items.setParent(this);
+
+    this->OnDoubleClicked = NULL;
+    this->OnKillFocus = NULL;
+    this->OnItemSelectedCancel = NULL;
+    this->OnSelectionChange = NULL;
+    this->OnSetFocus = NULL;
+
+    this->m_name =          CLASS_NAME;
+
+    this->m_sWindowArgs.dwExStyle =     WS_EX_CLIENTEDGE;
+    this->m_sWindowArgs.lpClassName =   WIN32_CLASS_NAME;
+    this->m_sWindowArgs.lpWindowName =  DEFAULT_TEXT;
+    this->m_sWindowArgs.dwStyle =       WS_VISIBLE | WS_CHILD;
+    this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
+    this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
+    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.lpParam =       this;
+
+    this->create();
+
+    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+
+    if (FALSE == fResult) {
+        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+    }
+
+    TH_LEAVE_FUNCTION;
+}
+
+thListBox::~thListBox()
+{
+    TH_ENTER_FUNCTION;
+    TH_LEAVE_FUNCTION;
+}
+
+int thListBox::getDebugIndex()
+{
+    TH_ENTER_FUNCTION;
+    int dReturn = this->m_indexPool;
+    this->m_indexPool++;
+    TH_LEAVE_FUNCTION;
+    return dReturn;
+}
+
+// all msgs: https://msdn.microsoft.com/en-us/library/windows/desktop/ff485968%28v=vs.85%29.aspx
+LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+{
+    TH_ENTER_FUNCTION;
+    LRESULT tResult = 0; // should return 1 if not used (no CB registered)
+
+    if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
+        switch (HIWORD(a_wParam)) {
+        case LBN_DBLCLK:
+            MSG_LOG(L"LBN_DBLCLK");
+            if (NULL != OnDoubleClicked) {
+                OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
+            }
+            tResult = 1;
+            break;
+        case LBN_KILLFOCUS:
+            MSG_LOG(L"LBN_KILLFOCUS");
+            if (NULL != OnKillFocus) {
+                OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
+            }
+            tResult = 1;
+            break;
+        case LBN_SELCANCEL:
+            MSG_LOG(L"LBN_SELCANCEL");
+            if (NULL != OnItemSelectedCancel) {
+                OnItemSelectedCancel(this, { a_uMsg, a_wParam, a_lParam });
+            }
+            tResult = 1;
+            break;
+        case LBN_SELCHANGE:
+            MSG_LOG(L"LBN_SELCHANGE");
+            if (NULL != OnSelectionChange) {
+                OnSelectionChange(this, { a_uMsg, a_wParam, a_lParam });
+            }
+            tResult = 1;
+            break;
+        case LBN_SETFOCUS:
+            MSG_LOG(L"LBN_SETFOCUS");
+            if (NULL != OnSetFocus) {
+                OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
+            }
+            tResult = 1;
+            break;
+        default:
+            MSG_LOG(L"Not supported %X", a_uMsg);
+            break;
+        }
+    }
+    else { //search through children
+        thListBox *  pFoundChildren = NULL;
+
+        pFoundChildren = reinterpret_cast<thListBox*>(findChildrenByID(LOWORD(a_wParam)));
+
+        if (pFoundChildren) {
+            tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+        }
+    }
+
+    TH_LEAVE_FUNCTION;
+    return tResult;
+}
+
+LRESULT thListBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+{
+    //TH_ENTER_FUNCTION;
+    LRESULT tResult = 0;
+    NMHDR * pData = 0;
+
+    pData = reinterpret_cast<NMHDR*>(a_lParam);
+
+    if (pData) {
+        //MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+    }
+
+    //TH_LEAVE_FUNCTION;
+    return tResult;
+}

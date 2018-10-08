@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Test App">
+      <UniqueIdentifier>{127a7696-679d-4bd1-b966-c03e1969d01d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test App\Win32">
+      <UniqueIdentifier>{40f46a0f-9ac2-465f-b6b8-76a54dc597c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Param">
+      <UniqueIdentifier>{cd33f222-a512-493d-8a8a-a64a4ab1632b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{973c6254-71ac-480e-9c6b-e34c8d46faff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="thObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thWin32App.h">
+      <Filter>Test App\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="thLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thWin32Logger.h">
+      <Filter>Test App\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="thForm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thParam.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thWidth.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thHeight.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thText.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thPosY.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thPosX.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thGroupBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thRadioButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thCheckBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thPopupMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thLabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thComboBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thComboBoxItems.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thToolbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thMenuCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thMDIChild.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thMDIClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thEditBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thImageList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thCommonDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thMemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thRichEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thListView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thItemList.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thListViewItem.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thListViewColumn.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thFont.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thResizable.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thListBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thListBoxItems.h">
+      <Filter>Param</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="thObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Test App</Filter>
+    </ClCompile>
+    <ClCompile Include="thWin32App.cpp">
+      <Filter>Test App\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="thLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thWin32Logger.cpp">
+      <Filter>Test App\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="thForm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thWidth.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thHeight.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thText.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thPosX.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thPosY.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thGroupBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thRadioButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thCheckBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thPopupMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thComboBoxItems.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thToolbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thMenuCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thMDIChild.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thMDIClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thEditBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thImageList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thCommonDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thMemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thRichEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thListView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thListViewItem.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thListViewColumn.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thFont.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thResizable.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thListBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thListBoxItems.cpp">
+      <Filter>Param</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
