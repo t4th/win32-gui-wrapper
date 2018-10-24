@@ -36,3 +36,4 @@ I was pretty satisfied with the result, but it was just prove of concept learnin
 - Lots of bad programming habits issues: naming and capsulation
 - C++ API is mixed with native Windows types
 - Only basic features
+- C++ Builder, QT or other popular frameworks use code generation for static object creation. In my code I had to workaround such problems with dynamic objects and elements, like event callbacks
