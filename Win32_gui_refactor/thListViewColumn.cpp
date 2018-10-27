@@ -28,14 +28,14 @@ thListViewColumn::thListViewColumn(const thListView * a_pParent, const thString 
 
         lvCol.mask = LVCF_TEXT | LVCF_WIDTH | LVCF_SUBITEM; // Type of mask
         lvCol.cx = 0x42; // Width of the column, in pixels
-        lvCol.pszText = const_cast<LPWSTR>(m_text.c_str());
+        lvCol.pszText = const_cast<LPTSTR>(m_text.c_str());
 
         result = ListView_InsertColumn(this->m_pParent->GetHandle(), nColumnCount, &lvCol);
 
         if (-1 != result) {
         }
         else {
-            MSG_ERROR(L"LVM_INSERTCOLUMN failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("LVM_INSERTCOLUMN failed with error = 0x%X"), GetLastError());
         }
     }
     TH_LEAVE_FUNCTION;

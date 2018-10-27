@@ -25,7 +25,7 @@ void thWin32App::Init(HINSTANCE a_hInstance)
     m_hAccel = LoadAccelerators(m_hInstance, APPLICATION_NAME);
 
     if (0 == m_hAccel) {
-        MSG_ERROR(L"LoadAccelerators failed with error: 0x%X", GetLastError());
+        MSG_ERROR(TEXT("LoadAccelerators failed with error: 0x%X"), GetLastError());
     }
 #endif
 

@@ -1,9 +1,9 @@
 #include "thForm.h"
 
 /* Defines */
-#define CLASS_NAME L"thForm"
+#define CLASS_NAME TEXT("thForm")
 #define WIN32_CLASS_NAME CLASS_NAME
-#define DEFAULT_TEXT L"Caption"
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  200
 #define DEFAULT_HEIGHT 200
@@ -66,11 +66,11 @@ void thForm::registerClass()
     wClass.hIconSm =        NULL;
     
     if (0 == RegisterClassEx(&wClass)) {
-        MSG_WARNING(L"RegisterClassEx error: 0x%X", GetLastError());
+        MSG_WARNING(TEXT("RegisterClassEx error: 0x%X"), GetLastError());
         //todo: add UnregisterClass 
     }
     else {
-        MSG_SUCCESS(L"Successfully registerd class with RegisterClassEx");
+        MSG_SUCCESS(TEXT("Successfully registerd class with RegisterClassEx"));
     }
     TH_LEAVE_FUNCTION;
 }
@@ -119,14 +119,14 @@ LRESULT thForm::onCreate()
 LRESULT thForm::onClose()
 {
 //  TH_ENTER_FUNCTION;
-    MSG_LOG(L"%s::onClose() - Enter", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onClose() - Enter"), this->m_name.c_str());
     LRESULT tResult = 0;
 
     if (OnClose) {
         tResult = OnClose(this);
     }
 
-    MSG_LOG(L"%s::onClose() - Leave", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onClose() - Leave"), this->m_name.c_str());
 //  TH_LEAVE_FUNCTION;
     return tResult;
 }
@@ -180,7 +180,7 @@ BOOL CALLBACK EnumChildProc(HWND a_hWnd, LPARAM a_lParam)
     LONG_PTR    pUserData = NULL;
     thWindow *  pWindow = NULL;
 
-    //MSG_LOG(L"EnumChildProc %X", a_hWnd);
+    //MSG_LOG(TEXT("EnumChildProc %X"), a_hWnd);
 
     pUserData = GetWindowLongPtr(a_hWnd, GWLP_USERDATA);
     pWindow = reinterpret_cast<thWindow *>(pUserData);
@@ -198,7 +198,7 @@ BOOL CALLBACK EnumChildProc(HWND a_hWnd, LPARAM a_lParam)
             pWindow->Height += pDifference->Height;
         }
 
-        //MSG_SUCCESS(L"w=%d, h=%d :: new w=%d, h=%d", dWidth, dHeight, dNewWidth, dNewHeight);
+        //MSG_SUCCESS(TEXT("w=%d, h=%d :: new w=%d, h=%d"), dWidth, dHeight, dNewWidth, dNewHeight);
     }
 
     return fResult;
@@ -242,7 +242,7 @@ LRESULT thForm::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
         sDifference.Height = 0 - sDifference.Height;
     }
 
-    //MSG_SUCCESS(L"w=%d, h=%d", sDifference.Width, sDifference.Height);
+    //MSG_SUCCESS(TEXT("w=%d, h=%d"), sDifference.Width, sDifference.Height);
 
     EnumChildWindows(this->m_hWinHandle, EnumChildProc, (LPARAM)&sDifference);
 
@@ -292,7 +292,7 @@ void thForm::SetMenu(thMenu * const a_pMenu)
                 fResult = ::SetMenu(this->m_hWinHandle, a_pMenu->m_hMenuHandle);
 
                 if (false == fResult) {
-                    MSG_ERROR(L"SetMenu failed with error =  0x%X", GetLastError());
+                    MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
                 }
                 else {
                     //todo:
@@ -303,12 +303,12 @@ void thForm::SetMenu(thMenu * const a_pMenu)
                 }
             }
             else {
-                MSG_ERROR(L"Provided thMenu is invalid (wrong handle)");
+                MSG_ERROR(TEXT("Provided thMenu is invalid (wrong handle)"));
             }
         }
     }
     else {
-        MSG_ERROR(L"Empty input pointer!");
+        MSG_ERROR(TEXT("Empty input pointer!"));
     }
 
     TH_LEAVE_FUNCTION;
@@ -322,7 +322,7 @@ void thForm::ClearMenu(void)
     fResult = ::SetMenu(this->m_hWinHandle, NULL);
 
     if (false == fResult) {
-        MSG_ERROR(L"SetMenu failed with error =  0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
     }
     else {
         this->m_menu->m_hParentWindow = NULL;

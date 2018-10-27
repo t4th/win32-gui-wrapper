@@ -70,11 +70,17 @@
 #include <math.h>
 #include "SimpleGrid.h"
 
-#define _tmemcpy wmemcpy
-#define _tmemcmp wmemcmp
-#define _tmemmove wmemmove
-#define _tmemset wmemset
-
+#ifdef UNICODE
+    #define _tmemcpy wmemcpy
+    #define _tmemcmp wmemcmp
+    #define _tmemmove wmemmove
+    #define _tmemset wmemset
+#else
+#define _tmemcpy memcpy
+#define _tmemcmp memcmp
+#define _tmemmove memmove
+#define _tmemset memset
+#endif
 /****************************************************************************/
 // Constants
 #define VECTOR_INITIAL_CAPACITY 16  ///< Constant
@@ -613,7 +619,7 @@ static LPTSTR NewString(LPTSTR str)
     {
         return (LPTSTR)calloc(1, sizeof(TCHAR));
     }
-    return _tmemmove(tmp, str, _tcslen(str));
+    return (LPTSTR)_tmemmove(tmp, str, _tcslen(str));
 }
 
 /// @brief Allocate and store a string array (double-null-terminated string).
@@ -637,7 +643,7 @@ static LPTSTR NewStringArray(LPTSTR szzStr)
     {
         return (LPTSTR)calloc(1, sizeof(TCHAR)); 
     }
-    return _tmemmove(tmp, szzStr, iLen);
+    return (LPTSTR)_tmemmove(tmp, szzStr, iLen);
 }
 
 /// @brief Append a string to an allocated string array
@@ -3621,7 +3627,7 @@ static VOID Grid_OnMouseWheel(HWND hwnd, int x, int y, int zDelta, UINT keyFlags
     if (g_lpInst->cWheelRemainder && uScrollLines)
     {
         int cLineScroll;
-        cLineScroll = uScrollLines * (float)g_lpInst->cWheelRemainder / WHEEL_DELTA;
+        cLineScroll = (int)( uScrollLines * (float)g_lpInst->cWheelRemainder / WHEEL_DELTA);
         g_lpInst->cWheelRemainder -= WHEEL_DELTA * cLineScroll / (int)uScrollLines;
 
         if(zDelta < 0)

@@ -28,9 +28,8 @@ public:
                     thWin32Logger();
                     ~thWin32Logger();
 
-    static void     Printf(const wchar_t *, ...);
-    static void     Printf(const char *, ...);
-    static void     ErrorPrintf(const wchar_t *, ...);
-    static void     WarningPrintf(const wchar_t *, ...);
-    static void     SuccessPrintf(const wchar_t *, ...);
+    static void     Printf(const TCHAR *, ...);
+    static void     ErrorPrintf(const TCHAR *, ...);
+    static void     WarningPrintf(const TCHAR *, ...);
+    static void     SuccessPrintf(const TCHAR *, ...);
 };

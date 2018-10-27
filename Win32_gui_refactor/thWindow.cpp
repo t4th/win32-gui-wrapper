@@ -47,7 +47,7 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY 
     }
     else {
         m_sWindowArgs.hInstance = GetModuleHandle(NULL);
-        MSG_WARNING(L"Empty input pointer! Using module handle as parent instance");
+        MSG_WARNING(TEXT("Empty input pointer! Using module handle as parent instance"));
     }
 
     this->Constraints = { 0 };
@@ -88,7 +88,7 @@ void thWindow::create()
             ); // adjust the size
 
         if (FALSE == fResult) {
-            MSG_ERROR(L"AdjustWindowRectEx failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("AdjustWindowRectEx failed with error = 0x%X"), GetLastError());
         }
 
         m_hWinHandle = CreateWindowEx(
@@ -109,7 +109,7 @@ void thWindow::create()
         if (m_hWinHandle) {
             LONG_PTR pUserData = NULL;
 
-            MSG_SUCCESS(L"Created new window: %s with ID=%d", this->m_name.c_str(), this->m_id);
+            MSG_SUCCESS(TEXT("Created new window: %s with ID=%d"), this->m_name.c_str(), this->m_id);
 
             // set defualt fond name and size. It must be done after successfull window creation
             this->Font.SetName(TH_DEF_APP_FONT_NAME);
@@ -124,7 +124,7 @@ void thWindow::create()
             this->StoreCurrentRect();
         }
         else {
-            MSG_ERROR(L"Failed to create window: %s, CreateWindowEx returned error: 0x%X", this->m_name.c_str(), GetLastError());
+            MSG_ERROR(TEXT("Failed to create window: %s, CreateWindowEx returned error: 0x%X"), this->m_name.c_str(), GetLastError());
         }
     }
 
@@ -161,14 +161,14 @@ LRESULT thWindow::onDestroy()
 {
 //  TH_ENTER_FUNCTION;
     thString name = this->m_name;
-    MSG_LOG(L"%s::onDestroy() - Enter", name.c_str());
+    MSG_LOG(TEXT("%s::onDestroy() - Enter"), name.c_str());
     LRESULT tResult = 0;
 
     if (OnDestroy) {
         tResult = OnDestroy(this);
     }
 
-    MSG_LOG(L"%s::onDestroy() - Leave", name.c_str());
+    MSG_LOG(TEXT("%s::onDestroy() - Leave"), name.c_str());
 //  TH_LEAVE_FUNCTION;
     return tResult;
 }
@@ -185,10 +185,10 @@ LRESULT thWindow::onSetText(LPARAM a_lParam)
 {
     //  TH_ENTER_FUNCTION;
     thString name = this->m_name;
-    MSG_LOG(L"%s::onSetText() - Enter", name.c_str());
+    MSG_LOG(TEXT("%s::onSetText() - Enter"), name.c_str());
     LRESULT tResult = 0;
 
-    MSG_LOG(L"%s::onSetText() - Leave", name.c_str());
+    MSG_LOG(TEXT("%s::onSetText() - Leave"), name.c_str());
     //  TH_LEAVE_FUNCTION;
     return tResult;
 }
@@ -277,7 +277,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
                 SWP_NOZORDER);
 
             if (FALSE == fResult) {
-                MSG_ERROR(L"SetWindowPos failed with error = 0x%X", GetLastError());
+                MSG_ERROR(TEXT("SetWindowPos failed with error = 0x%X"), GetLastError());
             }
 
             tResult = 1; // this will resize all children manually, so dont send WM_SIZE to children
@@ -300,7 +300,7 @@ a_lParam - low-order word is X, high-order word is Y
 LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 {
     //TH_ENTER_FUNCTION;
-    MSG_LOG(L"%s::onContextMenu - Enter", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onContextMenu - Enter"), this->m_name.c_str());
     LRESULT tResult = 0; // only check foremost window context menu
     POINT   point = { 0 };
     HWND    hwnd = 0;
@@ -313,7 +313,7 @@ LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
         tResult = 1;
     }
 
-    MSG_LOG(L"%s::onContextMenu - Leave", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onContextMenu - Leave"), this->m_name.c_str());
     //TH_LEAVE_FUNCTION;
     return tResult;
 }
@@ -414,7 +414,7 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
         tResult = this->onResize(a_hwnd, a_wParam, a_lParam);
         break;
     case WM_CTLCOLORSTATIC:
-        //MSG_ERROR(L"WM_CTLCOLORSTATIC - not supported atm");
+        //MSG_ERROR(TEXT("WM_CTLCOLORSTATIC - not supported atm"));
         break;
     case WM_SETTEXT:
         tResult = this->onSetText(a_lParam);
@@ -480,13 +480,13 @@ LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
 void thWindow::createDebugName()
 {
     TH_ENTER_FUNCTION;
-    wchar_t szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
+    TCHAR   szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
     int     dIndex = 0;
 
     dIndex = this->getDebugIndex();
 
-    if (-1 == swprintf(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, L"%d", dIndex)) {
-        MSG_ERROR(L"CRITICAL_ERROR - window index buffer overflow");
+    if (-1 == _stprintf_s(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, TEXT("%d"), dIndex)) {
+        MSG_ERROR(TEXT("CRITICAL_ERROR - window index buffer overflow"));
     }
     else {
         this->m_name += thString(szNameIndex);
@@ -636,7 +636,7 @@ void thWindow::Destroy(void)
     fResult = DestroyWindow(this->m_hWinHandle);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"DestroyWindow failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("DestroyWindow failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -650,7 +650,7 @@ void thWindow::SetFocus(void)
     fResult = ::SetFocus(this->m_hWinHandle);
 
     if (NULL == fResult) {
-        MSG_ERROR(L"SetFocus failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetFocus failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -675,7 +675,7 @@ void thWindow::GetRect(RECT & a_rcOutput)
         a_rcOutput.bottom = m_pParent->Height - (this->Y + (LONG)this->Height);
         a_rcOutput.right = m_pParent->Width - (this->X + (LONG)this->Width);
 #if 0
-        MSG_SUCCESS(L"Window %s position: L=%d, T=%d, B=%d, R=%d", this->m_name.c_str(),
+        MSG_SUCCESS(TEXT("Window %s position: L=%d, T=%d, B=%d, R=%d"), this->m_name.c_str(),
             a_rcOutput.left, a_rcOutput.top, a_rcOutput.bottom, a_rcOutput.right);
 #endif
     }
@@ -704,7 +704,7 @@ LRESULT CALLBACK WinProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lPa
             pWindow = reinterpret_cast<thWindow*>(cs->lpCreateParams);
         }
         else {
-            MSG_ERROR(L"CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!");
+            MSG_ERROR(TEXT("CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!"));
         }
     }
 
@@ -743,7 +743,7 @@ LRESULT CALLBACK ChildWindProc(HWND a_hWnd, UINT a_uMsg, WPARAM a_wParam, LPARAM
         fResult = RemoveWindowSubclass(a_hWnd, ChildWindProc, a_uIdSubclass);
 
         if (FALSE == fResult) {
-            MSG_ERROR(L"RemoveWindowSubclass failed");
+            MSG_ERROR(TEXT("RemoveWindowSubclass failed"));
         }
     }
 

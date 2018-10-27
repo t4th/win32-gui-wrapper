@@ -3,7 +3,7 @@
 #include "thWin32Logger.h"
 #include "thWindow.h"
 
-#define APPLICATION_NAME L"Win32_gui_refactor"
+#define APPLICATION_NAME TEXT("Win32_gui_refactor")
 
 class thWin32App : public thApplication
 {

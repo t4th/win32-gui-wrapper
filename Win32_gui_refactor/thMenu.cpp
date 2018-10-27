@@ -1,7 +1,7 @@
 #include "thMenu.h"
 
 /* Defines */
-#define CLASS_NAME L"thMenu"
+#define CLASS_NAME TEXT("thMenu")
 #define MAX_NUMBER_OF_DIGITS_FOR_INDEX 6
 
 /* Static elements */
@@ -32,27 +32,27 @@ thMenu::thMenu(void)
             fResult = SetMenuInfo(m_hMenuHandle, &menuInfo);
 
             if (FALSE == fResult) {
-                MSG_ERROR(L"SetMenuInfo failed with error = 0x%X", GetLastError());
+                MSG_ERROR(TEXT("SetMenuInfo failed with error = 0x%X"), GetLastError());
             }
         }
         else {
-            MSG_ERROR(L"GetMenuInfo failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("GetMenuInfo failed with error = 0x%X"), GetLastError());
         }
 #endif
         /* Create Default Menu Name */
-        wchar_t szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
+        TCHAR szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
 
-        if (-1 == swprintf(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, L"%d", u32Index)) {
-            MSG_ERROR(L"CRITICAL_ERROR - window index buffer overflow");
+        if (-1 == _stprintf_s(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, TEXT("%d"), u32Index)) {
+            MSG_ERROR(TEXT("CRITICAL_ERROR - window index buffer overflow"));
         }
         else {
             this->m_name += thString(szNameIndex);
         }
         u32Index++;
-        MSG_SUCCESS(L"Created new menu: %s with ID=%d", this->m_name.c_str(), this->m_id);
+        MSG_SUCCESS(TEXT("Created new menu: %s with ID=%d"), this->m_name.c_str(), this->m_id);
     }
     else {
-        MSG_ERROR(L"Failed to create menu with CreateMenu error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("Failed to create menu with CreateMenu error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;

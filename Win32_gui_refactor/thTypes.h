@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <Windowsx.h>
 #include <Commctrl.h> /* win32 common controls interface */
+#include <TCHAR.H>
 
 #pragma comment(lib, "Comctl32.lib") /* win32 common controls */
 

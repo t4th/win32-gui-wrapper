@@ -1,9 +1,9 @@
 #include "thCheckBox.h"
 
 /* Defines */
-#define CLASS_NAME L"thCheckBox"
-#define WIN32_CLASS_NAME L"BUTTON"
-#define DEFAULT_TEXT L"Caption"
+#define CLASS_NAME TEXT("thCheckBox")
+#define WIN32_CLASS_NAME TEXT("BUTTON")
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 25
@@ -45,7 +45,7 @@ thCheckBox::thCheckBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -74,7 +74,7 @@ LRESULT thCheckBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
     if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case BN_CLICKED:
-            MSG_LOG(L"BN_CLICKED");
+            MSG_LOG(TEXT("BN_CLICKED"));
             if (NULL != OnClick) {
                 OnClick(this, { a_uMsg, a_wParam, a_lParam });
             }
@@ -82,21 +82,21 @@ LRESULT thCheckBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
             break;
 #if 0
         case BN_PAINT:
-            MSG_LOG(L"BN_PAINT");
+            MSG_LOG(TEXT("BN_PAINT"));
             if (NULL != OnPaint) {
                 OnPaint(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_HILITE: //PUSHED
-            MSG_LOG(L"PUSHED");
+            MSG_LOG(TEXT("PUSHED"));
             if (NULL != OnPushed) {
                 OnPushed(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_UNHILITE: //UNPUSHED
-            MSG_LOG(L"UNPUSHED");
+            MSG_LOG(TEXT("UNPUSHED"));
             if (NULL != OnUnpushed) {
                 OnUnpushed(this, { a_uMsg, a_wParam, a_lParam });
             }
@@ -104,35 +104,35 @@ LRESULT thCheckBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
             break;
 #endif
         case BN_DISABLE:
-            MSG_LOG(L"BN_DISABLE");
+            MSG_LOG(TEXT("BN_DISABLE"));
             if (NULL != OnDisable) {
                 OnDisable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_DOUBLECLICKED:
-            MSG_LOG(L"BN_DOUBLECLICKED");
+            MSG_LOG(TEXT("BN_DOUBLECLICKED"));
             if (NULL != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_SETFOCUS:
-            MSG_LOG(L"BN_SETFOCUS");
+            MSG_LOG(TEXT("BN_SETFOCUS"));
             if (NULL != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_KILLFOCUS:
-            MSG_LOG(L"BN_KILLFOCUS");
+            MSG_LOG(TEXT("BN_KILLFOCUS"));
             if (NULL != OnKillFocus) {
                 OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         default:
-            MSG_ERROR(L"Not supported %X", a_uMsg);
+            MSG_ERROR(TEXT("Not supported %X"), a_uMsg);
             break;
         }
     }
@@ -162,19 +162,19 @@ LRESULT thCheckBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     if (pData) {
         switch (pData->code) {
         case BCN_DROPDOWN:
-            MSG_LOG(L"BCN_DROPDOWN - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("BCN_DROPDOWN - %s"), this->m_name.c_str());
             break;
 
         case BCN_HOTITEMCHANGE: //mouse is enetring button window
-            MSG_LOG(L"BCN_HOTITEMCHANGE - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("BCN_HOTITEMCHANGE - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         case NM_CUSTOMDRAW:
-            MSG_LOG(L"LNM_CUSTOMDRAW - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("LNM_CUSTOMDRAW - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         default:
-            MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+            MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
             break;
         }
     }

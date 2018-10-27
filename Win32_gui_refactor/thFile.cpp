@@ -31,10 +31,10 @@ uint32_t thFile::Open(thString a_filePath, eDesiredAccess_t a_DesiredAccess, eCr
 
         if (INVALID_HANDLE_VALUE == m_hHandle) {
             u32Result = GetLastError();
-            MSG_ERROR(L"CloseHandle failed with error = 0x%X", u32Result);
+            MSG_ERROR(TEXT("CloseHandle failed with error = 0x%X"), u32Result);
         }
         else {
-            MSG_SUCCESS(L"File opened successfully");
+            MSG_SUCCESS(TEXT("File opened successfully"));
         }
     }
     else {
@@ -57,7 +57,7 @@ uint32_t thFile::Write(uint8_t * const a_inputBuffer, uint32_t a_BytesToWrite)
 
     if (FALSE == fResult) {
         u32Result = GetLastError();
-        MSG_ERROR(L"WriteFile failed with error = 0x%X", u32Result);
+        MSG_ERROR(TEXT("WriteFile failed with error = 0x%X"), u32Result);
     }
 
     TH_LEAVE_FUNCTION;
@@ -74,7 +74,7 @@ uint32_t thFile::Read(uint8_t * const a_ouputBuffer, uint32_t a_bytesToRead, uin
 
     if (FALSE == fResult) {
         u32Result = GetLastError();
-        MSG_ERROR(L"ReadFile failed with error = 0x%X", u32Result);
+        MSG_ERROR(TEXT("ReadFile failed with error = 0x%X"), u32Result);
     }
 
     TH_LEAVE_FUNCTION;
@@ -100,7 +100,7 @@ void thFile::Close(void)
     fResult = CloseHandle(m_hHandle);
 
     if (0 == fResult) {
-        MSG_ERROR(L"CloseHandle failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("CloseHandle failed with error = 0x%X"), GetLastError());
     }
     else
     {
@@ -137,11 +137,11 @@ thString thFile::GetFilePath(void) const
         fResult = GetFileInformationByHandleEx(m_hHandle, FileNameInfo, info, size);
 
         if (fResult) {
-            MSG_SUCCESS(L"File path is: %s", info->FileName);
+            MSG_SUCCESS(TEXT("File path is: %s"), info->FileName);
                 //tFullDirInfo.FileName);
         }
         else {
-            MSG_ERROR(L"GetFileInformationByHandleEx failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("GetFileInformationByHandleEx failed with error = 0x%X"), GetLastError());
         }
     }
 
@@ -157,12 +157,12 @@ thString thFile::GetFilePath(void) const
     
         if (dwResult < MAX_PATH)
         {
-            MSG_SUCCESS(L"The final path is: %s", sBuffer);
+            MSG_SUCCESS(TEXT("The final path is: %s"), sBuffer);
 
             oFilePath = thString(sBuffer);
         }
         else {
-            MSG_ERROR(L"The required buffer size is %d", dwResult);
+            MSG_ERROR(TEXT("The required buffer size is %d"), dwResult);
         }
     }
 #endif
@@ -191,10 +191,10 @@ uint64_t thFile::GetFileSize(void) const
 
     if (fResult) {
         u64FileSize = (uint64_t)tSize.QuadPart;
-        MSG_SUCCESS(L"File size: %ull", u64FileSize);
+        MSG_SUCCESS(TEXT("File size: %ull"), u64FileSize);
     }
     else {
-        MSG_ERROR(L"GetFileSizeEx failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("GetFileSizeEx failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;

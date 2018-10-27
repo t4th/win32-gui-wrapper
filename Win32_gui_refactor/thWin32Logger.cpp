@@ -35,7 +35,7 @@ thWin32Logger::~thWin32Logger()
     }
 }
 
-void thWin32Logger::Printf(const wchar_t * format, ...)
+void thWin32Logger::Printf(const TCHAR * format, ...)
 {
     va_list args;
     HANDLE  hConsole = 0;
@@ -45,29 +45,13 @@ void thWin32Logger::Printf(const wchar_t * format, ...)
     SetConsoleTextAttribute(hConsole, thWin32Logger::EN_COLORS::WHITE);
 
     va_start(args, format);
-    vwprintf(format, args);
+    _vtprintf(format, args);
     va_end(args);
 
     std::wcout << std::endl;
 }
 
-void thWin32Logger::Printf(const char * format, ...)
-{
-    va_list args;
-    HANDLE  hConsole = 0;
-
-    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    SetConsoleTextAttribute(hConsole, thWin32Logger::EN_COLORS::WHITE);
-
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
-
-    std::wcout << std::endl;
-}
-
-void thWin32Logger::ErrorPrintf(const wchar_t * format, ...)
+void thWin32Logger::ErrorPrintf(const TCHAR * format, ...)
 {
     va_list args;
     HANDLE  hConsole = 0;
@@ -77,13 +61,13 @@ void thWin32Logger::ErrorPrintf(const wchar_t * format, ...)
     SetConsoleTextAttribute(hConsole, thWin32Logger::EN_COLORS::RED);
 
     va_start(args, format);
-    vwprintf(format, args);
+    _vtprintf(format, args);
     va_end(args);
 
     std::wcout << std::endl;
 }
 
-void thWin32Logger::WarningPrintf(const wchar_t * format, ...)
+void thWin32Logger::WarningPrintf(const TCHAR * format, ...)
 {
     va_list args;
     HANDLE  hConsole = 0;
@@ -93,13 +77,13 @@ void thWin32Logger::WarningPrintf(const wchar_t * format, ...)
     SetConsoleTextAttribute(hConsole, thWin32Logger::EN_COLORS::YELLOW);
 
     va_start(args, format);
-    vwprintf(format, args);
+    _vtprintf(format, args);
     va_end(args);
 
     std::wcout << std::endl;
 }
 
-void thWin32Logger::SuccessPrintf(const wchar_t * format, ...)
+void thWin32Logger::SuccessPrintf(const TCHAR * format, ...)
 {
     va_list args;
     HANDLE  hConsole = 0;
@@ -109,7 +93,7 @@ void thWin32Logger::SuccessPrintf(const wchar_t * format, ...)
     SetConsoleTextAttribute(hConsole, thWin32Logger::EN_COLORS::GREEN);
 
     va_start(args, format);
-    vwprintf(format, args);
+    _vtprintf(format, args);
     va_end(args);
 
     std::wcout << std::endl;

@@ -51,7 +51,7 @@ void thPosY::setValue(LONG a_dNewY)
         }
     }
     else {
-        MSG_ERROR(L"SetWindowPos failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowPos failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;

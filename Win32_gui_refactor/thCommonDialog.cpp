@@ -1,6 +1,10 @@
 #include "thCommonDialog.h"
 #include "thWindow.h"
 
+// thOpenDialog
+
+const thString OPEN_DIALOG_DEFAULT_FILTER = TEXT("All Files\0*.*\0");
+
 // thCommonDialog
 thCommonDialog::thCommonDialog() : m_hParent(NULL)
 {
@@ -33,9 +37,6 @@ bool_t thCommonDialog::Show(thWindow * const a_parentWindow)
     return fResult;
 }
 
-// thOpenDialog
-#define OPEN_DIALOG_DEFAULT_FILTER L"All Files\0*.*\0"
-
 thOpenDialog::thOpenDialog()
 {
     TH_ENTER_FUNCTION;
@@ -53,12 +54,12 @@ thString thOpenDialog::getFilterString()
 {
     TH_ENTER_FUNCTION;
     thString filter;
-    const wchar_t end_of_string = L'\0';
+    TCHAR end_of_string = TEXT('\0');
 
     // if filter is not provided, default one is used - All\0*.*\0
     if (0 == this->Filter.GetCount()) {
-        filter.append(OPEN_DIALOG_DEFAULT_FILTER, sizeof(OPEN_DIALOG_DEFAULT_FILTER) / sizeof(wchar_t));
-        MSG_WARNING(L"No filters provided -> using default filter \"All\\0*.*\\0\"");
+        filter.append(OPEN_DIALOG_DEFAULT_FILTER);
+        MSG_WARNING(TEXT("No filters provided -> using default filter \"All\\0*.*\\0\""));
     }
     else {
         for (int i = 0; i < this->Filter.GetCount(); i++) {
@@ -81,14 +82,14 @@ bool_t thOpenDialog::show()
     thString filter = getFilterString();
 
     OPENFILENAME     ofn = { 0 };
-    wchar_t          szFileName[MAX_PATH] = L"";
+    TCHAR            szFileName[MAX_PATH] = TEXT("");
 
     ofn.lStructSize =       sizeof (ofn);
     ofn.hwndOwner =         this->m_hParent;
     ofn.lpstrFile =         szFileName;
     ofn.lpstrFile[0] =      L'\0';
     ofn.nMaxFile =          sizeof(szFileName);
-    ofn.lpstrFilter =       filter.c_str(); //Filter;// L"All\0*.*\0Text\0*.TXT\0";
+    ofn.lpstrFilter =       filter.c_str(); //Filter;// TEXT("All\0*.*\0Text\0*.TXT\0");
     ofn.nFilterIndex =      1;
     ofn.lpstrFileTitle =    NULL;
     ofn.nMaxFileTitle =     0;
@@ -101,7 +102,7 @@ bool_t thOpenDialog::show()
     }
     else {
         this->FileName.clear();
-        MSG_WARNING(L"GetOpenFileName error or cancel. GetLastError = 0x%X", CommDlgExtendedError());
+        MSG_WARNING(TEXT("GetOpenFileName error or cancel. GetLastError = 0x%X"), CommDlgExtendedError());
     }
 
     TH_LEAVE_FUNCTION;

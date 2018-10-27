@@ -28,8 +28,8 @@ protected:
 
     struct {
         DWORD       dwExStyle;
-        LPCWSTR     lpClassName;
-        LPCWSTR     lpWindowName;
+        LPCTSTR     lpClassName;
+        LPCTSTR     lpWindowName;
         DWORD       dwStyle;
         int         nX;         // set in thWindow c-tor
         int         nY;         // set in thWindow c-tor

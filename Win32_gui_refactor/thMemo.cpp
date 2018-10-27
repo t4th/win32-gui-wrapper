@@ -1,9 +1,9 @@
 #include "thMemo.h"
 
 /* Defines */
-#define CLASS_NAME L"thMemo"
-#define WIN32_CLASS_NAME L"EDIT"
-#define DEFAULT_TEXT L""
+#define CLASS_NAME TEXT("thMemo")
+#define WIN32_CLASS_NAME TEXT("EDIT")
+#define DEFAULT_TEXT TEXT("")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 75
@@ -42,7 +42,7 @@ thMemo::thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -88,7 +88,7 @@ LRESULT thMemo::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, 
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
-        MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+        MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
     //TH_LEAVE_FUNCTION;

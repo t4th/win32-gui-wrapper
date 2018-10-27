@@ -49,7 +49,7 @@ void thListBoxItems::Remove(int _index)
     dResult = ListBox_DeleteString(this->m_pParent->GetHandle(), _index);
 
     if (CB_ERR == dResult) {
-        MSG_ERROR(L"ListBox_DeleteString failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListBox_DeleteString failed with error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }
@@ -73,7 +73,7 @@ int thListBoxItems::ItemIndex(void) const
     nResult = ListBox_GetCurSel(this->m_pParent->GetHandle());
 
     if (CB_ERR == nResult) {
-        MSG_ERROR(L"ListBox_GetCurSel failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListBox_GetCurSel failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -88,7 +88,7 @@ void thListBoxItems::SetItemIndex(int a_nItemIndex)
     nResult = ListBox_SetCurSel(this->m_pParent->GetHandle(), a_nItemIndex);
 
     if (CB_ERR == nResult && -1 != a_nItemIndex) {
-        MSG_ERROR(L"ListBox_SetCurSel failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListBox_SetCurSel failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -126,7 +126,7 @@ void thListBoxItem::Remove(void)
     result = ListBox_DeleteString(this->m_pParent->GetHandle(), m_nIndex);
 
     if (CB_ERR == result) {
-        MSG_ERROR(L"ListBox_DeleteString failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListBox_DeleteString failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -136,17 +136,17 @@ thString thListBoxItem::GetText(void)
 {
     TH_ENTER_FUNCTION;
     thString    result;
-    WCHAR *     pBuffer = 0;
+    TCHAR *     pBuffer = 0;
     int         nLen = 0;
 
     nLen = ListBox_GetTextLen(this->m_pParent->GetHandle(), m_nIndex);
 
     if (nLen > 0)
     {
-        pBuffer = new WCHAR[nLen + 1]; //+1 for '\0'
+        pBuffer = new TCHAR[nLen + 1]; //+1 for '\0'
 
         if (CB_ERR == ListBox_GetText(this->m_pParent->GetHandle(), m_nIndex, pBuffer)) {
-            MSG_ERROR(L"ListBox_GetLBText failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("ListBox_GetLBText failed with error = 0x%X"), GetLastError());
         }
         else {
             result = thString(pBuffer, nLen);

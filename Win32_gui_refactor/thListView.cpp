@@ -1,9 +1,9 @@
 #include "thListView.h"
 
 /* Defines */
-#define CLASS_NAME L"thListView"
-#define WIN32_CLASS_NAME WC_LISTVIEWW
-#define DEFAULT_TEXT L""
+#define CLASS_NAME TEXT("thListView")
+#define WIN32_CLASS_NAME WC_LISTVIEW
+#define DEFAULT_TEXT TEXT("")
 
 #define DEFAULT_WIDTH  150
 #define DEFAULT_HEIGHT 150
@@ -28,7 +28,7 @@ thListView::thListView(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     iccx.dwSize = sizeof(INITCOMMONCONTROLSEX);
     iccx.dwICC = ICC_BAR_CLASSES;
     if (FALSE == InitCommonControlsEx(&iccx)) {
-        MSG_ERROR(L"InitCommonControlsEx ICC_BAR_CLASSES failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("InitCommonControlsEx ICC_BAR_CLASSES failed with error = 0x%X"), GetLastError());
     }
 
     this->Columns.SetParent(this);
@@ -51,7 +51,7 @@ thListView::thListView(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -79,7 +79,7 @@ void thListView::SetView(eViewType_t a_eViewType)
     result = ListView_SetView(this->m_hWinHandle, a_eViewType);
 
     if (-1 == result) {
-        MSG_ERROR(L"ListView_SetView failed - provided view is invalid");
+        MSG_ERROR(TEXT("ListView_SetView failed - provided view is invalid"));
     }
 }
 
@@ -101,7 +101,7 @@ LRESULT thListView::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
-        //MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+        //MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
     //TH_LEAVE_FUNCTION;

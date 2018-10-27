@@ -6,9 +6,9 @@
 #include "thComboBox.h"
 
 /* Defines */
-#define CLASS_NAME L"thComboBox"
-#define WIN32_CLASS_NAME L"COMBOBOX"
-#define DEFAULT_TEXT L"Caption"
+#define CLASS_NAME TEXT("thComboBox")
+#define WIN32_CLASS_NAME TEXT("COMBOBOX")
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  125
 // combobox height is height including dropdown list!
@@ -59,7 +59,7 @@ thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -107,82 +107,82 @@ LRESULT thComboBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
     if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case (WORD)CBN_ERRSPACE:
-            MSG_LOG(L"CBN_ERRSPACE");
+            MSG_LOG(TEXT("CBN_ERRSPACE"));
             this->onErrorSpace(a_hwnd, a_uMsg, a_wParam, a_lParam);
             tResult = 1;
             break;
         case CBN_SELCHANGE:
-            MSG_LOG(L"CBN_SELCHANGE");
+            MSG_LOG(TEXT("CBN_SELCHANGE"));
             if (NULL != OnSelectChange) {
                 OnSelectChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_DBLCLK:
-            MSG_LOG(L"CBN_DBLCLK");
+            MSG_LOG(TEXT("CBN_DBLCLK"));
             if (NULL != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SETFOCUS: //UNPUSHED
-            MSG_LOG(L"CBN_SETFOCUS");
+            MSG_LOG(TEXT("CBN_SETFOCUS"));
             if (NULL != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_KILLFOCUS:
-            MSG_LOG(L"CBN_KILLFOCUS");
+            MSG_LOG(TEXT("CBN_KILLFOCUS"));
             if (NULL != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_EDITCHANGE:
-            MSG_LOG(L"CBN_EDITCHANGE");
+            MSG_LOG(TEXT("CBN_EDITCHANGE"));
             if (NULL != OnEditChange) {
                 OnEditChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_EDITUPDATE:
-            MSG_LOG(L"CBN_EDITUPDATE");
+            MSG_LOG(TEXT("CBN_EDITUPDATE"));
             if (NULL != OnEditUpdate) {
                 OnEditUpdate(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_DROPDOWN:
-            MSG_LOG(L"CBN_DROPDOWN");
+            MSG_LOG(TEXT("CBN_DROPDOWN"));
             if (NULL != OnDropdown) {
                 OnDropdown(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_CLOSEUP:
-            MSG_LOG(L"CBN_CLOSEUP");
+            MSG_LOG(TEXT("CBN_CLOSEUP"));
             if (NULL != OnCloseUp) {
                 OnCloseUp(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SELENDOK:
-            MSG_LOG(L"CBN_SELENDOK");
+            MSG_LOG(TEXT("CBN_SELENDOK"));
             if (NULL != OnItemSelected) {
                 OnItemSelected(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SELENDCANCEL:
-            MSG_LOG(L"CBN_SELENDCANCEL");
+            MSG_LOG(TEXT("CBN_SELENDCANCEL"));
             if (NULL != OnItemSelectedCancel) {
                 OnItemSelectedCancel(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         default:
-            MSG_LOG(L"Not supported %X", a_uMsg);
+            MSG_LOG(TEXT("Not supported %X"), a_uMsg);
             break;
         }
     }
@@ -208,7 +208,7 @@ LRESULT thComboBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
 
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
-    MSG_LOG(L"Not supported %X", pData->code);
+    MSG_LOG(TEXT("Not supported %X"), pData->code);
 
     //TH_LEAVE_FUNCTION;
     return tResult;

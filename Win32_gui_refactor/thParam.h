@@ -106,7 +106,7 @@ private:
             }
         }
         else {
-            MSG_WARNING(L"GetWindowLongPtr failed with error: 0x%X", GetLastError());
+            MSG_WARNING(TEXT("GetWindowLongPtr failed with error: 0x%X"), GetLastError());
         }
 
         TH_LEAVE_FUNCTION;
@@ -134,11 +134,11 @@ private:
             lpResult = SetWindowLongPtr(this->m_pParent->GetHandle(), TStyleType, lpWindowStyle);
 
             if (0 == lpResult) {
-                MSG_WARNING(L"SetWindowLongPtr failed with error: 0x%X", GetLastError());
+                MSG_WARNING(TEXT("SetWindowLongPtr failed with error: 0x%X"), GetLastError());
             }
         }
         else {
-            MSG_WARNING(L"GetWindowLongPtr failed with error: 0x%X", GetLastError());
+            MSG_WARNING(TEXT("GetWindowLongPtr failed with error: 0x%X"), GetLastError());
         }
 
         TH_LEAVE_FUNCTION;

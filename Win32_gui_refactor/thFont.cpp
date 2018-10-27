@@ -14,7 +14,7 @@ thFont::~thFont()
         fResult = DeleteObject(m_sFont);
 
         if (TRUE != fResult) {
-            MSG_ERROR(L"DeleteObject failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("DeleteObject failed with error = 0x%X"), GetLastError());
         }
     }
 }
@@ -28,7 +28,7 @@ void thFont::set(void)
         fResult = DeleteObject(m_sFont);
 
         if (TRUE != fResult) {
-            MSG_ERROR(L"DeleteObject failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("DeleteObject failed with error = 0x%X"), GetLastError());
         }
         else {
             m_sFont = 0;
@@ -44,18 +44,18 @@ void thFont::set(void)
             SendMessage(m_pParent->GetHandle(), WM_SETFONT, (WPARAM)m_sFont, (LPARAM)TRUE);
         }
         else {
-            MSG_ERROR(L"CreateFontIndirect failed with error = 0x%X", GetLastError());            
+            MSG_ERROR(TEXT("CreateFontIndirect failed with error = 0x%X"), GetLastError());            
         }
     }
     else {
-        MSG_ERROR(L"Failed to set new font!");
+        MSG_ERROR(TEXT("Failed to set new font!"));
     }
 }
 
 void thFont::SetName(thString a_fontName)
 {
     SecureZeroMemory(this->m_sLogicalFont.lfFaceName, LF_FACESIZE);
-    wcscpy_s(this->m_sLogicalFont.lfFaceName, LF_FACESIZE, a_fontName.c_str());
+    _tcscpy_s(this->m_sLogicalFont.lfFaceName, LF_FACESIZE, a_fontName.c_str());
 
     this->set();
 }
@@ -84,10 +84,10 @@ void thFont::SetParent(const thWindow * const a_pParent)
             m_pParent = a_pParent;
         }
         else {
-            MSG_ERROR(L"Parent already set!");
+            MSG_ERROR(TEXT("Parent already set!"));
         }
     }
     else {
-        MSG_ERROR(L"Empty pointer as argument!");
+        MSG_ERROR(TEXT("Empty pointer as argument!"));
     }
 }

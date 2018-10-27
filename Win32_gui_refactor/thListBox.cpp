@@ -1,9 +1,9 @@
 #include "thListBox.h"
 
 /* Defines */
-#define CLASS_NAME L"thListBox"
-#define WIN32_CLASS_NAME L"LISTBOX"
-#define DEFAULT_TEXT L"Caption"
+#define CLASS_NAME TEXT("thListBox")
+#define WIN32_CLASS_NAME TEXT("LISTBOX")
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 25
@@ -48,7 +48,7 @@ thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -78,42 +78,42 @@ LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case LBN_DBLCLK:
-            MSG_LOG(L"LBN_DBLCLK");
+            MSG_LOG(TEXT("LBN_DBLCLK"));
             if (NULL != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_KILLFOCUS:
-            MSG_LOG(L"LBN_KILLFOCUS");
+            MSG_LOG(TEXT("LBN_KILLFOCUS"));
             if (NULL != OnKillFocus) {
                 OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SELCANCEL:
-            MSG_LOG(L"LBN_SELCANCEL");
+            MSG_LOG(TEXT("LBN_SELCANCEL"));
             if (NULL != OnItemSelectedCancel) {
                 OnItemSelectedCancel(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SELCHANGE:
-            MSG_LOG(L"LBN_SELCHANGE");
+            MSG_LOG(TEXT("LBN_SELCHANGE"));
             if (NULL != OnSelectionChange) {
                 OnSelectionChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SETFOCUS:
-            MSG_LOG(L"LBN_SETFOCUS");
+            MSG_LOG(TEXT("LBN_SETFOCUS"));
             if (NULL != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         default:
-            MSG_LOG(L"Not supported %X", a_uMsg);
+            MSG_LOG(TEXT("Not supported %X"), a_uMsg);
             break;
         }
     }
@@ -140,7 +140,7 @@ LRESULT thListBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
-        //MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+        //MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
     //TH_LEAVE_FUNCTION;

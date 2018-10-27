@@ -60,7 +60,7 @@ void thWidth::setValue(int newValue)
     fResult = AdjustWindowRectEx(&rcClient, dwStyle, hMenu ? TRUE : FALSE, dwExStyle);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"AdjustWindowRectEx failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("AdjustWindowRectEx failed with error = 0x%X"), GetLastError());
     }
 
     if (newValue > 0) {
@@ -80,7 +80,7 @@ void thWidth::setValue(int newValue)
                 this->m_pParent->StoreCurrentRect();
             }
         } else {
-            MSG_ERROR(L"SetWindowPos failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("SetWindowPos failed with error = 0x%X"), GetLastError());
         }
     }
 

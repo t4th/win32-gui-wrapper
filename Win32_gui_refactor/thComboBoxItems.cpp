@@ -49,7 +49,7 @@ void thComboBoxItems::Remove(int _index)
     dResult = ComboBox_DeleteString(this->m_pParent->GetHandle(), _index);
 
     if (CB_ERR == dResult) {
-        MSG_ERROR(L"ComboBox_DeleteString failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ComboBox_DeleteString failed with error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }
@@ -73,7 +73,7 @@ int thComboBoxItems::ItemIndex(void) const
     nResult = ComboBox_GetCurSel(this->m_pParent->GetHandle());
 
     if (CB_ERR == nResult) {
-        MSG_ERROR(L"ComboBox_GetCurSel failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ComboBox_GetCurSel failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -88,7 +88,7 @@ void thComboBoxItems::SetItemIndex(int a_nItemIndex)
     nResult = ComboBox_SetCurSel(this->m_pParent->GetHandle(), a_nItemIndex);
 
     if (CB_ERR == nResult && -1 != a_nItemIndex) {
-        MSG_ERROR(L"ComboBox_SetCurSel failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ComboBox_SetCurSel failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -126,7 +126,7 @@ void thComboBoxItem::Remove(void)
     result = ComboBox_DeleteString(this->m_pParent->GetHandle(), m_nIndex);
 
     if (CB_ERR == result) {
-        MSG_ERROR(L"ComboBox_DeleteString failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ComboBox_DeleteString failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -136,17 +136,17 @@ thString thComboBoxItem::GetText(void)
 {
     TH_ENTER_FUNCTION;
     thString    result;
-    WCHAR *     pBuffer = 0;
+    TCHAR *     pBuffer = 0;
     int         nLen = 0;
 
     nLen = ComboBox_GetLBTextLen(this->m_pParent->GetHandle(), m_nIndex);
 
     if (nLen > 0)
     {
-        pBuffer = new WCHAR[nLen + 1]; //+1 for '\0'
+        pBuffer = new TCHAR[nLen + 1]; //+1 for '\0'
 
         if (CB_ERR == ComboBox_GetLBText(this->m_pParent->GetHandle(), m_nIndex, pBuffer)) {
-            MSG_ERROR(L"ComboBox_GetLBText failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("ComboBox_GetLBText failed with error = 0x%X"), GetLastError());
         }
         else {
             result = thString(pBuffer, nLen);

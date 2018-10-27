@@ -1,9 +1,9 @@
 #include "thLabel.h"
 
 /* Defines */
-#define CLASS_NAME L"thLabel"
-#define WIN32_CLASS_NAME L"STATIC"
-#define DEFAULT_TEXT L"Caption"
+#define CLASS_NAME TEXT("thLabel")
+#define WIN32_CLASS_NAME TEXT("STATIC")
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 25
@@ -45,7 +45,7 @@ thLabel::thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = 
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -74,35 +74,35 @@ LRESULT thLabel::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
     if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case STN_CLICKED:
-            MSG_LOG(L"STN_CLICKED");
+            MSG_LOG(TEXT("STN_CLICKED"));
             if (NULL != OnClick) {
                 OnClick(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_DBLCLK:
-            MSG_LOG(L"STN_DBLCLK");
+            MSG_LOG(TEXT("STN_DBLCLK"));
             if (NULL != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_DISABLE: //PUSHED
-            MSG_LOG(L"STN_DISABLE");
+            MSG_LOG(TEXT("STN_DISABLE"));
             if (NULL != OnDisable) {
                 OnDisable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_ENABLE: //UNPUSHED
-            MSG_LOG(L"STN_ENABLE");
+            MSG_LOG(TEXT("STN_ENABLE"));
             if (NULL != OnEnable) {
                 OnEnable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         default:
-            MSG_LOG(L"Not supported %X", a_uMsg);
+            MSG_LOG(TEXT("Not supported %X"), a_uMsg);
             break;
         }
     }
@@ -129,7 +129,7 @@ LRESULT thLabel::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
-        MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+        MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
     //TH_LEAVE_FUNCTION;

@@ -3,9 +3,9 @@
 #include "Scintilla.h"
 
 /* Defines */
-#define CLASS_NAME L"Scintilla"
-#define WIN32_CLASS_NAME L"Scintilla"
-#define DEFAULT_TEXT L""
+#define CLASS_NAME TEXT("Scintilla")
+#define WIN32_CLASS_NAME TEXT("Scintilla")
+#define DEFAULT_TEXT TEXT("")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 75
@@ -42,8 +42,8 @@ static const char g_cppKeyWords[] =
 // Scintilla Colors structure
 struct SScintillaColors
 {
-    int			iItem;
-    COLORREF	rgb;
+    int         iItem;
+    COLORREF    rgb;
 };
 
 // A few basic colors
@@ -101,7 +101,7 @@ thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     BOOL    fResult = FALSE;
     HMODULE hScintilla = NULL;
     
-    hScintilla = LoadLibrary(L"..\\scintilla\\win32\\Release\\SciLexer.DLL");
+    hScintilla = LoadLibrary(TEXT("..\\scintilla\\win32\\Release\\SciLexer.DLL"));
 
     if (hScintilla)
     {
@@ -125,12 +125,12 @@ thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
         //
         //if (!_pScintillaFunc)
         //{
-        //    MSG_ERROR(L"ScintillaEditView::init : SCI_GETDIRECTFUNCTION message failed");
+        //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTFUNCTION message failed"));
         //}
         //
         //if (!_pScintillaPtr)
         //{
-        //    MSG_ERROR(L"ScintillaEditView::init : SCI_GETDIRECTPOINTER message failed");
+        //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTPOINTER message failed"));
         //}
 
 
@@ -175,11 +175,11 @@ thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
         fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
         if (FALSE == fResult) {
-            MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
         }
     }
     else {
-        MSG_ERROR(L"thRichEdit:LoadLibrary - getlasterror=%u", GetLastError());
+        MSG_ERROR(TEXT("thRichEdit:LoadLibrary - getlasterror=%u"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -205,14 +205,14 @@ LRESULT thRichEdit::onSetText(LPARAM a_lParam)
     //  TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
     std::wstring text((wchar_t*)a_lParam);
-    MSG_LOG(L"%s::onSetText() - Enter", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onSetText() - Enter"), this->m_name.c_str());
     //SendMessage(this->m_hWinHandle, SCI_SETCODEPAGE, 0, SC_CP_UTF8);
     SendMessage(this->m_hWinHandle, SCI_SETTEXT, 0, (LPARAM)(WStringToString(text).c_str()));
     //SendMessage(this->m_hWinHandle, SCI_EMPTYUNDOBUFFER, 0, 0);
     
     tResult = 1;
 
-    MSG_LOG(L"%s::onSetText() - Leave", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onSetText() - Leave"), this->m_name.c_str());
     //  TH_LEAVE_FUNCTION;
     return tResult;
 }
@@ -235,7 +235,7 @@ LRESULT thRichEdit::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
-    //    MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+    //    MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
     //TH_LEAVE_FUNCTION;

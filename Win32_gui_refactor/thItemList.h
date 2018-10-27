@@ -51,7 +51,7 @@ public:
             m_items.push_back(pNewItem);
         }
         else {
-            MSG_ERROR(L"new failed");
+            MSG_ERROR(TEXT("new failed"));
         }
     }
 

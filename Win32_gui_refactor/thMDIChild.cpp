@@ -1,9 +1,9 @@
 #include "thMDIChild.h"
 
 /* Defines */
-#define CLASS_NAME L"thMDIChild"
+#define CLASS_NAME TEXT("thMDIChild")
 #define WIN32_CLASS_NAME CLASS_NAME
-#define DEFAULT_TEXT L"thMDIChild"
+#define DEFAULT_TEXT TEXT("thMDIChild")
 
 #define DEFAULT_WIDTH  200
 #define DEFAULT_HEIGHT 200
@@ -54,11 +54,11 @@ void thMDIChild::registerClass()
     wClass.hIconSm =        NULL;
     
     if (0 == RegisterClassEx(&wClass)) {
-        MSG_WARNING(L"RegisterClassEx error: 0x%X", GetLastError());
+        MSG_WARNING(TEXT("RegisterClassEx error: 0x%X"), GetLastError());
         //todo: add UnregisterClass 
     }
     else {
-        MSG_SUCCESS(L"Successfully registerd class with RegisterClassEx");
+        MSG_SUCCESS(TEXT("Successfully registerd class with RegisterClassEx"));
         m_isFirstRegWin = TRUE;
         //fMainApplicationWindow = true; //firstly created form is the main form
     }
@@ -101,14 +101,14 @@ LRESULT thMDIChild::onNCCreate()
 
 LRESULT thMDIChild::onClose()
 {
-    MSG_LOG(L"%s::onClose() - Enter", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onClose() - Enter"), this->m_name.c_str());
     LRESULT tResult = 0;
 
     if (OnClose) {
         tResult = OnClose(this);
     }
 
-    MSG_LOG(L"%s::onClose() - Leave", this->m_name.c_str());
+    MSG_LOG(TEXT("%s::onClose() - Leave"), this->m_name.c_str());
     return tResult;
 }
 
@@ -182,7 +182,7 @@ void thMDIChild::SetMenu(thMenu * const a_pMenu)
                 fResult = ::SetMenu(this->m_hWinHandle, a_pMenu->m_hMenuHandle);
 
                 if (false == fResult) {
-                    MSG_ERROR(L"SetMenu failed with error =  0x%X", GetLastError());
+                    MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
                 }
                 else {
                     //todo:
@@ -193,12 +193,12 @@ void thMDIChild::SetMenu(thMenu * const a_pMenu)
                 }
             }
             else {
-                MSG_ERROR(L"Provided thMenu is invalid (wrong handle)");
+                MSG_ERROR(TEXT("Provided thMenu is invalid (wrong handle)"));
             }
         }
     }
     else {
-        MSG_ERROR(L"Empty input pointer!");
+        MSG_ERROR(TEXT("Empty input pointer!"));
     }
 
     TH_LEAVE_FUNCTION;
@@ -212,7 +212,7 @@ void thMDIChild::ClearMenu(void)
     fResult = ::SetMenu(this->m_hWinHandle, NULL);
 
     if (false == fResult) {
-        MSG_ERROR(L"SetMenu failed with error =  0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
     }
     else {
         this->m_menu->m_hParentWindow = NULL;
@@ -258,7 +258,7 @@ LRESULT CALLBACK MDIChildProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM 
             pMDIChild = reinterpret_cast<thMDIChild*>(pMDIinfo->lParam);
         }
         else {
-            MSG_ERROR(L"CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!");
+            MSG_ERROR(TEXT("CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!"));
         }
     }
 

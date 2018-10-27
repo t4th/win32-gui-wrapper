@@ -2,10 +2,6 @@
 #include "thTypes.h"
 #include "thWin32Logger.h"
 
-#ifndef UNICODE
-#error define UNICODE in project settigs!
-#endif
-
 /* Debug levels:
 2 - all logs (messages and enter/leave functions)
 1 - only messages
@@ -40,6 +36,6 @@
 #define TH_ID_MDI_FIRSTCHILD 50000
 
 /* Default application font settings */
-#define TH_DEF_APP_FONT_NAME L"Calibri"
+#define TH_DEF_APP_FONT_NAME TEXT("Calibri")
 /* Size in Points */
 #define TH_DEF_APP_FONT_SIZE 9

@@ -2,9 +2,9 @@
 #include "SimpleGrid_src\simpleGrid.h"
 
 /* Defines */
-#define CLASS_NAME L"thStringGrid"
+#define CLASS_NAME TEXT("thStringGrid")
 #define WIN32_CLASS_NAME WC_SIMPLEGRID
-#define DEFAULT_TEXT L""
+#define DEFAULT_TEXT TEXT("")
 
 #define DEFAULT_WIDTH  200
 #define DEFAULT_HEIGHT 200
@@ -45,26 +45,26 @@ BOOL Main_OnCreate(HWND hGrid, LPCREATESTRUCT lpCreateStruct, DWORD id)
     //Include a title for this grid
     HFONT hFont = CreateFont(20, 0, 0, 0, FW_EXTRABOLD, FALSE, FALSE, FALSE,
         ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-        PROOF_QUALITY, VARIABLE_PITCH | FF_MODERN, L"ARIEL");
+        PROOF_QUALITY, VARIABLE_PITCH | FF_MODERN, TEXT("ARIEL"));
 
     SimpleGrid_SetTitleFont(hGrid, hFont);
     SimpleGrid_SetTitleHeight(hGrid, 21);
-    SimpleGrid_SetTitle(hGrid, L"Grid's window text displayed here.");
+    SimpleGrid_SetTitle(hGrid, TEXT("Grid's window text displayed here."));
 #endif
 
     //Add three columns and four rows
 
-    //LPTSTR blankText = L""; //just some blank text
+    //LPTSTR blankText = TEXT(""); //just some blank text
 
     //use column header text
     SimpleGrid_SetColsNumbered(hGrid, FALSE);
 
     //Column type, Column header text,  Optional data (ex: combobox choices)
     SGCOLUMN lpColumns[] = {
-        GCT_EDIT, L"1", NULL,
-        GCT_EDIT, L"2", NULL,
-        GCT_EDIT, L"3", NULL,
-        GCT_EDIT, L"4", NULL
+        GCT_EDIT, TEXT("1"), NULL,
+        GCT_EDIT, TEXT("2"), NULL,
+        GCT_EDIT, TEXT("3"), NULL,
+        GCT_EDIT, TEXT("4"), NULL
     };
 
     //Add the columns
@@ -93,7 +93,7 @@ thStringGrid::thStringGrid(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int
     iccx.dwICC = ICC_WIN95_CLASSES/*|ICC_COOL_CLASSES|ICC_DATE_CLASSES|
                                  ICC_PAGESCROLLER_CLASS|ICC_USEREX_CLASSES*/;
     if (FALSE == InitCommonControlsEx(&iccx)) {
-        MSG_ERROR(L"InitCommonControlsEx ICC_BAR_CLASSES failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("InitCommonControlsEx ICC_BAR_CLASSES failed with error = 0x%X"), GetLastError());
     }
     
     InitSimpleGrid(this->m_sWindowArgs.hInstance); //thWindow c-tor init this
@@ -116,7 +116,7 @@ thStringGrid::thStringGrid(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
     
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -146,7 +146,7 @@ LRESULT thStringGrid::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_w
         switch (HIWORD(a_wParam)) {
         case 0: // workaround for Warning 1 warning C4065: switch statement contains 'default' but no 'case' labels
         default:
-            MSG_LOG(L"Not supported %X", a_uMsg);
+            MSG_LOG(TEXT("Not supported %X"), a_uMsg);
             break;
         }
     }
@@ -179,19 +179,19 @@ LRESULT thStringGrid::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wP
     if (pData) {
         switch (pData->code) {
         case BCN_DROPDOWN:
-            MSG_LOG(L"BCN_DROPDOWN - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("BCN_DROPDOWN - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         case BCN_HOTITEMCHANGE: //mouse is enetring button window
-            MSG_LOG(L"BCN_HOTITEMCHANGE - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("BCN_HOTITEMCHANGE - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         case NM_CUSTOMDRAW:
-            MSG_LOG(L"LNM_CUSTOMDRAW - %s", this->m_name.c_str());
+            MSG_LOG(TEXT("LNM_CUSTOMDRAW - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         default:
-            MSG_ERROR(L"WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X", pData->hwndFrom, pData->idFrom, pData->code);
+            MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
             break;
         }
     }

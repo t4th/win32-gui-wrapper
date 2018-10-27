@@ -51,7 +51,7 @@ namespace MainWindow
     thButton *  pComboBoxButton;
 
     LRESULT     Form_onDestroy(thWindow *);
-    void        ComboBoxButton_onClick(thObject * const, thEventParams_t);
+    LRESULT        ComboBoxButton_onClick(thObject * const, thEventParams_t);
 }
 
 namespace ComboBoxWindow
@@ -64,9 +64,9 @@ namespace ComboBoxWindow
     thButton *   pRemoveButton;
 
     LRESULT     Form_onClose(thWindow *);
-    void        ComboBox_onSelectChange(thObject * const, thEventParams_t);
-    void        RemoveButton_onClick(thObject * const, thEventParams_t);
-    void        AddButton_onClick(thObject * const, thEventParams_t);
+    LRESULT        ComboBox_onSelectChange(thObject * const, thEventParams_t);
+    LRESULT        RemoveButton_onClick(thObject * const, thEventParams_t);
+    LRESULT        AddButton_onClick(thObject * const, thEventParams_t);
 }
 
 // Application entry point
@@ -74,7 +74,7 @@ void thWin32App::OnCreate()
 {
     // create main window form
     MainWindow::pForm = new thForm(0, 0, 0);
-    MainWindow::pForm->Text = L"Example application";
+    MainWindow::pForm->Text = TEXT("Example application");
     MainWindow::pForm->X = 500;
     MainWindow::pForm->Y = 200;
     MainWindow::pForm->Width = 300;
@@ -90,7 +90,7 @@ void thWin32App::OnCreate()
 
     // create ComboBox example window
     ComboBoxWindow::pForm = new thForm(MainWindow::pForm, 0, 0);
-    ComboBoxWindow::pForm->Text = L"Example application";
+    ComboBoxWindow::pForm->Text = TEXT("Example application");
     ComboBoxWindow::pForm->X = 500;
     ComboBoxWindow::pForm->Y = 200;
     ComboBoxWindow::pForm->Width = 300;
@@ -101,26 +101,26 @@ void thWin32App::OnCreate()
     ComboBoxWindow::pComboBox = new thComboBox(ComboBoxWindow::pForm, 20, 20);
     ComboBoxWindow::pComboBox->Width = 180;
     ComboBoxWindow::pComboBox->Anchors.Right = TRUE;
-    ComboBoxWindow::pComboBox->Items.Add(L"Test Item 1");
+    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 1"));
     ComboBoxWindow::pComboBox->Items.SetItemIndex(0);
-    ComboBoxWindow::pComboBox->Items.Add(L"Test Item 2");
-    ComboBoxWindow::pComboBox->Items.Add(L"Test Item 3");
+    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 2"));
+    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 3"));
     ComboBoxWindow::pComboBox->OnSelectChange = ComboBoxWindow::ComboBox_onSelectChange;
 
     ComboBoxWindow::pRemoveButton = new thButton(ComboBoxWindow::pForm, 210, 20);
     ComboBoxWindow::pRemoveButton->Width = 70;
-    ComboBoxWindow::pRemoveButton->Text = L"Remove";
+    ComboBoxWindow::pRemoveButton->Text = TEXT("Remove");
     ComboBoxWindow::pRemoveButton->Anchors.Left = FALSE;
     ComboBoxWindow::pRemoveButton->OnClick = ComboBoxWindow::RemoveButton_onClick;
 
     ComboBoxWindow::pInputEditBox = new thEditBox(ComboBoxWindow::pForm, 20, 50);
-    ComboBoxWindow::pInputEditBox->Text = L"Test Item 4";
+    ComboBoxWindow::pInputEditBox->Text = TEXT("Test Item 4");
     ComboBoxWindow::pInputEditBox->Width = 180;
     ComboBoxWindow::pInputEditBox->Anchors.Right = TRUE;
 
     ComboBoxWindow::pAddButton = new thButton(ComboBoxWindow::pForm, 210, 50);
     ComboBoxWindow::pAddButton->Width = 70;
-    ComboBoxWindow::pAddButton->Text = L"Add";
+    ComboBoxWindow::pAddButton->Text = TEXT("Add");
     ComboBoxWindow::pAddButton->Anchors.Left = FALSE;
     ComboBoxWindow::pAddButton->OnClick = ComboBoxWindow::AddButton_onClick;
 
@@ -131,7 +131,7 @@ void thWin32App::OnCreate()
 
     // create ComboBox example button
     MainWindow::pComboBoxButton = new thButton(MainWindow::pForm, 20, 20);
-    MainWindow::pComboBoxButton->Text = L"ComboBox example";
+    MainWindow::pComboBoxButton->Text = TEXT("ComboBox example");
     MainWindow::pComboBoxButton->Width = 260;
     MainWindow::pComboBoxButton->Anchors.Right = TRUE;
     MainWindow::pComboBoxButton->OnClick = MainWindow::ComboBoxButton_onClick; // onClick event
@@ -157,10 +157,11 @@ static LRESULT MainWindow::Form_onDestroy(thWindow *) {
     return 0;
 }
 
-void MainWindow::ComboBoxButton_onClick(thObject * const sender, thEventParams_t info){
+LRESULT MainWindow::ComboBoxButton_onClick(thObject * const sender, thEventParams_t info){
     if (ComboBoxWindow::pForm) {
         ComboBoxWindow::pForm->Show();
     }
+    return 1;
 }
 
 LRESULT ComboBoxWindow::Form_onClose(thWindow * sender) {
@@ -168,18 +169,21 @@ LRESULT ComboBoxWindow::Form_onClose(thWindow * sender) {
     return 1; // return 0 would destroy the window
 }
 
-void ComboBoxWindow::ComboBox_onSelectChange(thObject * const sender, thEventParams_t info){
+LRESULT ComboBoxWindow::ComboBox_onSelectChange(thObject * const sender, thEventParams_t info){
     int nSelectedItem = ComboBoxWindow::pComboBox->Items.ItemIndex();
     ComboBoxWindow::pSelectionLabel->Text = ComboBoxWindow::pComboBox->Items[nSelectedItem].GetText();
+    return 1;
 }
 
-void ComboBoxWindow::RemoveButton_onClick(thObject * const sender, thEventParams_t info){
+LRESULT ComboBoxWindow::RemoveButton_onClick(thObject * const sender, thEventParams_t info){
     ComboBoxWindow::pComboBox->Items.Remove(ComboBoxWindow::pComboBox->Items.ItemIndex());
     ComboBoxWindow::pComboBox->Items.SetItemIndex(-1); // refresh comboBox
+    return 1;
 }
 
-void ComboBoxWindow::AddButton_onClick(thObject * const sender, thEventParams_t info){
+LRESULT ComboBoxWindow::AddButton_onClick(thObject * const sender, thEventParams_t info){
     ComboBoxWindow::pComboBox->Items.Add(ComboBoxWindow::pInputEditBox->Text);
+    return 1;
 }
 
 
@@ -274,14 +278,14 @@ LRESULT Menu1_onClick(thObject * const sender, thEventParams_t info){
 
     if (pNewchild) {
         pNewchild->OnDestroy = MDIChild_onDestroy; // bind onDestroy callback
-        pNewchild->Text = L"MDI";
+        pNewchild->Text = TEXT("MDI");
         mdiChilds.push_back(pNewchild);
     }
     return 1;
 }
 
 LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info){
-    button->Text = L"aa";
+    button->Text = TEXT("aa");
     return 1;
 }
 
@@ -351,10 +355,10 @@ int Get_BOM_HeaderSize(uint8_t* p)
 // open file in new MDI child int ASCII/UNICODE format
 LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
     thOpenDialog openDialog;
-    thDialogFilterItem all(L"All", L"*.*");
+    thDialogFilterItem all(TEXT("All"), TEXT("*.*"));
     thDialogFilterItem text;
-    text.Name = L"Text";
-    text.Filter = L"*.TXT";
+    text.Name = TEXT("Text");
+    text.Filter = TEXT("*.TXT");
 
     openDialog.Filter.Add(all);
     openDialog.Filter.Add(text);
@@ -415,18 +419,26 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
 
                                     if (fResult) {
                                         // UNICODE
-                                        MSG_LOG(L"UNICODE");
+                                        MSG_LOG(TEXT("UNICODE"));
                                         //uint32_t bom_size = 0;
                                         //bom_size = Get_BOM_HeaderSize(buffer);
 
-                                        thString text((WCHAR*)buffer, u32BytesRead); // - 10 bytes of BOM header
-                                        pNewchild->pRichEdit->Text = text;
+                                        std::wstring text((wchar_t*)buffer, u32BytesRead); // interpret as wide string; - 10 bytes of BOM header
+                                        #ifdef UNICODE
+                                            pNewchild->pRichEdit->Text = text;
+                                        #else
+                                            pNewchild->pRichEdit->Text = WStringToString(text);
+                                        #endif
                                     }
                                     else {
                                         // ASCII
-                                        MSG_LOG(L"ASCII");
-                                        std::string text((char*)buffer, u32BytesRead);
-                                        pNewchild->pRichEdit->Text = StringToWString(text);
+                                        MSG_LOG(TEXT("ASCII"));
+                                        std::string text((char*)buffer, u32BytesRead); // interpret as ANSI string
+                                        #ifdef UNICODE
+                                            pNewchild->pRichEdit->Text = StringToWString(text);
+                                        #else
+                                            pNewchild->pRichEdit->Text = text;
+                                        #endif
                                     }
 
                                 }
@@ -504,38 +516,38 @@ void thWin32App::OnCreate()
 
     // window submenu
     menu2 = new thMenu();
-    menu2->Items.Add(L"cascade");
+    menu2->Items.Add(TEXT("cascade"));
     menu2->Items[0]->OnClick = Menu2_onClick1;
-    menu2->Items.Add(L"horizontal tile");
+    menu2->Items.Add(TEXT("horizontal tile"));
     menu2->Items[1]->OnClick = Menu2_onClick2;
-    menu2->Items.Add(L"vertical tile");
+    menu2->Items.Add(TEXT("vertical tile"));
     menu2->Items[2]->OnClick = Menu2_onClick3;
-    menu2->Items.Add(L"arrange icons");
+    menu2->Items.Add(TEXT("arrange icons"));
     menu2->Items[3]->OnClick = Menu2_onClick4;
-    menu2->Items.Add(L"-");
+    menu2->Items.Add(TEXT("-"));
 
     // main menu
     menu1 = new thMenu();
 
-    menu1->Items.Add(L"open file");
+    menu1->Items.Add(TEXT("open file"));
     menu1->Items[0]->OnClick = Menu2_FileOpen_onClick;
-    menu1->Items.Add(L"test name");
-    menu1->Items[1]->Text = L"Add mdi child";
+    menu1->Items.Add(TEXT("test name"));
+    menu1->Items[1]->Text = TEXT("Add mdi child");
     menu1->Items[1]->OnClick = Menu1_onClick;
-    menu1->Items.Add(L"Window");
+    menu1->Items.Add(TEXT("Window"));
     menu1->Items[2]->SubMenu = menu2;
-    menu1->Items.Add(L"form");
+    menu1->Items.Add(TEXT("form"));
     menu1->Items[3]->OnClick = Menu2_onClick5;
-    menu1->Items.Add(L"form2");
+    menu1->Items.Add(TEXT("form2"));
     menu1->Items[4]->OnClick = Menu2_onClick6;
 
     // popup menus
     pop1 = new thPopupMenu();
-    pop1->Items.Add(L"stuff");
-    pop1->Items.Add(L"later");
+    pop1->Items.Add(TEXT("stuff"));
+    pop1->Items.Add(TEXT("later"));
     pop2 = new thPopupMenu();
-    pop2->Items.Add(L"options");
-    pop2->Items.Add(L"change");
+    pop2->Items.Add(TEXT("options"));
+    pop2->Items.Add(TEXT("change"));
     pop2->Items[0]->SubMenu = pop1;
     //   pop2->Items[0]->SubMenu = 0;
 
@@ -545,7 +557,7 @@ void thWin32App::OnCreate()
     form3->Height = 800;
     form3->X = 50;
     form3->Y = 50;
-    form3->Text = L"test form name 1";
+    form3->Text = TEXT("test form name 1");
     form3->SetMenu(menu1);
     form3->OnDestroy = Form3_onDestroy;
 
@@ -570,7 +582,7 @@ void thWin32App::OnCreate()
     form->Height = 350;
     form->X = 500;
     form->Y = 100;
-    form->Text = L"test form name 2";
+    form->Text = TEXT("test form name 2");
     form->PopupMenu = pop1;
     form->OnClose = Form_onClose;
     //form->Show();
@@ -578,27 +590,27 @@ void thWin32App::OnCreate()
     combo1 = new thComboBox(form, 2, 2);
     combo1->Width = form->Width - 4;
     combo1->Height = 200;
-    combo1->Items.Add(L"Details");
-    combo1->Items.Add(L"Icon");
-    combo1->Items.Add(L"List");
-    combo1->Items.Add(L"Small icon");
-    combo1->Items.Add(L"Tile");
+    combo1->Items.Add(TEXT("Details"));
+    combo1->Items.Add(TEXT("Icon"));
+    combo1->Items.Add(TEXT("List"));
+    combo1->Items.Add(TEXT("Small icon"));
+    combo1->Items.Add(TEXT("Tile"));
     combo1->Items.SetItemIndex(0);
     combo1->PopupMenu = pop2;
     combo1->Anchors.Right = true;
     combo1->OnSelectChange = ComboBox1_onSelChange;
 
     edit1 = new thEditBox(form, 2, 4 + combo1->Height);
-    edit1->Text = L"name1";
+    edit1->Text = TEXT("name1");
 
     button = new thButton(form, 2, 4 + edit1->Y + edit1->Height);
-    button->Text = L"Item";
+    button->Text = TEXT("Item");
     button->OnClick = Button_onClick;
     button->PopupMenu = pop2;
 
     button4 = new thButton(form, 2, 4 + button->Y + button->Height);
     button4->OnClick = Button2_onClick;
-    button4->Text = L"Subitem";
+    button4->Text = TEXT("Subitem");
     //button4->PopupMenu = pop2;
 
     listbox1 = new thListBox(form, 2, 4 + button4->Y + button4->Height);
@@ -610,10 +622,10 @@ void thWin32App::OnCreate()
     thListView1->Height = 300;
     thListView1->Anchors.Right = true;
     thListView1->Anchors.Bottom = true;
-    thListView1->Columns.Add(L"Column1");
-    thListView1->Columns.Add(L"Column2");
-    thListView1->Columns.Add(L"Column3");
-    thListView1->Columns.Add(L"Column4");
+    thListView1->Columns.Add(TEXT("Column1"));
+    thListView1->Columns.Add(TEXT("Column2"));
+    thListView1->Columns.Add(TEXT("Column3"));
+    thListView1->Columns.Add(TEXT("Column4"));
     thListView1->SetView(thListView::eViewType_t::view_details);
 
     form2 = new thForm(form, 0, 0);
@@ -621,35 +633,35 @@ void thWin32App::OnCreate()
     form2->Height = 300;
     form2->X = form->Width + 520;
     form2->Y = 100;
-    form2->Text = L"test form name 3";
+    form2->Text = TEXT("test form name 3");
     form2->Resizable = false;
     form2->OnClose = Form_onClose;
 
 
     tb1 = new thToolbar(form2, 0, 0);
-    tb1->Items.Add(L"destroyss");
-    tb1->Items[0]->Text = L"destroy";
+    tb1->Items.Add(TEXT("destroyss"));
+    tb1->Items[0]->Text = TEXT("destroy");
     tb1->Items[0]->OnClick = Toolbar1_onClick;
 
-    tb1->Items.Add(L"test2");
-    tb1->Items[1]->Text = L"test222";
+    tb1->Items.Add(TEXT("test2"));
+    tb1->Items[1]->Text = TEXT("test222");
 
-    tb1->Items.Add(L"test3");
-    //tb1->Items[2]->Text = L"test3";
+    tb1->Items.Add(TEXT("test3"));
+    //tb1->Items[2]->Text = TEXT("test3");
     //tb1->Items[2]->OnClick = Button2_onClick;
 
     //button2 = new thButton(tb1, 70, 0);
 
     rb1 = new thRadioButton(form2, 5, 35 + button->Height + 5);
     rb1->Width = 200;
-    rb1->Font.SetName(L"Times New Roman");
+    rb1->Font.SetName(TEXT("Times New Roman"));
     rb1->Font.SetSize(10);
     rb2 = new thRadioButton(form2, 5, rb1->Y * 2);
-    rb2->Font.SetName(L"Gill Sans Ultra Bold Condensed");
+    rb2->Font.SetName(TEXT("Gill Sans Ultra Bold Condensed"));
     rb2->Font.SetSize(10);
     rb2->Width = 200;
     cb1 = new thCheckBox(form2, 5, rb1->Y * 3);
-    cb1->Font.SetName(L"Wide Latin");
+    cb1->Font.SetName(TEXT("Wide Latin"));
     cb1->Font.SetSize(10);
     cb1->Width = 200;
 
@@ -707,10 +719,10 @@ LRESULT Button2_onClick(thObject * const sender, thEventParams_t info)
     TH_ENTER_FUNCTION;
     for (int j = 0; j < thListView1->Items.GetCount(); j++) {
         for (int i = 1; i < thListView1->Columns.GetCount(); i++) {
-            thListView1->Items[j]->SubItems[i].SetText(std::to_wstring(i));
+            thListView1->Items[j]->SubItems[i].SetText(NumToString(i));
         }
     }
-    //    thListView1->Items[0]->SetText(L"asdasd");
+    //    thListView1->Items[0]->SetText(TEXT("asdasd"));
 
     TH_LEAVE_FUNCTION;
     return 1;

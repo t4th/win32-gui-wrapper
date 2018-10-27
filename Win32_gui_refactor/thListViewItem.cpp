@@ -27,7 +27,7 @@ thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_
         lvItem.cchTextMax = m_text.size(); // buffer size
         lvItem.iItem = dItemCount; // insert new item at the end
         lvItem.iSubItem = 0; // must be 0
-        lvItem.pszText = const_cast<LPWSTR>(m_text.c_str());
+        lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());
 
         result = ListView_InsertItem(this->m_pParent->GetHandle(), &lvItem);
 
@@ -35,7 +35,7 @@ thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_
             m_index = result;
         }
         else {
-            MSG_ERROR(L"ListView_InsertItem failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("ListView_InsertItem failed with error = 0x%X"), GetLastError());
         }
     }
 
@@ -81,14 +81,14 @@ void thListViewItem::SetText(thString a_itemText)
     lvItem.cchTextMax = m_text.size(); // buffer size
     lvItem.iItem = m_index; // insert new item at the end
     lvItem.iSubItem = 0;
-    lvItem.pszText = const_cast<LPWSTR>(m_text.c_str());
+    lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());
 
     result = ListView_SetItem(this->m_pParent->GetHandle(), &lvItem);
 
     if (TRUE == result) {
     }
     else {
-        MSG_ERROR(L"ListView_SetItem failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListView_SetItem failed with error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }
@@ -160,14 +160,14 @@ void thListViewSubItem::SetText(thString a_itemText)
     lvItem.cchTextMax = m_text.size(); // buffer size
     lvItem.iItem = m_pParent->GetIndex(); //parent item index
     lvItem.iSubItem = m_nParentColumn;
-    lvItem.pszText = const_cast<LPWSTR>(m_text.c_str());
+    lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());
 
     result = ListView_SetItem(this->m_pParent->GetParent()->GetHandle(), &lvItem);
 
     if (TRUE == result) {
     }
     else {
-        MSG_ERROR(L"ListView_SetItem failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ListView_SetItem failed with error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }

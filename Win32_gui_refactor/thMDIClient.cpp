@@ -2,9 +2,9 @@
 #include "thForm.h"
 
 /* Defines */
-#define CLASS_NAME L"thMDIClient"
-#define WIN32_CLASS_NAME L"MDICLIENT"
-#define DEFAULT_TEXT L"Caption"
+#define CLASS_NAME TEXT("thMDIClient")
+#define WIN32_CLASS_NAME TEXT("MDICLIENT")
+#define DEFAULT_TEXT TEXT("Caption")
 
 #define DEFAULT_WIDTH  200
 #define DEFAULT_HEIGHT 200
@@ -50,7 +50,7 @@ thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"SetWindowSubclass failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;

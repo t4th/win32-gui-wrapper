@@ -1,7 +1,7 @@
 #include "thPopupMenu.h"
 
 /* Defines */
-#define CLASS_NAME L"thPopupMenu"
+#define CLASS_NAME TEXT("thPopupMenu")
 #define MAX_NUMBER_OF_DIGITS_FOR_INDEX 6
 
 /* Static elements */
@@ -27,7 +27,7 @@ thPopupMenu::thPopupMenu(void)
         fResult = GetMenuInfo(m_hMenuHandle, &menuInfo);
 
         if (FALSE == fResult) {
-            MSG_ERROR(L"GetMenuInfo failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("GetMenuInfo failed with error = 0x%X"), GetLastError());
         }
         else {
             menuInfo.fMask = MIM_STYLE;
@@ -36,24 +36,24 @@ thPopupMenu::thPopupMenu(void)
             fResult = SetMenuInfo(m_hMenuHandle, &menuInfo);
 
             if (FALSE == fResult) {
-                MSG_ERROR(L"SetMenuInfo failed with error = 0x%X", GetLastError());
+                MSG_ERROR(TEXT("SetMenuInfo failed with error = 0x%X"), GetLastError());
             }
         }
 #endif
         /* Create Default Menu Name */
-        wchar_t szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
+        TCHAR szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
 
-        if (-1 == swprintf(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, L"%d", u32Index)) {
-            MSG_ERROR(L"CRITICAL_ERROR - window index buffer overflow");
+        if (-1 == _stprintf_s(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, TEXT("%d"), u32Index)) {
+            MSG_ERROR(TEXT("CRITICAL_ERROR - window index buffer overflow"));
         }
         else {
             this->m_name += thString(szNameIndex);
         }
         u32Index++;
-        MSG_SUCCESS(L"Created new popup menu: %s with ID=%d", this->m_name.c_str(), this->m_id);
+        MSG_SUCCESS(TEXT("Created new popup menu: %s with ID=%d"), this->m_name.c_str(), this->m_id);
     }
     else {
-        MSG_ERROR(L"Failed to create popup menu with CreateMenu error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("Failed to create popup menu with CreateMenu error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }
@@ -73,7 +73,7 @@ void thPopupMenu::Show(HWND a_parent, POINT & a_point)
     //fResult = SetForegroundWindow(a_parent->m_hWinHandle);
 
     //if (false == fResult) {
-    //    MSG_ERROR(L"SetForegroundWindow failed with error = 0x%X", GetLastError());
+    //    MSG_ERROR(TEXT("SetForegroundWindow failed with error = 0x%X"), GetLastError());
     //}
 
     //fResult = false;
@@ -87,7 +87,7 @@ void thPopupMenu::Show(HWND a_parent, POINT & a_point)
         NULL);
 
     if (false == fResult) {
-        MSG_ERROR(L"TrackPopupMenu failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("TrackPopupMenu failed with error = 0x%X"), GetLastError());
     }
     TH_LEAVE_FUNCTION;
 }
@@ -101,7 +101,7 @@ void thPopupMenu::Show(thWindow * a_parent, POINT & a_point)
         //fResult = SetForegroundWindow(a_parent->m_hWinHandle);
 
         //if (false == fResult) {
-        //    MSG_ERROR(L"SetForegroundWindow failed with error = 0x%X", GetLastError());
+        //    MSG_ERROR(TEXT("SetForegroundWindow failed with error = 0x%X"), GetLastError());
         //}
 
         //fResult = false;
@@ -115,11 +115,11 @@ void thPopupMenu::Show(thWindow * a_parent, POINT & a_point)
             NULL);
 
         if (false == fResult) {
-            MSG_ERROR(L"TrackPopupMenu failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("TrackPopupMenu failed with error = 0x%X"), GetLastError());
         }
     }
     else {
-        MSG_ERROR(L"Empty pointer as argument!");
+        MSG_ERROR(TEXT("Empty pointer as argument!"));
     }
     TH_LEAVE_FUNCTION;
 }

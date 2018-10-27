@@ -47,7 +47,7 @@ void thText::setValue(thString newValue)
 
     if (TRUE != tResult) {
         if (dwLastError) {
-            MSG_ERROR(L"SendMessage WM_SETTEXT failed with error = 0x%X, tResult = %d", dwLastError, tResult);
+            MSG_ERROR(TEXT("SendMessage WM_SETTEXT failed with error = 0x%X, tResult = %d"), dwLastError, tResult);
         }
     }
 

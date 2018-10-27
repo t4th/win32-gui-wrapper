@@ -81,7 +81,7 @@ void thMenuText::operator=(thString a_newText) {
     BOOL fResult = FALSE;
     UINT uFlags = MF_STRING | MF_BYCOMMAND;
 
-    if (a_newText.compare(L"-") == 0) {
+    if (a_newText.compare(TEXT("-")) == 0) {
         uFlags |= MF_SEPARATOR;
     }
 
@@ -94,7 +94,7 @@ void thMenuText::operator=(thString a_newText) {
         );
 
     if (FALSE == fResult) {
-        MSG_ERROR(L"ModifyMenu failed with error = 0x%X", GetLastError());
+        MSG_ERROR(TEXT("ModifyMenu failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -124,7 +124,7 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
         BOOL            fResult = FALSE;
         UINT            uFlags = MF_BYCOMMAND | MF_ENABLED;
         MENUITEMINFO    itemInfo = { 0 };
-        WCHAR *         pBuffer = NULL;
+        TCHAR *         pBuffer = NULL;
 
         // Retrieving menu item TEXT according to Remarks section in
         // http://msdn.microsoft.com/en-us/library/windows/desktop/ms647980%28v=vs.85%29.aspx
@@ -141,7 +141,7 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
 
         if (itemInfo.cch) {
             itemInfo.cch++;
-            pBuffer = new WCHAR[itemInfo.cch];
+            pBuffer = new TCHAR[itemInfo.cch];
         }
 
         itemInfo.dwTypeData = pBuffer;
@@ -180,15 +180,15 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
                     DrawMenuBar(this->m_pParent->m_pParent->m_hParentWindow);
                 }
                 else {
-                    MSG_ERROR(L"ModifyMenu failed with error = 0x%X", GetLastError());
+                    MSG_ERROR(TEXT("ModifyMenu failed with error = 0x%X"), GetLastError());
                 }
             }
             else {
-                MSG_ERROR(L"GetMenuItemInfo failed with error = 0x%X", GetLastError());
+                MSG_ERROR(TEXT("GetMenuItemInfo failed with error = 0x%X"), GetLastError());
             }
         }
         else {
-            MSG_ERROR(L"GetMenuItemInfo failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("GetMenuItemInfo failed with error = 0x%X"), GetLastError());
         }
 
         if (pBuffer) {
@@ -225,7 +225,7 @@ LRESULT thMenuItem::processCommandMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM a
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0; // should return 1 if used by app
 
-    MSG_LOG(L"Menu Item CLICKED, Id=%d", this->m_id);
+    MSG_LOG(TEXT("Menu Item CLICKED, Id=%d"), this->m_id);
 
     // for now: only button click event
     if (NULL != OnClick) {
@@ -244,7 +244,7 @@ LRESULT thMenuItem::processNotifyMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM a_
 
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
-    //MSG_LOG(L"%s - Not supported %X", this->m_name.c_str(), pData->code);
+    //MSG_LOG(TEXT("%s - Not supported %X"), this->m_name.c_str(), pData->code);
 
     TH_LEAVE_FUNCTION;
     return tResult;
@@ -315,11 +315,11 @@ void thMenuItemList::Add(thString a_newText) {
             UINT    uFlags = MF_BYCOMMAND | MF_ENABLED;
             LPCTSTR lpNewItem = NULL;
 
-            MSG_SUCCESS(L"Menu item created with id=%d", newMenu->m_id);
+            MSG_SUCCESS(TEXT("Menu item created with id=%d"), newMenu->m_id);
             m_items.push_back(newMenu);
             LastIndex++;
 
-            if (a_newText.compare(L"-") == 0) {
+            if (a_newText.compare(TEXT("-")) == 0) {
                 uFlags |= MF_SEPARATOR;
             }
             else {
@@ -340,7 +340,7 @@ void thMenuItemList::Add(thString a_newText) {
                 DrawMenuBar(this->m_pParent->m_hParentWindow);
             }
             else {
-                MSG_ERROR(L"AppendMenu failed with error = 0x%X", GetLastError());
+                MSG_ERROR(TEXT("AppendMenu failed with error = 0x%X"), GetLastError());
             }
         }
     }
@@ -369,7 +369,7 @@ void thMenuItemList::Remove(uint32_t a_u32ItemIndex) {
             );
 
         if (FALSE == fResult){
-            MSG_ERROR(L"RemoveMenu failed with error = 0x%X", GetLastError());
+            MSG_ERROR(TEXT("RemoveMenu failed with error = 0x%X"), GetLastError());
         }
 
         // update menu in window
