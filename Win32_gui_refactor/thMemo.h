@@ -14,4 +14,6 @@ private:
 public:
                             thMemo(thWindow *, int, int);
                             ~thMemo();
+
+    void                    ScrollDown();
 };

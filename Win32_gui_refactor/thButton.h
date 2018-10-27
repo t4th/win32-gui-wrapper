@@ -1,5 +1,6 @@
 #pragma once
 #include "thWindow.h"
+#include "thWindowStyles.h"
 
 class thButton : public thWindow
 {
@@ -14,6 +15,8 @@ private:
 public:
                             thButton(thWindow *, int, int);
                             ~thButton();
+
+    thBS_DefaultPush        DefaultPushStyle; // Change Button look
 
     thEventCallbackFunc_t   OnClick; // = BN_CLICKED,
     thEventCallbackFunc_t   OnPaint; // = BN_PAINT,

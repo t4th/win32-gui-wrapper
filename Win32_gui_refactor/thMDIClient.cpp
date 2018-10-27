@@ -11,7 +11,7 @@
 
 /* Local Memory */
 int thMDIClient::m_indexPool = 1;
-
+thMDIClient * gmdic = 0;
 /* Prototypes */
 
 thMDIClient::thMDIClient() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
@@ -20,7 +20,8 @@ thMDIClient::thMDIClient() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
     TH_LEAVE_FUNCTION;
 }
 
-thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;
@@ -36,7 +37,7 @@ thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     this->m_sWindowArgs.dwStyle =       WS_CHILD | WS_VISIBLE | WS_CLIPCHILDREN | WS_VSCROLL | WS_HSCROLL;
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.hMenu =         0;//this->m_id;
     this->m_sWindowArgs.lpParam =       &cs;
 
     this->create();
@@ -44,6 +45,7 @@ thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     if (a_pParent) {
         a_pParent->m_hMDIClient = this->m_hWinHandle;
     }
+    gmdic = this;
 
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 

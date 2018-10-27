@@ -14,12 +14,13 @@ thWindow::thWindow() : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnD
     TH_ENTER_FUNCTION;
     m_sWindowArgs = { 0 };
     Constraints = { 0 };
-    Anchors = { TRUE, FALSE, FALSE, TRUE };
+    Anchors = { true, false, false, true };
     m_rcOldPosition = { 0 };
     TH_LEAVE_FUNCTION;
 }
 
-thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY) : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL)
+thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL)
 {
     TH_ENTER_FUNCTION;
 
@@ -50,7 +51,7 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY) : m_pParent(NUL
     }
 
     this->Constraints = { 0 };
-    this->Anchors = { TRUE, FALSE, FALSE, TRUE };
+    this->Anchors = { true, false, false, true };
     this->m_rcOldPosition = { 0 };
     TH_LEAVE_FUNCTION;
 }
@@ -172,6 +173,13 @@ LRESULT thWindow::onDestroy()
     return tResult;
 }
 
+thWindow * thWindow::GetParent() const
+{
+      TH_ENTER_FUNCTION;
+    TH_LEAVE_FUNCTION;
+    return this->m_pParent;
+}
+
 // a_lParam is pointer to char* ended with \0
 LRESULT thWindow::onSetText(LPARAM a_lParam)
 {
@@ -199,7 +207,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 
     // loop through this window children
     for (; i != m_children.end(); i++) {
-        if (0 == dynamic_cast<thForm*>(*i) && 0 == dynamic_cast<thMDIChild*>(*i)) {
+        if ((0 == dynamic_cast<thForm*>(*i)) && (0 == dynamic_cast<thMDIChild*>(*i))) {
             RECT    rcCurPos = { 0 };
 
             (*i)->GetRect(rcCurPos);
@@ -209,7 +217,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
             LONG newW = (*i)->Width;
             LONG newH = (*i)->Height;
 
-            if (FALSE == (*i)->Anchors.Left) {
+            if (false == (*i)->Anchors.Left) {
                 if (rcCurPos.right > (*i)->m_rcOldPosition.right) {
                     newX += (rcCurPos.right - (*i)->m_rcOldPosition.right);
                 }
@@ -222,7 +230,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
                 }
             }
 
-            if (FALSE == (*i)->Anchors.Top) {
+            if (false == (*i)->Anchors.Top) {
                 if (rcCurPos.bottom > (*i)->m_rcOldPosition.bottom) {
                     newY += (rcCurPos.bottom - (*i)->m_rcOldPosition.bottom);
                 }
@@ -236,7 +244,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
             }
 
 #if 1
-            if (TRUE == (*i)->Anchors.Right) {
+            if (true == (*i)->Anchors.Right) {
                 if (rcCurPos.right > (*i)->m_rcOldPosition.right) {
                     newW += (rcCurPos.right - (*i)->m_rcOldPosition.right);
                 }
@@ -247,7 +255,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 #endif
 
 #if 1
-            if (TRUE == (*i)->Anchors.Bottom) {
+            if (true == (*i)->Anchors.Bottom) {
                 if (rcCurPos.bottom > (*i)->m_rcOldPosition.bottom) {
                     newH += (rcCurPos.bottom - (*i)->m_rcOldPosition.bottom);
                 }
@@ -345,6 +353,16 @@ LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
     return tResult;
 }
 
+// WPARAM is key code: https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx
+// LPARAM is https://msdn.microsoft.com/en-us/library/windows/desktop/ms646280%28v=vs.85%29.aspx
+// note: An application should return zero if it processes this message.
+LRESULT thWindow::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
+{
+    LRESULT tResult = 1;
+
+    return tResult;
+}
+
 LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     LRESULT tResult = 0;
@@ -386,9 +404,6 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
     case WM_CLOSE:
         tResult = this->onClose();
         break;
-    // http://msdn.microsoft.com/en-us/library/windows/desktop/ff468861%28v=vs.85%29.aspx
-    case WM_KEYUP:
-        break;
 #if 0
     // not needed
     case WM_DESTROY:
@@ -404,6 +419,14 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
     case WM_SETTEXT:
         tResult = this->onSetText(a_lParam);
         break;
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/ff468861%28v=vs.85%29.aspx
+#if 1
+    case WM_KEYUP:
+        break;
+    case WM_KEYDOWN:
+        tResult = this->onKeyDown(a_wParam, a_lParam);
+        break;
+#endif
     }
 
     //TH_LEAVE_FUNCTION;

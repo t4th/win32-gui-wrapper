@@ -30,6 +30,16 @@ language='*'\"")
 // for linux http://www.gtk.org/
 
 // new example
+// entry point
+
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)
+{
+    thWin32App MyApp;
+
+    MyApp.Init(hInst);
+
+    return MyApp.Run();
+}
 
 thWin32Logger   m_oLogger;
 
@@ -199,8 +209,8 @@ thToolbar *     tb1 = 0;
 thEditBox *     edit1 = 0;
 thListBox *     listbox1 = 0;
 
-void Button_onClick(thObject * const sender, thEventParams_t info);
-void Button2_onClick(thObject * const sender, thEventParams_t info);
+LRESULT Button_onClick(thObject * const sender, thEventParams_t info);
+LRESULT Button2_onClick(thObject * const sender, thEventParams_t info);
 
 std::vector<thMDIChild*> mdiChilds;
 
@@ -257,7 +267,7 @@ LRESULT Text_MDIChild_onDestroy(thWindow * pOwner) {
 }
 
 //create mdi children
-void Menu1_onClick(thObject * const sender, thEventParams_t info){
+LRESULT Menu1_onClick(thObject * const sender, thEventParams_t info){
     thMDIChild * pNewchild = 0;
 
     pNewchild = new thMDIChild(mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
@@ -267,10 +277,12 @@ void Menu1_onClick(thObject * const sender, thEventParams_t info){
         pNewchild->Text = L"MDI";
         mdiChilds.push_back(pNewchild);
     }
+    return 1;
 }
 
-void Toolbar1_onClick(thObject * const sender, thEventParams_t info){
+LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info){
     button->Text = L"aa";
+    return 1;
 }
 
 // onClose event: instead of destorying form, hide it.
@@ -337,7 +349,7 @@ int Get_BOM_HeaderSize(uint8_t* p)
 }
 
 // open file in new MDI child int ASCII/UNICODE format
-void Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
     thOpenDialog openDialog;
     thDialogFilterItem all(L"All", L"*.*");
     thDialogFilterItem text;
@@ -429,33 +441,40 @@ void Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
             }
         }
     }
+    return 1;
 }
 
-void Menu2_onClick1(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info){
     mdiclient->Cascade();
+    return 1;
 }
 
-void Menu2_onClick2(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info){
     mdiclient->TileHorizontal();
+    return 1;
 }
 
-void Menu2_onClick3(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info){
     mdiclient->TileVertical();
+    return 1;
 }
 
-void Menu2_onClick4(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info){
     mdiclient->ArrangeIcons();
+    return 1;
 }
 
-void Menu2_onClick5(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info){
     form->Show();
+    return 1;
 }
 
-void Menu2_onClick6(thObject * const sender, thEventParams_t info){
+LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info){
     form2->Show();
+    return 1;
 }
 
-void ComboBox1_onSelChange(thObject * const sender, thEventParams_t info){
+LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info){
     switch (combo1->Items.ItemIndex()) {
     case 0:
         thListView1->SetView(thListView::eViewType_t::view_details);
@@ -476,6 +495,7 @@ void ComboBox1_onSelChange(thObject * const sender, thEventParams_t info){
         // not used
         break;
     }
+    return 1;
 }
 
 void thWin32App::OnCreate()
@@ -669,7 +689,7 @@ void thWin32App::OnDestroy()
 
 // callbacks
 
-void Button_onClick(thObject * const sender, thEventParams_t info)
+LRESULT Button_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
     static int i = 0;
@@ -679,9 +699,10 @@ void Button_onClick(thObject * const sender, thEventParams_t info)
     listbox1->Items.Add(edit1->Text);
 
     TH_LEAVE_FUNCTION;
+    return 1;
 }
 
-void Button2_onClick(thObject * const sender, thEventParams_t info)
+LRESULT Button2_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
     for (int j = 0; j < thListView1->Items.GetCount(); j++) {
@@ -692,5 +713,6 @@ void Button2_onClick(thObject * const sender, thEventParams_t info)
     //    thListView1->Items[0]->SetText(L"asdasd");
 
     TH_LEAVE_FUNCTION;
+    return 1;
 }
 #endif

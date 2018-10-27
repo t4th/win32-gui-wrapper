@@ -24,6 +24,8 @@ thEditBox::thEditBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;
 
+    this->OnKeyDown = NULL;
+
     this->m_name = CLASS_NAME;
 
     this->m_sWindowArgs.dwExStyle =     WS_EX_CLIENTEDGE;
@@ -52,6 +54,10 @@ thEditBox::~thEditBox()
     TH_LEAVE_FUNCTION;
 }
 
+void thEditBox::SetCaretPosition(uint32_t a_u32Position) {
+    SendMessage(this->m_hWinHandle, EM_SETSEL, a_u32Position, a_u32Position);
+}
+
 int thEditBox::getDebugIndex()
 {
     TH_ENTER_FUNCTION;
@@ -61,12 +67,28 @@ int thEditBox::getDebugIndex()
     return dReturn;
 }
 
+// WPARAM is key code: https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx
+// LPARAM is https://msdn.microsoft.com/en-us/library/windows/desktop/ms646280%28v=vs.85%29.aspx
+// note: An application should return zero if it processes this message.
+LRESULT thEditBox::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
+{
+    LRESULT tResult = 0;
+
+    MSG_LOG(L"WM_KEYDOWN");
+    if (NULL != OnKeyDown) {
+        tResult = this->OnKeyDown(this, { 0, a_wParam, a_lParam });
+    }
+    else {
+        tResult = 1;
+    }
+
+    return tResult;
+}
+
 LRESULT thEditBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
-
-
 
     TH_LEAVE_FUNCTION;
     return tResult;

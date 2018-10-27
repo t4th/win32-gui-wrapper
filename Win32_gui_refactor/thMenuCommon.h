@@ -109,7 +109,7 @@ class thMenuCommon : public thObject
     friend class        thMenuItemList;
 private:
 protected:
-    HMENU               m_hMenuHandle;
+    //HMENU               m_hMenuHandle;
     HWND                m_hParentWindow;
     LRESULT             processCommandMessage(HWND, UINT, WPARAM, LPARAM);
 public:
@@ -117,4 +117,5 @@ public:
     virtual             ~thMenuCommon();
 
     thMenuItemList      Items;
+    HMENU               m_hMenuHandle;
 };

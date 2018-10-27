@@ -24,6 +24,8 @@ thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY 
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;
 
+    this->DefaultPushStyle.setParent(this);
+
     OnClick = NULL; // = BN_CLICKED,
     OnPaint = NULL; // = BN_PAINT,
     OnHilite = NULL; // = BN_HILITE,

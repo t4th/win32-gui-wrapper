@@ -250,29 +250,28 @@ LRESULT CALLBACK MDIChildProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM 
 
     if (WM_NCCREATE == a_uMsg) {
         LPCREATESTRUCT cs = (LPCREATESTRUCT)a_lParam;
-        if (cs) {
-            if (cs->lpCreateParams) {
-                MDICREATESTRUCT * pMDIinfo = NULL;
+        if (cs->lpCreateParams) {
+            MDICREATESTRUCT * pMDIinfo = NULL;
 
-                pMDIinfo = reinterpret_cast<MDICREATESTRUCT*>(cs->lpCreateParams);
-                SetWindowLongPtr(a_hwnd, GWLP_USERDATA, pMDIinfo->lParam);
-                pMDIChild = reinterpret_cast<thMDIChild*>(pMDIinfo->lParam);
-            }
-            else {
-                MSG_ERROR(L"CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!");
-            }
+            pMDIinfo = reinterpret_cast<MDICREATESTRUCT*>(cs->lpCreateParams);
+            SetWindowLongPtr(a_hwnd, GWLP_USERDATA, pMDIinfo->lParam);
+            pMDIChild = reinterpret_cast<thMDIChild*>(pMDIinfo->lParam);
         }
         else {
-            MSG_ERROR(L"CRITICAL ERROR - no a_lParam pointer in CreateWindowEx Param!");
+            MSG_ERROR(L"CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!");
         }
     }
 
     if (pMDIChild) {
         tResult = pMDIChild->processMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
 
-        if (0 == tResult || WM_SIZE == a_uMsg) {
-            // msg not handled or it is WM_SIZE which should always be passed:
-            // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644925%28v=vs.85%29.aspx
+        // msgs that must be passed through or msgs not handled
+        // https://msdn.microsoft.com/en-us/library/windows/desktop/ms644925%28v=vs.85%29.aspx
+        if (0 == tResult || WM_SIZE == a_uMsg
+            || WM_CHILDACTIVATE == a_uMsg || WM_GETMINMAXINFO == a_uMsg
+            || WM_MENUCHAR == a_uMsg || WM_MOVE == a_uMsg
+            || WM_SETFOCUS == a_uMsg || WM_SYSCOMMAND == a_uMsg
+            ) {
             tResult = DefMDIChildProc(a_hwnd, a_uMsg, a_wParam, a_lParam);
         }
     }

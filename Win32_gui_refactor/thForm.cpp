@@ -108,13 +108,13 @@ LRESULT thForm::onCreate()
     return tResult;
 }
 
-LRESULT thForm::onNCCreate()
-{
-    TH_ENTER_FUNCTION;
-    LRESULT tResult = 0;
-    TH_LEAVE_FUNCTION;
-    return tResult;
-}
+//LRESULT thForm::onNCCreate()
+//{
+//    TH_ENTER_FUNCTION;
+//    LRESULT tResult = 0;
+//    TH_LEAVE_FUNCTION;
+//    return tResult;
+//}
 
 LRESULT thForm::onClose()
 {

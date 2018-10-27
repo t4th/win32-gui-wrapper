@@ -50,6 +50,7 @@ protected:
     virtual LRESULT         onResize(HWND, WPARAM, LPARAM); // WM_SIZE
     virtual LRESULT         onGetMinMax(LPARAM);    // WM_GETMINMAXINFO
     LRESULT                 onContextMenu(WPARAM, LPARAM); //WM_CONTEXTMENU
+    virtual LRESULT         onKeyDown(WPARAM, LPARAM); //WM_KEYDOWN
 
     LRESULT                 processMessage(HWND, UINT, WPARAM, LPARAM);
     virtual LRESULT         processCommandMessage(HWND, UINT, WPARAM, LPARAM);
@@ -83,10 +84,10 @@ public:
     thFont                  Font;
 
     struct {
-        BOOL Left;      // TRUE by default
-        BOOL Right;     // FALSE by default
-        BOOL Bottom;    // FALSE by default
-        BOOL Top;       // TRUE by default
+        bool_t Left;      // true by default
+        bool_t Right;     // false by default
+        bool_t Bottom;    // false by default
+        bool_t Top;       // true by default
     } Anchors;
 
     struct {
@@ -108,6 +109,10 @@ public:
 
     thCallbackFunc_t        OnDestroy;
 
+    thWindow *              GetParent() const;
+
+    // todo:
+    // invalidate
 #if 1
     // win32 specific
     // this should be hidden behind public interface

@@ -11,7 +11,7 @@ protected:
 private:
     HINSTANCE       m_hInstance;
     HACCEL          m_hAccel;
-    HWND            m_mainWindow;
+    thWindow *      m_mainWindow;
     HWND            m_MDIclient;
 public:
                     thWin32App();

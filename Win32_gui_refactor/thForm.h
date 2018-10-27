@@ -1,7 +1,7 @@
 #pragma once
 #include "thWindow.h"
 #include "thMenu.h"
-#include "thResizable.h"
+#include "thWindowStyles.h"
 
 class thForm : public thWindow
 {
@@ -18,7 +18,7 @@ private:
     void                registerClass();
 
     LRESULT             onCreate();                 // WM_CREATE
-    LRESULT             onNCCreate();               // WM_NCCREATE
+//    LRESULT             onNCCreate();               // WM_NCCREATE
     LRESULT             onClose();                  // WM_CLOSE
     LRESULT             onGetMinMax(LPARAM);    // WM_GETMINMAXINFO
 #if 0

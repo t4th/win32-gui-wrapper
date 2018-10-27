@@ -40,6 +40,6 @@
 #define TH_ID_MDI_FIRSTCHILD 50000
 
 /* Default application font settings */
-#define TH_DEF_APP_FONT_NAME L"Microsoft Sans Serif"
+#define TH_DEF_APP_FONT_NAME L"Calibri"
 /* Size in Points */
 #define TH_DEF_APP_FONT_SIZE 9

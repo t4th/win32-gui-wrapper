@@ -25,6 +25,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\SimpleGrid_src">
+      <UniqueIdentifier>{9b722876-4285-48ed-8f53-2b14ac37cf15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="thObject.h">
@@ -147,14 +150,20 @@
     <ClInclude Include="thString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thResizable.h">
-      <Filter>Param</Filter>
-    </ClInclude>
     <ClInclude Include="thListBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="thListBoxItems.h">
       <Filter>Param</Filter>
+    </ClInclude>
+    <ClInclude Include="thStringGrid.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thWindowStyles.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleGrid_src\simpleGrid.h">
+      <Filter>Source Files\SimpleGrid_src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,14 +278,17 @@
     <ClCompile Include="thString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thResizable.cpp">
-      <Filter>Param</Filter>
-    </ClCompile>
     <ClCompile Include="thListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thListBoxItems.cpp">
       <Filter>Param</Filter>
+    </ClCompile>
+    <ClCompile Include="thStringGrid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleGrid_src\simpleGrid.cpp">
+      <Filter>Source Files\SimpleGrid_src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

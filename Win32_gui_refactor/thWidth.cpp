@@ -1,17 +1,22 @@
 #include "thWidth.h"
 #include "thWindow.h"
 #include "thForm.h"
+#include "thMDIChild.h"
 
 const int thWidth::getValue(void) const
 {
     TH_ENTER_FUNCTION;
-    RECT     rcClient = { 0 };
-    int      returnValue = 0;
-    thForm * pForm = NULL;
-    
-    pForm = dynamic_cast<thForm*>(m_pParent);
+    RECT         rcClient = { 0 };
+    int          returnValue = 0;
+    thForm *     pForm = NULL;
+    thMDIChild * pMdiChild = NULL;
 
-    if (pForm) {
+    pForm = dynamic_cast<thForm*>(m_pParent);
+    pMdiChild = dynamic_cast<thMDIChild*>(m_pParent);
+
+    // thForm and MDIChild are exceptions due to the fact
+    // that their border need to be taken into account
+    if (pForm || pMdiChild) {
         //right and bottom members contain the width and height of the window
         GetClientRect(this->m_pParent->GetHandle(), &rcClient);
 

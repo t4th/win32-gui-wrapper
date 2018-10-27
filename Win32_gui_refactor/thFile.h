@@ -9,18 +9,18 @@ class thFile
 public:
     typedef enum
     {
-        generic_read =      GENERIC_READ,    // Read access
-        generic_write =     GENERIC_WRITE,   // Write access
-        generic_execute =   GENERIC_EXECUTE, // Execute access
-        generic_all =       GENERIC_ALL      // All possible access rights
+        generic_read = GENERIC_READ,    // Read access
+        generic_write = GENERIC_WRITE,   // Write access
+        generic_execute = GENERIC_EXECUTE, // Execute access
+        generic_all = GENERIC_ALL      // All possible access rights
     } eDesiredAccess_t;
 
     typedef enum
     {
-        create_always =     CREATE_ALWAYS,    // Creates a new file, always
-        create_new =        CREATE_NEW,       // Creates a new file, only if it does not already exist
-        open_always =       OPEN_ALWAYS,      // Opens a file, always
-        open_existing =     OPEN_EXISTING,    // Opens a file or device, only if it exists
+        create_always = CREATE_ALWAYS,    // Creates a new file, always
+        create_new = CREATE_NEW,       // Creates a new file, only if it does not already exist
+        open_always = OPEN_ALWAYS,      // Opens a file, always
+        open_existing = OPEN_EXISTING,    // Opens a file or device, only if it exists
         truncate_existing = TRUNCATE_EXISTING // Opens a file and truncates it so that its size is zero bytes, only if it exists
     } eCreationDisposition;
 protected:

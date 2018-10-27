@@ -40,13 +40,14 @@ void thWin32App::Terminate(int a_nExitCode = 0)
 
     TH_LEAVE_FUNCTION;
 }
-
+extern thMDIClient * gmdic;
 int thWin32App::Run()
 {
     TH_ENTER_FUNCTION;
 
     MSG     msg = { 0 };
     BOOL    fMsgTranslated = FALSE;
+    HACCEL  hAccel;
 
     if (0 == m_hInstance) {
         m_hInstance = GetModuleHandle(NULL);
@@ -54,31 +55,21 @@ int thWin32App::Run()
 
     this->OnCreate();
 
+    // Load accelerator table
+
+    hAccel = LoadAccelerators(m_hInstance, APPLICATION_NAME);
+
     while (GetMessage(&msg, NULL, 0, 0) != FALSE) {
         fMsgTranslated = FALSE; //http://msdn.microsoft.com/en-us/library/windows/desktop/ms644926%28v=vs.85%29.aspx
 
-        if (WM_KEYUP == msg.message || WM_KEYDOWN == msg.message) {
-            LONG_PTR    pUserData = NULL;
-            thWindow *  pWindow = NULL;
-
-            pUserData = GetWindowLongPtr(msg.hwnd, GWLP_USERDATA);
-            if (pUserData) {
-                pWindow = reinterpret_cast<thWindow *>(pUserData);
-            }
-
-            if (pWindow) {
-                thMDIChild * pMdiChild = NULL;
-                pMdiChild = dynamic_cast<thMDIChild*>(pWindow);
-                if (pMdiChild) {
-                    fMsgTranslated = TranslateMDISysAccel(pMdiChild->GetHandle(), &msg);
-                }
-#if 0
-                if (FALSE == fMsgTranslated) {
-                    fMsgTranslated = TranslateAccelerator(m_mainWindow, m_hAccel, &msg);
-                }
-#endif
-            }
+        if (gmdic) {
+            fMsgTranslated = TranslateMDISysAccel(gmdic->GetHandle(), &msg);
         }
+
+        if (m_mainWindow && FALSE == fMsgTranslated) {
+            fMsgTranslated = TranslateAccelerator(m_mainWindow->GetHandle(), hAccel, &msg);
+        }
+
         if (FALSE == fMsgTranslated)
         {
             TranslateMessage(&msg);
@@ -91,13 +82,4 @@ int thWin32App::Run()
     TH_LEAVE_FUNCTION;
 
     return 0;
-}
-
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)
-{
-    thWin32App MyApp;
-
-    MyApp.Init(hInst);
-
-    return MyApp.Run();
 }

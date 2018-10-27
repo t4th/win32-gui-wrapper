@@ -29,7 +29,7 @@ thMemo::thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW
     this->m_sWindowArgs.dwExStyle =     WS_EX_CLIENTEDGE;
     this->m_sWindowArgs.lpClassName =   WIN32_CLASS_NAME;
     this->m_sWindowArgs.lpWindowName =  DEFAULT_TEXT;
-    this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL;
+    this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | ES_LEFT | ES_MULTILINE | ES_AUTOVSCROLL | WS_VSCROLL | ES_AUTOHSCROLL;
     //    | ES_AUTOHSCROLL | WS_HSCROLL;
     //ES_READONLY WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
@@ -52,6 +52,11 @@ thMemo::~thMemo()
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
+}
+
+void thMemo::ScrollDown()
+{
+    SendMessage(this->m_hWinHandle, LOWORD(WM_VSCROLL), SB_BOTTOM, 0);
 }
 
 int thMemo::getDebugIndex()
