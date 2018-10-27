@@ -1,5 +1,5 @@
 ## Experimental win32 GUI wrapper in C++
-This is fun little project I did when learning win32 GUI API.
+This is fun little project I did when learning win32 GUI API and C++.
 
 ## Goal
 My goal was to wrap native Windows C code with C++ classes like in Borland C++ Builder (now Embarcadero).
