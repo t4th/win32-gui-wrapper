@@ -442,9 +442,8 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
                                     }
 
                                 }
+                                delete[] buffer;
                             }
-
-                            delete[] buffer;
                         }
                     }
 
