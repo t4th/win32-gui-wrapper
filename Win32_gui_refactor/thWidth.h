@@ -8,7 +8,8 @@ protected:
     const int   getValue(void) const;
     void        setValue(int);
 public:
-                thWidth();
+                thWidth() = delete;
+                thWidth(thWindow & a_pParent);
                 ~thWidth();
 
     thWidth &   operator= (const int &);

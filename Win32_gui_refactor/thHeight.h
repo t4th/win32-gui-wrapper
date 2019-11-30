@@ -8,7 +8,8 @@ protected:
     const int   getValue(void) const;
     void        setValue(int);
 public:
-                thHeight();
+                thHeight() = delete;
+                thHeight(thWindow & a_pParent);
                 ~thHeight();
     
     thHeight &  operator= (const int &);

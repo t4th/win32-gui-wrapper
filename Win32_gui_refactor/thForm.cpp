@@ -20,7 +20,8 @@ typedef struct
     int Height;
 } thDifference_t;
 
-thForm::thForm() : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL), thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+thForm::thForm() : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL), thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT),
+Resizable(*this)
 // m_dOldWidth(0), m_dOldHeight(0)
 {
     TH_ENTER_FUNCTION;
@@ -31,7 +32,6 @@ thForm::thForm() : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL), thWindow(NUL
 void thForm::init()
 {
     TH_ENTER_FUNCTION;
-    Resizable.setParent(this);
 
     this->m_name = CLASS_NAME;
 
@@ -75,7 +75,9 @@ void thForm::registerClass()
     TH_LEAVE_FUNCTION;
 }
 
-thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL), thWindow(a_pParent, a_posX, a_posY)
+thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL),
+thWindow(a_pParent, a_posX, a_posY),
+Resizable(*this)
 // m_dOldWidth(0), m_dOldHeight(0),
 {
     TH_ENTER_FUNCTION;

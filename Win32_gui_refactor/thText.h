@@ -8,7 +8,8 @@ protected:
     const thString      getValue(void) const;
     void                setValue(thString newValue);
 public:
-                        thText();
+                        thText() = delete;
+                        thText(thWindow & a_pParent);
                         ~thText();
 
     thText &             operator =  (const thString &);

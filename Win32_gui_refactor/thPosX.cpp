@@ -2,7 +2,7 @@
 #include "thWindow.h"
 #include "thForm.h"
 
-thPosX::thPosX()
+thPosX::thPosX(thWindow & a_pParent) : thParam(a_pParent)
 {
     TH_ENTER_FUNCTION;
 
@@ -22,8 +22,8 @@ const LONG thPosX::getValue(void) const
     TH_ENTER_FUNCTION;
     RECT rcClient = { 0 };
 
-    GetWindowRect(this->m_pParent->GetHandle(), &rcClient);
-    MapWindowPoints(HWND_DESKTOP, GetParent(this->m_pParent->GetHandle()), (LPPOINT)&rcClient, 2);
+    GetWindowRect(this->m_pParent.GetHandle(), &rcClient);
+    MapWindowPoints(HWND_DESKTOP, GetParent(this->m_pParent.GetHandle()), (LPPOINT)&rcClient, 2);
 
     TH_LEAVE_FUNCTION;
     return rcClient.left;
@@ -34,18 +34,18 @@ void thPosX::setValue(LONG a_dNewX)
     BOOL        fResult = FALSE;
     thForm *    pForm = NULL;
 
-    pForm = dynamic_cast<thForm*>(m_pParent);
+    pForm = dynamic_cast<thForm*>(&m_pParent);
 
-    fResult = SetWindowPos(this->m_pParent->GetHandle(), NULL,
+    fResult = SetWindowPos(this->m_pParent.GetHandle(), NULL,
         a_dNewX,        // x
-        m_pParent->Y,   // y
+        m_pParent.Y,   // y
         0,              // cx - ignored with SWP_NOSIZE
         0,              // cy - ignored with SWP_NOSIZE
         SWP_NOZORDER | SWP_NOSIZE); // SWP_NOMOVE ignore x,y | SWP_NOSIZE ignore cx, cy
 
     if (fResult) {
         if (NULL == pForm) {
-            this->m_pParent->StoreCurrentRect(); // store new RECT
+            this->m_pParent.StoreCurrentRect(); // store new RECT
         }
     }
     else {

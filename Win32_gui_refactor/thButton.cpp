@@ -13,18 +13,20 @@ int thButton::m_indexPool = 1;
 
 /* Prototypes */
 
-thButton::thButton() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+thButton::thButton() :
+    thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT),
+    DefaultPushStyle(*this)
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
 
-thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : 
+    thWindow(a_pParent, a_posX, a_posY),
+    DefaultPushStyle(*this)
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;
-
-    this->DefaultPushStyle.setParent(this);
 
     OnClick = NULL; // = BN_CLICKED,
     OnPaint = NULL; // = BN_PAINT,

@@ -10,7 +10,8 @@ private:
     const LONG  getValue(void) const;
     void        setValue(LONG);
 public:
-                thPosY();
+                thPosY() = delete;
+                thPosY(thWindow & a_pParent);
                 ~thPosY();
 
     thPosY &     operator =(const LONG &);

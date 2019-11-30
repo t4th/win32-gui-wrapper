@@ -17,7 +17,7 @@ thWin32Logger::thWin32Logger() : m_pStream(NULL)
         err |= freopen_s(&m_pStream, "CONOUT$", "w", stdout);
         err |= freopen_s(&m_pStream, "CONOUT$", "w", stderr);
 
-        if (0 != err) {
+        if (0 != err && NULL != m_pStream) {
             fclose(m_pStream);
             m_pStream = NULL;
         }

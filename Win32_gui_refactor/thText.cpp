@@ -8,7 +8,7 @@ const thString thText::getValue(void) const
     TCHAR *     pBuffer = NULL;
     int         nLen = 0;
 
-    nLen = GetWindowTextLength(this->m_pParent->GetHandle());
+    nLen = GetWindowTextLength(this->m_pParent.GetHandle());
 
     if (nLen > 0) {
         pBuffer = new TCHAR[nLen + 1]; //+1 for '\0'
@@ -16,7 +16,7 @@ const thString thText::getValue(void) const
         if (pBuffer) {
             BOOL fResult = FALSE;
 
-            fResult = GetWindowText(this->m_pParent->GetHandle(), pBuffer, nLen + 1);
+            fResult = GetWindowText(this->m_pParent.GetHandle(), pBuffer, nLen + 1);
 
             if (fResult) {
                 returnValue = thString(pBuffer, nLen);
@@ -38,7 +38,7 @@ void thText::setValue(thString newValue)
     SetLastError(dwLastError);
 
     tResult = SendMessage(
-        this->m_pParent->GetHandle(),
+        this->m_pParent.GetHandle(),
         WM_SETTEXT,
         NULL,
         (LPARAM)(newValue.c_str()));
@@ -53,7 +53,7 @@ void thText::setValue(thString newValue)
 
     TH_LEAVE_FUNCTION;
 }
-thText::thText()
+thText::thText(thWindow & a_pParent) : thParam(a_pParent)
 {
     TH_ENTER_FUNCTION;
 

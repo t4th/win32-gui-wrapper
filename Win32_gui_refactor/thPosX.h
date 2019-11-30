@@ -8,7 +8,8 @@ private:
     const LONG  getValue(void) const;
     void        setValue(LONG);
 public:
-                thPosX();
+                thPosX() = delete;
+                thPosX(thWindow & a_pParent);
                 ~thPosX();
 
     thPosX &     operator =(const LONG &);

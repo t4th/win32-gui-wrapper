@@ -2,7 +2,7 @@
 #include "thWindow.h"
 #include "thForm.h"
 
-thPosY::thPosY()
+thPosY::thPosY(thWindow & a_pParent) : thParam(a_pParent)
 {
     TH_ENTER_FUNCTION;
 
@@ -22,8 +22,8 @@ const LONG thPosY::getValue(void) const
     TH_ENTER_FUNCTION;
     RECT rcClient = { 0 };
 
-    GetWindowRect(this->m_pParent->GetHandle(), &rcClient);
-    MapWindowPoints(HWND_DESKTOP, GetParent(this->m_pParent->GetHandle()), (LPPOINT)&rcClient, 2);
+    GetWindowRect(this->m_pParent.GetHandle(), &rcClient);
+    MapWindowPoints(HWND_DESKTOP, GetParent(this->m_pParent.GetHandle()), (LPPOINT)&rcClient, 2);
 
     TH_LEAVE_FUNCTION;
     return rcClient.top;
@@ -34,12 +34,12 @@ void thPosY::setValue(LONG a_dNewY)
     BOOL        fResult = FALSE;
     thForm *    pForm = NULL;
 
-    pForm = dynamic_cast<thForm*>(m_pParent);
+    pForm = dynamic_cast<thForm*>(&m_pParent);
 
     //GetWindowRect(m_pParent->getHandle(), &rcClient);
 
-    fResult = SetWindowPos(this->m_pParent->GetHandle(), NULL,
-        m_pParent->X, //x
+    fResult = SetWindowPos(this->m_pParent.GetHandle(), NULL,
+        m_pParent.X, //x
         a_dNewY, //y
         0, //cx - new width
         0, //cy - no change
@@ -47,7 +47,7 @@ void thPosY::setValue(LONG a_dNewY)
 
     if (fResult) {
         if (NULL == pForm) {
-            this->m_pParent->StoreCurrentRect();
+            this->m_pParent.StoreCurrentRect();
         }
     }
     else {

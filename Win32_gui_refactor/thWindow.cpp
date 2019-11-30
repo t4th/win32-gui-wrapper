@@ -9,7 +9,12 @@
 /* Prototypes */
 LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
-thWindow::thWindow() : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL)
+thWindow::thWindow() : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL),
+Text(*this),
+Width(*this),
+Height(*this),
+X(*this),
+Y(*this)
 {
     TH_ENTER_FUNCTION;
     m_sWindowArgs = { 0 };
@@ -20,15 +25,15 @@ thWindow::thWindow() : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnD
 }
 
 thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
-    : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL)
+    : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL),
+    Text(*this),
+    Width(*this),
+    Height(*this),
+    X(*this),
+    Y(*this)
 {
     TH_ENTER_FUNCTION;
 
-    this->Text.setParent(this);
-    this->Width.setParent(this);
-    this->Height.setParent(this);
-    this->X.setParent(this);
-    this->Y.setParent(this);
     this->Font.SetParent(this);
 
     m_sWindowArgs = { 0 };

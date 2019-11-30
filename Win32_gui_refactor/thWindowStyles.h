@@ -15,7 +15,11 @@
 class thResizable : public thSetGetStyle < GWL_STYLE, WS_THICKFRAME >
 {
 public:
-    thResizable() {}
+    thResizable() = delete;
+
+    thResizable(thWindow & a_pParent) : thSetGetStyle(a_pParent)
+    {}
+
     ~thResizable() {}
     thResizable & operator =(const bool_t & a_arg)
     {
@@ -41,7 +45,12 @@ public:
 class thBS_DefaultPush : public thSetGetStyle < GWL_STYLE, BS_DEFPUSHBUTTON >
 {
 public:
-    thBS_DefaultPush() {}
+    thBS_DefaultPush() = delete;
+
+    thBS_DefaultPush(thWindow & a_pParent) :
+        thSetGetStyle(a_pParent)
+    {}
+
     ~thBS_DefaultPush() {}
     thBS_DefaultPush & operator =(const bool_t & a_arg)
     {

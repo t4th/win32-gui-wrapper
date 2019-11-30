@@ -16,22 +16,20 @@ class thParam
     friend class    thForm;
     friend class    thButton;
 protected:
-    thWindow *      m_pParent; // dont set it explicitly. Use setParent instead.
+    thWindow &      m_pParent;
 
     inline virtual const T getValue(void) const = 0;
     inline virtual void    setValue(T) = 0;
 
-    void setParent(thWindow * a_pParent) {
-        TH_ENTER_FUNCTION;
-        if (a_pParent && (NULL == m_pParent)) {
-            this->m_pParent = a_pParent;
-        }
-        TH_LEAVE_FUNCTION;
-    }
 private:
 public:
-                    thParam() : m_pParent(NULL) {}
-                    ~thParam() {}
+    thParam() = delete;
+
+    thParam(thWindow & const a_pParent) : m_pParent(a_pParent)
+    {
+    }
+
+    ~thParam() {}
 
     inline thParam & operator=(const T & a_arg)
     {
@@ -98,7 +96,7 @@ private:
         LONG_PTR    lpWindowStyle = 0;
 
         // GetWindowLongPtr return 0 on error
-        lpWindowStyle = GetWindowLongPtr(this->m_pParent->GetHandle(), TStyleType);
+        lpWindowStyle = GetWindowLongPtr(this->m_pParent.GetHandle(), TStyleType);
 
         if (lpWindowStyle) {
             if (TMask == (lpWindowStyle & TMask)) {
@@ -120,7 +118,7 @@ private:
         LONG_PTR    lpResult = 0;
 
         // GetWindowLongPtr return 0 on error
-        lpWindowStyle = GetWindowLongPtr(this->m_pParent->GetHandle(), TStyleType);
+        lpWindowStyle = GetWindowLongPtr(this->m_pParent.GetHandle(), TStyleType);
 
         if (lpWindowStyle) {
             if (a_fResizeable) {
@@ -131,7 +129,7 @@ private:
             }
 
             // SetWindowLongPtr return 0 on error
-            lpResult = SetWindowLongPtr(this->m_pParent->GetHandle(), TStyleType, lpWindowStyle);
+            lpResult = SetWindowLongPtr(this->m_pParent.GetHandle(), TStyleType, lpWindowStyle);
 
             if (0 == lpResult) {
                 MSG_WARNING(TEXT("SetWindowLongPtr failed with error: 0x%X"), GetLastError());
@@ -144,7 +142,9 @@ private:
         TH_LEAVE_FUNCTION;
     }
 public:
-    thSetGetStyle()
+    thSetGetStyle() = delete;
+
+    thSetGetStyle(thWindow & a_pParent) : thParam(a_pParent)
     {
         TH_ENTER_FUNCTION;
 
