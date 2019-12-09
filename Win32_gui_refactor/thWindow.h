@@ -71,6 +71,8 @@ private:
 
     // old child window position. Used by Anchors.
     RECT                    m_rcOldPosition;
+
+    void                    GetRect(RECT &);
 public:
                             thWindow(thWindow *, int, int);
     virtual                 ~thWindow();
@@ -117,7 +119,6 @@ public:
     // win32 specific
     // this should be hidden behind public interface
     void                    StoreCurrentRect(void);
-    void                    GetRect(RECT &);
     HWND                    GetHandle(void) const;
 #endif
 };

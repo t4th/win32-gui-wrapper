@@ -9,12 +9,12 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thComboBox();
     LRESULT                 onErrorSpace(HWND, UINT, WPARAM, LPARAM);
     virtual LRESULT         onResize(HWND, WPARAM, LPARAM);
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thComboBox() = delete;
                             thComboBox(thWindow *, int, int);
                             ~thComboBox();
 

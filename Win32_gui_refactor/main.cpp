@@ -100,7 +100,7 @@ void thWin32App::OnCreate()
     // create ComboBox in ComboBox example window
     ComboBoxWindow::pComboBox = new thComboBox(ComboBoxWindow::pForm, 20, 20);
     ComboBoxWindow::pComboBox->Width = 180;
-    ComboBoxWindow::pComboBox->Anchors.Right = TRUE;
+    ComboBoxWindow::pComboBox->Anchors.Right = true;
     ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 1"));
     ComboBoxWindow::pComboBox->Items.SetItemIndex(0);
     ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 2"));
@@ -110,30 +110,30 @@ void thWin32App::OnCreate()
     ComboBoxWindow::pRemoveButton = new thButton(ComboBoxWindow::pForm, 210, 20);
     ComboBoxWindow::pRemoveButton->Width = 70;
     ComboBoxWindow::pRemoveButton->Text = TEXT("Remove");
-    ComboBoxWindow::pRemoveButton->Anchors.Left = FALSE;
+    ComboBoxWindow::pRemoveButton->Anchors.Left = false;
     ComboBoxWindow::pRemoveButton->OnClick = ComboBoxWindow::RemoveButton_onClick;
 
     ComboBoxWindow::pInputEditBox = new thEditBox(ComboBoxWindow::pForm, 20, 50);
     ComboBoxWindow::pInputEditBox->Text = TEXT("Test Item 4");
     ComboBoxWindow::pInputEditBox->Width = 180;
-    ComboBoxWindow::pInputEditBox->Anchors.Right = TRUE;
+    ComboBoxWindow::pInputEditBox->Anchors.Right = true;
 
     ComboBoxWindow::pAddButton = new thButton(ComboBoxWindow::pForm, 210, 50);
     ComboBoxWindow::pAddButton->Width = 70;
     ComboBoxWindow::pAddButton->Text = TEXT("Add");
-    ComboBoxWindow::pAddButton->Anchors.Left = FALSE;
+    ComboBoxWindow::pAddButton->Anchors.Left = false;
     ComboBoxWindow::pAddButton->OnClick = ComboBoxWindow::AddButton_onClick;
 
     ComboBoxWindow::pSelectionLabel = new thLabel(ComboBoxWindow::pForm, 20, 70);
     ComboBoxWindow::pSelectionLabel->Text = ComboBoxWindow::pComboBox->Items[0].GetText();
     ComboBoxWindow::pSelectionLabel->Width = 180;
-    ComboBoxWindow::pSelectionLabel->Anchors.Right = TRUE;
+    ComboBoxWindow::pSelectionLabel->Anchors.Right = true;
 
     // create ComboBox example button
     MainWindow::pComboBoxButton = new thButton(MainWindow::pForm, 20, 20);
     MainWindow::pComboBoxButton->Text = TEXT("ComboBox example");
     MainWindow::pComboBoxButton->Width = 260;
-    MainWindow::pComboBoxButton->Anchors.Right = TRUE;
+    MainWindow::pComboBoxButton->Anchors.Right = true;
     MainWindow::pComboBoxButton->OnClick = MainWindow::ComboBoxButton_onClick; // onClick event
 }
 
@@ -377,7 +377,6 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
             pNewchild->pMdi = new thMDIChild(mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
 
             if (pNewchild->pMdi) {
-                pNewchild->pMdi->Text = openDialog.FileName;
                 pNewchild->pMdi->Width = (int)((double)form3->Width * 0.8);
                 pNewchild->pMdi->Height = (int)((double)form3->Height * 0.8);
                 pNewchild->pMdi->OnDestroy = Text_MDIChild_onDestroy; // register onDestroy Event
@@ -396,6 +395,8 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
                     file.Open(openDialog.FileName, thFile::generic_read, thFile::open_existing);
 
                     if (file.IsOpen()) {
+                        pNewchild->pMdi->Text = file.GetFileName();
+
                         uint32_t u32BufferSize = 0; // in bytes
 
                         u32BufferSize = (uint32_t)file.GetFileSize();
@@ -413,7 +414,7 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
 
                                 if (0 == u32Result) {
                                     // http://www.catch22.net/tuts/unicode-text-processing
-                                    BOOL fResult = FALSE;
+                                    BOOL fResult = false;
 
                                     fResult = IsTextUnicode(buffer, (int)u32BytesRead, NULL);
 
@@ -485,7 +486,8 @@ LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info){
     return 1;
 }
 
-LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info){
+LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
+{
     switch (combo1->Items.ItemIndex()) {
     case 0:
         thListView1->SetView(thListView::eViewType_t::view_details);
@@ -563,15 +565,15 @@ void thWin32App::OnCreate()
     button2 = new thButton(form3, 0, form3->Height - 30);
     button2->Width = form3->Width;
     button2->Height = 30;
-    button2->Anchors.Top = FALSE;
-    button2->Anchors.Left = TRUE;
-    button2->Anchors.Right = TRUE;
+    button2->Anchors.Top = false;
+    button2->Anchors.Left = true;
+    button2->Anchors.Right = true;
 
     mdiclient = new thMDIClient(form3, 0, 0);
     mdiclient->Width = form3->Width;
     mdiclient->Height = form3->Height - 30;
-    mdiclient->Anchors.Right = TRUE;
-    mdiclient->Anchors.Bottom = TRUE;
+    mdiclient->Anchors.Right = true;
+    mdiclient->Anchors.Bottom = true;
 
     form3->Show();
 

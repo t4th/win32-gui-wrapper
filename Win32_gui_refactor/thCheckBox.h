@@ -7,11 +7,11 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thCheckBox();
     int                     getDebugIndex();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thCheckBox() = delete;
                             thCheckBox(thWindow *, int, int);
                             ~thCheckBox();
 

@@ -11,14 +11,6 @@
 /* Local Memory */
 int thMDIChild::m_indexPool = 1;
 
-/* Prototypes */
-thMDIChild::thMDIChild() : m_isFirstRegWin(FALSE), m_menu(NULL), thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
 void thMDIChild::init()
 {
     TH_ENTER_FUNCTION;

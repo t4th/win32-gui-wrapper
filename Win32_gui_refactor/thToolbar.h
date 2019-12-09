@@ -10,10 +10,10 @@ class thToolbarText
 {
     friend class                thToolbarItem;
 private:
-    thToolbarItem *             m_pParent;
-    void                        setParent(thToolbarItem*);
+    thToolbarItem &             m_parent;
 public:
-                                thToolbarText();
+                                thToolbarText() = delete;
+                                thToolbarText(thToolbarItem & a_parent);
                                 ~thToolbarText();
 
     void                        operator=(thString);
@@ -25,7 +25,7 @@ class thToolbarItem : public thObject
     friend class                thToolbarText;
     friend class                thToolbar;
 private:
-    thToolbar *                 m_pParent;
+    thToolbar &                 m_parent;
     static int                  m_indexPool;
 
     TBBUTTON                    m_data;
@@ -41,10 +41,10 @@ private:
     LRESULT                      processCommandMessage(UINT, WPARAM, LPARAM);
     LRESULT                      processNotifyMessage(UINT, WPARAM, LPARAM);
 
-                                thToolbarItem();
 protected:
 public:
-                                thToolbarItem(thToolbar *);
+                                thToolbarItem() = delete;
+                                thToolbarItem(thToolbar & a_parent);
                                 ~thToolbarItem();
     //bitmap
     //state
@@ -61,13 +61,13 @@ class thToolbarItemList
 {
     friend class                thToolbar;
 private:
-    thToolbar *                  m_pParent;
+    thToolbar &                  m_parent;
     std::vector<thToolbarItem *> m_items;
 
     thToolbarItem *              findItemById(UINT_PTR);
-    void                         setParent(thToolbar *);
 public:
-                                 thToolbarItemList();
+                                 thToolbarItemList() = delete;
+                                 thToolbarItemList(thToolbar & a_parent);
                                  ~thToolbarItemList();
 
     void                         Add(thString);
@@ -88,10 +88,10 @@ protected:
 private:
     static int          m_indexPool;
 
-                        thToolbar();
     LRESULT             processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT             processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                        thToolbar() = delete;
                         thToolbar(thWindow *, int, int);
     virtual             ~thToolbar(void);
 

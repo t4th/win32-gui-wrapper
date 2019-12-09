@@ -20,13 +20,10 @@ int thToolbar::m_indexPool = 1;
 
 /* Prototypes */
 
-thToolbar::thToolbar() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    :
+    thWindow(a_pParent, a_posX, a_posY),
+    Items(*this)
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;
@@ -39,7 +36,6 @@ thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
     }
 
     //this->Events = { 0 };
-    this->Items.setParent(this);
 
     this->m_name = CLASS_NAME;
 
@@ -54,7 +50,7 @@ thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
     this->create();
 
-    this->Anchors.Right = TRUE;
+    this->Anchors.Right = true;
 
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
@@ -126,7 +122,10 @@ LRESULT thToolbar::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
 
 /* thToolbarText */
 
-thToolbarText::thToolbarText(){
+thToolbarText::thToolbarText(thToolbarItem & a_parent)
+    :
+    m_parent(a_parent)
+{
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
@@ -136,34 +135,32 @@ thToolbarText::~thToolbarText(){
     TH_LEAVE_FUNCTION;
 }
 
-void thToolbarText::setParent(thToolbarItem*p) {
-    TH_ENTER_FUNCTION;
-    m_pParent = p;
-    TH_LEAVE_FUNCTION;
-}
-
 void thToolbarText::operator=(thString in) {
     TH_ENTER_FUNCTION;
-    m_pParent->m_changedata.cbSize = sizeof(m_pParent->m_changedata);
-    m_pParent->m_changedata.dwMask = TBIF_TEXT;
-    m_pParent->m_text = in;
-    m_pParent->m_changedata.pszText = (LPTSTR)m_pParent->m_text.c_str();
+    m_parent.m_changedata.cbSize = sizeof(m_parent.m_changedata);
+    m_parent.m_changedata.dwMask = TBIF_TEXT;
+    m_parent.m_text = in;
+    m_parent.m_changedata.pszText = (LPTSTR)m_parent.m_text.c_str();
 
-    SendMessage(this->m_pParent->m_pParent->m_hWinHandle, TB_SETBUTTONINFO, (WPARAM)this->m_pParent->m_data.idCommand, (LPARAM)&this->m_pParent->m_changedata);
+    SendMessage(this->m_parent.m_parent.m_hWinHandle,
+        TB_SETBUTTONINFO,
+        (WPARAM)this->m_parent.m_data.idCommand,
+        (LPARAM)&this->m_parent.m_changedata);
+
     TH_LEAVE_FUNCTION;
 }
 
 /* thToolbarItem */
 
-thToolbarItem::thToolbarItem() {
+thToolbarItem::thToolbarItem(thToolbar & a_parent)
+    :
+    m_parent(a_parent),
+    m_data{},
+    m_changedata{},
+    Text(*this),
+    OnClick(NULL)
+{
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thToolbarItem::thToolbarItem(thToolbar * a_parent) : m_pParent(a_parent), OnClick(NULL) {
-    TH_ENTER_FUNCTION;
-    this->Text.setParent(this);
-
     m_data.idCommand = (int)this->m_id;
     m_data.iBitmap = 0;
     m_data.fsState = TBSTATE_ENABLED;
@@ -171,10 +168,10 @@ thToolbarItem::thToolbarItem(thToolbar * a_parent) : m_pParent(a_parent), OnClic
     m_data.iString = (INT_PTR)TEXT("TBButton");
 
     //http://stackoverflow.com/questions/16883251/size-of-button-in-a-toolbar-win32-program
-    SendMessage(m_pParent->m_hWinHandle, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
+    SendMessage(m_parent.m_hWinHandle, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
     //SendMessage(this->hWinHandle, TB_SETBUTTONSIZE, 0, MAKELPARAM(12, 12));
-    SendMessage(m_pParent->m_hWinHandle, TB_SETBITMAPSIZE, 0, MAKELPARAM(0, 0));
-    BOOL s = SendMessage(m_pParent->m_hWinHandle, TB_ADDBUTTONS, 1, (LPARAM)&(m_data));
+    SendMessage(m_parent.m_hWinHandle, TB_SETBITMAPSIZE, 0, MAKELPARAM(0, 0));
+    BOOL s = SendMessage(m_parent.m_hWinHandle, TB_ADDBUTTONS, 1, (LPARAM)&(m_data));
     TH_LEAVE_FUNCTION;
 }
 
@@ -219,7 +216,11 @@ LRESULT thToolbarItem::processNotifyMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM
 
 /* thToolbarItemList */
 
-thToolbarItemList::thToolbarItemList() : m_pParent(0), LastIndex(-1){
+thToolbarItemList::thToolbarItemList(thToolbar & a_parent)
+    :
+    m_parent(a_parent),
+    LastIndex(-1)
+{
     TH_ENTER_FUNCTION;
 
     TH_LEAVE_FUNCTION;
@@ -256,23 +257,15 @@ thToolbarItem * thToolbarItemList::findItemById(UINT_PTR a_searchedId) {
     return pFoundItem;
 }
 
-void thToolbarItemList::setParent(thToolbar * a_parent) {
-    TH_ENTER_FUNCTION;
-    m_pParent = a_parent;
-    TH_LEAVE_FUNCTION;
-}
-
 void thToolbarItemList::Add(thString a_text) {
     TH_ENTER_FUNCTION;
-    if (0 != m_pParent) {
-        thToolbarItem * newToolbar = new thToolbarItem(m_pParent);
+    thToolbarItem * newToolbar = new thToolbarItem(m_parent);
 
-        if (newToolbar) {
-            MSG_SUCCESS(TEXT("Toolbar item created with id=%d"), newToolbar->m_id);
-            m_items.push_back(newToolbar);
-            newToolbar->Text = a_text;
-            LastIndex++;
-        }
+    if (newToolbar) {
+        MSG_SUCCESS(TEXT("Toolbar item created with id=%d"), newToolbar->m_id);
+        m_items.push_back(newToolbar);
+        newToolbar->Text = a_text;
+        LastIndex++;
     }
     TH_LEAVE_FUNCTION;
 }

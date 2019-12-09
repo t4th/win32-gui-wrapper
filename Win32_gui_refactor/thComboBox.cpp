@@ -19,18 +19,11 @@ int thComboBox::m_indexPool = 1;
 
 /* Prototypes */
 
-thComboBox::thComboBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    : thWindow(a_pParent, a_posX, a_posY),
+    Items(*this)
 {
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
-{
-    TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
-
-    Items.setParent(this);
 
     OnSelectChange = NULL;
     OnDoubleClicked = NULL;
@@ -56,6 +49,7 @@ thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
     this->create();
 
+    BOOL fResult = FALSE;
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {

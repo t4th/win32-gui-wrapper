@@ -7,11 +7,11 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thRadioButton();
     int                     getDebugIndex();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thRadioButton() = delete;
                             thRadioButton(thWindow *, int, int);
                             ~thRadioButton();
 

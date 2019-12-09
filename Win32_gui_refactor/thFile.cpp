@@ -21,7 +21,7 @@ thFile::~thFile()
 }
 
 // return 0 if no error
-uint32_t thFile::Open(thString a_filePath, eDesiredAccess_t a_DesiredAccess, eCreationDisposition a_CreationDisposition)
+uint32_t thFile::Open(thString a_filePath, thFile::eDesiredAccess_t a_DesiredAccess, thFile::eCreationDisposition a_CreationDisposition)
 {
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
@@ -34,6 +34,29 @@ uint32_t thFile::Open(thString a_filePath, eDesiredAccess_t a_DesiredAccess, eCr
             MSG_ERROR(TEXT("CloseHandle failed with error = 0x%X"), u32Result);
         }
         else {
+            m_filePath = a_filePath;
+
+            wchar_t drive[_MAX_DRIVE]{};
+            wchar_t dir[_MAX_DIR]{};
+            wchar_t fname[_MAX_FNAME]{};
+            wchar_t ext[_MAX_EXT]{};
+            errno_t err{};
+
+            // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/splitpath-s-wsplitpath-s?redirectedfrom=MSDN&view=vs-2019
+            err = _tsplitpath_s( a_filePath.c_str(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
+                _MAX_FNAME, ext, _MAX_EXT );
+
+            if (err != 0)
+            {
+                MSG_ERROR(TEXT("Error splitting the path. Error code %d."), err);
+            }
+            else
+            {
+                m_fileDirectory = thString(dir);
+                m_fileName = thString(fname);
+                m_fileExtension = thString(ext);
+            }
+
             MSG_SUCCESS(TEXT("File opened successfully"));
         }
     }
@@ -113,10 +136,9 @@ void thFile::Close(void)
 thString thFile::GetFileName(void) const
 {
     TH_ENTER_FUNCTION;
-    thString oFileName;
 
     TH_LEAVE_FUNCTION;
-    return oFileName;
+    return this->m_fileName + this->m_fileExtension;
 }
 
 thString thFile::GetFilePath(void) const
@@ -174,10 +196,9 @@ thString thFile::GetFilePath(void) const
 thString thFile::GetFileDirectory(void) const
 {
     TH_ENTER_FUNCTION;
-    thString oFileDirectory;
 
     TH_LEAVE_FUNCTION;
-    return oFileDirectory;
+    return this->m_fileDirectory;
 }
 
 uint64_t thFile::GetFileSize(void) const

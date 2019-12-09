@@ -9,10 +9,10 @@ class thMenuText
 {
     friend class        thMenuItem;
 private:
-    thMenuItem *        m_pParent;
-    void                setParent(thMenuItem*);
+    thMenuItem &        m_parent;
 public:
-                        thMenuText();
+                        thMenuText() = delete;
+                        thMenuText(thMenuItem & a_parent);
                         ~thMenuText();
 
     void                operator=(thString);
@@ -22,10 +22,10 @@ class thMenuSubMenu
 {
     friend class        thMenuItem;
 private:
-    thMenuItem *        m_pParent;
-    void                setParent(thMenuItem*);
+    thMenuItem &        m_parent;
 public:
-                        thMenuSubMenu();
+                        thMenuSubMenu() = delete;
+                        thMenuSubMenu(thMenuItem & a_parent);
                         ~thMenuSubMenu();
 
     void                operator=(thMenuCommon *);
@@ -51,7 +51,7 @@ class thMenuItem : public thObject
     friend class            thMenuText;
     friend class            thMenuCommon;
 private:
-    thMenuCommon *          m_pParent;
+    thMenuCommon &          m_parent;
     static int              m_indexPool;
     thMenuCommon *          m_popupMenu;
     //    void GetInfo()
@@ -63,10 +63,10 @@ private:
     LRESULT                 processCommandMessage(UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(UINT, WPARAM, LPARAM);
 
-                            thMenuItem();
 protected:
 public:
-                            thMenuItem(thMenuCommon *);
+                            thMenuItem() = delete;
+                            thMenuItem(thMenuCommon &);
                             ~thMenuItem();
     //bitmap
     //state
@@ -83,14 +83,13 @@ class thMenuItemList
 {
     friend class                thMenuCommon;
 private:
-    thMenuCommon *              m_pParent;
+    thMenuCommon &              m_pParent;
     std::vector<thMenuItem *>   m_items;
 
     thMenuItem *                findItemById(UINT_PTR);
-    void                        setParent(thMenuCommon *);
 public:
-                                thMenuItemList();
-                                thMenuItemList(thMenuCommon *);
+                                thMenuItemList() = delete;
+                                thMenuItemList(thMenuCommon & a_parent);
                                 ~thMenuItemList();
 
     void                        Add(thString);

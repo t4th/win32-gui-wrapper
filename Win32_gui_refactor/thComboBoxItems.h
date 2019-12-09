@@ -10,11 +10,11 @@ class thComboBoxItems
     friend class            thComboBox; // share setParent
 protected:
 private:
-    const thComboBox *      m_pParent; // dont set it explicitly. Use SetParent instead.
+    thComboBox &            m_pParent;
 
-    void                    setParent(thComboBox const * const);
 public:
-                            thComboBoxItems();
+                            thComboBoxItems() = delete;
+                            thComboBoxItems(thComboBox & a_pParent);
                             ~thComboBoxItems();
 
     thComboBoxItem          operator[] (int);
@@ -25,19 +25,19 @@ public:
     void                    SetItemIndex(int);
 };
 
-// ListView SubItem abstraction. Single instance - single use.
+// ComboBox SubItem abstraction. Single instance - single use.
 class thComboBoxItem
 {
 protected:
 private:
-    const thComboBox *      m_pParent; // dont set it explicitly. Use SetParent instead.
+    thComboBox &            m_pParent;
     thString                m_text;
     int                     m_nIndex;
 
-                            thComboBoxItem(void);
 public:
-                            thComboBoxItem(const thComboBox *, int);
-                            ~thComboBoxItem(void);
+                            thComboBoxItem() = delete;
+                            thComboBoxItem(thComboBox & a_Parent, int a_Item);
+                            ~thComboBoxItem();
 
     void                    Remove(void);
     thString                GetText(void);

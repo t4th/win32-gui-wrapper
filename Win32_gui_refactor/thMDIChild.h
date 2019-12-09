@@ -23,8 +23,8 @@ private:
     //virtual LRESULT processMenuCommandMessage(HWND, UINT, WPARAM, LPARAM);
 
     int                 getDebugIndex();
-                        thMDIChild();
 public:
+                        thMDIChild() = delete;
                         thMDIChild(thMDIClient *, int, int);
                         ~thMDIChild();
 

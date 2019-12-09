@@ -9,10 +9,10 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thButton();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thButton() = delete;
                             thButton(thWindow *, int, int);
                             ~thButton();
 

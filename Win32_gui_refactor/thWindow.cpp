@@ -301,12 +301,14 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 /*
 a_wParam - handle to the window user right clicked. this can be a child
 a_lParam - low-order word is X, high-order word is Y
+return 0 will process this message further in Z-axis
+return 1 will stop processing this msg
 */
 LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 {
     //TH_ENTER_FUNCTION;
     MSG_LOG(TEXT("%s::onContextMenu - Enter"), this->m_name.c_str());
-    LRESULT tResult = 0; // only check foremost window context menu
+    LRESULT tResult = 1; // only check foremost window context menu
     POINT   point = { 0 };
     HWND    hwnd = 0;
 
@@ -315,7 +317,6 @@ LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 
     if (PopupMenu) {
         PopupMenu->Show(hwnd, point);
-        tResult = 1;
     }
 
     MSG_LOG(TEXT("%s::onContextMenu - Leave"), this->m_name.c_str());

@@ -3,10 +3,12 @@
 #include "thMenuCommon.h"
 
 /* thMenuCommon */
-thMenuCommon::thMenuCommon() : m_hMenuHandle(NULL), m_hParentWindow(NULL)
+thMenuCommon::thMenuCommon() :
+    Items(*this),
+    m_hMenuHandle(NULL),
+    m_hParentWindow(NULL)
 {
     TH_ENTER_FUNCTION;
-    this->Items.setParent(this);
     TH_LEAVE_FUNCTION;
 }
 
@@ -60,19 +62,15 @@ LRESULT thMenuCommon::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_w
 
 /* thMenuText */
 
-thMenuText::thMenuText(){
+thMenuText::thMenuText(thMenuItem & a_parent) :
+    m_parent(a_parent)
+{
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
 
 thMenuText::~thMenuText(){
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-void thMenuText::setParent(thMenuItem * a_pParent) {
-    TH_ENTER_FUNCTION;
-    m_pParent = a_pParent;
     TH_LEAVE_FUNCTION;
 }
 
@@ -86,10 +84,10 @@ void thMenuText::operator=(thString a_newText) {
     }
 
     fResult = ModifyMenu(
-        this->m_pParent->m_pParent->m_hMenuHandle,
-        (UINT)this->m_pParent->m_id,
+        this->m_parent.m_parent.m_hMenuHandle,
+        (UINT)this->m_parent.m_id,
         uFlags,
-        (UINT_PTR)this->m_pParent->m_id,
+        (UINT_PTR)this->m_parent.m_id,
         a_newText.c_str()
         );
 
@@ -102,7 +100,10 @@ void thMenuText::operator=(thString a_newText) {
 
 /* thMenuSubMenu */
 
-thMenuSubMenu::thMenuSubMenu(){
+thMenuSubMenu::thMenuSubMenu(thMenuItem & a_parent)
+    :
+    m_parent(a_parent)
+{
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
@@ -112,17 +113,11 @@ thMenuSubMenu::~thMenuSubMenu(){
     TH_LEAVE_FUNCTION;
 }
 
-void thMenuSubMenu::setParent(thMenuItem * a_pParent) {
-    TH_ENTER_FUNCTION;
-    m_pParent = a_pParent;
-    TH_LEAVE_FUNCTION;
-}
-
 void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
     TH_ENTER_FUNCTION;
-    if (this->m_pParent->m_pParent != a_pSubMenu && a_pSubMenu) {
+    if (a_pSubMenu && this->m_parent.m_parent.m_id != a_pSubMenu->m_id)
+    {
         BOOL            fResult = FALSE;
-        UINT            uFlags = MF_BYCOMMAND | MF_ENABLED;
         MENUITEMINFO    itemInfo = { 0 };
         TCHAR *         pBuffer = NULL;
 
@@ -133,8 +128,8 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
 
         // get buffer size
         fResult = GetMenuItemInfo(
-            this->m_pParent->m_pParent->m_hMenuHandle,
-            (UINT)this->m_pParent->m_id,
+            this->m_parent.m_parent.m_hMenuHandle,
+            (UINT)this->m_parent.m_id,
             FALSE,
             &itemInfo
             );
@@ -147,19 +142,17 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
         itemInfo.dwTypeData = pBuffer;
 
         if (fResult) {
-            fResult = FALSE;
-
             fResult = GetMenuItemInfo(
-                this->m_pParent->m_pParent->m_hMenuHandle,
-                (UINT)this->m_pParent->m_id,
+                this->m_parent.m_parent.m_hMenuHandle,
+                (UINT)this->m_parent.m_id,
                 FALSE,
                 &itemInfo
                 );
 
             if (fResult) {
                 // modify menu item
+                UINT     uFlags = MF_BYCOMMAND | MF_ENABLED;
                 UINT_PTR pPopupMenu = NULL;
-                fResult = FALSE;
 
                 if (a_pSubMenu) {
                     uFlags |= MF_POPUP;
@@ -167,17 +160,17 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
                 }
 
                 fResult = ModifyMenu(
-                    this->m_pParent->m_pParent->m_hMenuHandle,
-                    (UINT)this->m_pParent->m_id,
+                    this->m_parent.m_parent.m_hMenuHandle,
+                    (UINT)this->m_parent.m_id,
                     uFlags,
                     pPopupMenu,
                     itemInfo.dwTypeData
                     );
 
                 if (fResult) {
-                    this->m_pParent->m_popupMenu = a_pSubMenu;
+                    this->m_parent.m_popupMenu = a_pSubMenu;
 
-                    DrawMenuBar(this->m_pParent->m_pParent->m_hParentWindow);
+                    DrawMenuBar(this->m_parent.m_parent.m_hParentWindow);
                 }
                 else {
                     MSG_ERROR(TEXT("ModifyMenu failed with error = 0x%X"), GetLastError());
@@ -201,15 +194,15 @@ void thMenuSubMenu::operator=(thMenuCommon * a_pSubMenu) {
 
 /* thMenuItem */
 
-thMenuItem::thMenuItem() {
+thMenuItem::thMenuItem(thMenuCommon & a_parent)
+    :
+    Text(*this),
+    SubMenu(*this),
+    m_parent(a_parent),
+    m_popupMenu(NULL),
+    OnClick(NULL)
+{
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thMenuItem::thMenuItem(thMenuCommon * a_parent) : m_pParent(a_parent), m_popupMenu(NULL), OnClick(NULL) {
-    TH_ENTER_FUNCTION;
-    this->Text.setParent(this);
-    this->SubMenu.setParent(this);
 
     TH_LEAVE_FUNCTION;
 }
@@ -252,7 +245,10 @@ LRESULT thMenuItem::processNotifyMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM a_
 
 /* thMenuItemList */
 
-thMenuItemList::thMenuItemList() : m_pParent(0), LastIndex(-1){
+thMenuItemList::thMenuItemList(thMenuCommon & a_parent) :
+    m_pParent(a_parent),
+    LastIndex(-1)
+{
     TH_ENTER_FUNCTION;
 
     TH_LEAVE_FUNCTION;
@@ -295,53 +291,45 @@ thMenuItem * thMenuItemList::findItemById(UINT_PTR a_searchedId) {
     return pFoundItem;
 }
 
-void thMenuItemList::setParent(thMenuCommon * a_parent) {
-    TH_ENTER_FUNCTION;
-    m_pParent = a_parent;
-    TH_LEAVE_FUNCTION;
-}
-
 // add new menu item.
 // If provided name is "-", new item will be created as separator
 void thMenuItemList::Add(thString a_newText) {
     TH_ENTER_FUNCTION;
-    if (0 != m_pParent) {
-        thMenuItem * newMenu = NULL;
+    thMenuItem * newMenu = NULL;
         
-        newMenu = new thMenuItem(m_pParent);
+    newMenu = new thMenuItem(m_pParent);
 
-        if (newMenu) {
-            BOOL    fResult = FALSE;
-            UINT    uFlags = MF_BYCOMMAND | MF_ENABLED;
-            LPCTSTR lpNewItem = NULL;
+    if (newMenu) {
+        BOOL    fResult = FALSE;
+        UINT    uFlags = MF_BYCOMMAND | MF_ENABLED;
+        LPCTSTR lpNewItem = NULL;
 
-            MSG_SUCCESS(TEXT("Menu item created with id=%d"), newMenu->m_id);
-            m_items.push_back(newMenu);
-            LastIndex++;
+        MSG_SUCCESS(TEXT("Menu item created with id=%d"), newMenu->m_id);
+        m_items.push_back(newMenu);
+        LastIndex++;
 
-            if (a_newText.compare(TEXT("-")) == 0) {
-                uFlags |= MF_SEPARATOR;
-            }
-            else {
-                uFlags |= MF_STRING;
-                lpNewItem = a_newText.c_str();
-            }
+        if (a_newText.compare(TEXT("-")) == 0) {
+            uFlags |= MF_SEPARATOR;
+        }
+        else {
+            uFlags |= MF_STRING;
+            lpNewItem = a_newText.c_str();
+        }
 
 
-            fResult = AppendMenu(
-                this->m_pParent->m_hMenuHandle,
-                uFlags,
-                (UINT)newMenu->m_id,
-                lpNewItem
-                );
+        fResult = AppendMenu(
+            this->m_pParent.m_hMenuHandle,
+            uFlags,
+            (UINT)newMenu->m_id,
+            lpNewItem
+            );
 
-            if (fResult) {
-                // update menu in window
-                DrawMenuBar(this->m_pParent->m_hParentWindow);
-            }
-            else {
-                MSG_ERROR(TEXT("AppendMenu failed with error = 0x%X"), GetLastError());
-            }
+        if (fResult) {
+            // update menu in window
+            DrawMenuBar(this->m_pParent.m_hParentWindow);
+        }
+        else {
+            MSG_ERROR(TEXT("AppendMenu failed with error = 0x%X"), GetLastError());
         }
     }
     TH_LEAVE_FUNCTION;

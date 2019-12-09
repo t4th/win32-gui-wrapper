@@ -25,7 +25,7 @@ private:
 public:
     thParam() = delete;
 
-    thParam(thWindow & const a_pParent) : m_pParent(a_pParent)
+    thParam(thWindow & a_pParent) : m_pParent(a_pParent)
     {
     }
 

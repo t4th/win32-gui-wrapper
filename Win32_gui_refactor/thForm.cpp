@@ -75,9 +75,13 @@ void thForm::registerClass()
     TH_LEAVE_FUNCTION;
 }
 
-thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL),
-thWindow(a_pParent, a_posX, a_posY),
-Resizable(*this)
+thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    :
+    thWindow(a_pParent, a_posX, a_posY),
+    m_menu(NULL),
+    m_hMDIClient(NULL),
+    OnClose(NULL),
+    Resizable(*this)
 // m_dOldWidth(0), m_dOldHeight(0),
 {
     TH_ENTER_FUNCTION;
