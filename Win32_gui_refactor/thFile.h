@@ -7,21 +7,21 @@
 class thFile
 {
 public:
-    enum eDesiredAccess_t
+    enum class DesiredAccess
     {
-        generic_read = GENERIC_READ,    // Read access
-        generic_write = GENERIC_WRITE,   // Write access
-        generic_execute = GENERIC_EXECUTE, // Execute access
-        generic_all = GENERIC_ALL      // All possible access rights
+        generic_read = 0,   // Read access
+        generic_write,      // Write access
+        generic_execute,    // Execute access
+        generic_all         // All possible access rights
     };
 
-    enum eCreationDisposition
+    enum class CreationDisposition
     {
-        create_always = CREATE_ALWAYS,    // Creates a new file, always
-        create_new = CREATE_NEW,       // Creates a new file, only if it does not already exist
-        open_always = OPEN_ALWAYS,      // Opens a file, always
-        open_existing = OPEN_EXISTING,    // Opens a file or device, only if it exists
-        truncate_existing = TRUNCATE_EXISTING // Opens a file and truncates it so that its size is zero bytes, only if it exists
+        create_always = 0, // Creates a new file, always
+        create_new,        // Creates a new file, only if it does not already exist
+        open_always,       // Opens a file, always
+        open_existing,     // Opens a file or device, only if it exists
+        truncate_existing  // Opens a file and truncates it so that its size is zero bytes, only if it exists
     };
 protected:
     HANDLE              m_hHandle;
@@ -34,7 +34,7 @@ public:
                         thFile();
     virtual             ~thFile();
 
-    uint32_t            Open(thString, thFile::eDesiredAccess_t, thFile::eCreationDisposition);
+    uint32_t            Open(thString, thFile::DesiredAccess, thFile::CreationDisposition);
     uint32_t            Write(uint8_t * const, uint32_t);
     uint32_t            Read(uint8_t * const, uint32_t, uint32_t &);
 

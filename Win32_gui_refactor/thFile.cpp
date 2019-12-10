@@ -2,7 +2,12 @@
 #include "thFile.h"
 
 
-thFile::thFile() : m_hHandle(NULL)
+thFile::thFile() :
+    m_hHandle(NULL),
+    m_filePath{},
+    m_fileDirectory{},
+    m_fileName{},
+    m_fileExtension{}
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
@@ -21,13 +26,22 @@ thFile::~thFile()
 }
 
 // return 0 if no error
-uint32_t thFile::Open(thString a_filePath, thFile::eDesiredAccess_t a_DesiredAccess, thFile::eCreationDisposition a_CreationDisposition)
+uint32_t thFile::Open(thString a_filePath, thFile::DesiredAccess a_DesiredAccess, thFile::CreationDisposition a_CreationDisposition)
 {
+    const static DWORD DesiredAccess[] = {GENERIC_READ, GENERIC_WRITE, GENERIC_EXECUTE, GENERIC_ALL};
+    const static DWORD CreationDisposition[] = {CREATE_ALWAYS, CREATE_NEW, OPEN_ALWAYS, OPEN_EXISTING, TRUNCATE_EXISTING};
+
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
 
     if (NULL == m_hHandle) {
-        m_hHandle = CreateFile(a_filePath.c_str(), a_DesiredAccess, 0, NULL, a_CreationDisposition, FILE_ATTRIBUTE_NORMAL, NULL);
+        m_hHandle = CreateFile(a_filePath.c_str(),
+            DesiredAccess[static_cast<int>(a_DesiredAccess)],
+            0,
+            NULL,
+            CreationDisposition[static_cast<int>(a_CreationDisposition)],
+            FILE_ATTRIBUTE_NORMAL,
+            NULL);
 
         if (INVALID_HANDLE_VALUE == m_hHandle) {
             u32Result = GetLastError();

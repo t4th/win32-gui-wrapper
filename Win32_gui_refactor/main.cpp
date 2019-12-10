@@ -392,7 +392,7 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
 
                     // Open file selected in openDialog
                     thFile file;
-                    file.Open(openDialog.FileName, thFile::generic_read, thFile::open_existing);
+                    file.Open(openDialog.FileName, thFile::DesiredAccess::generic_read, thFile::CreationDisposition::open_existing);
 
                     if (file.IsOpen()) {
                         pNewchild->pMdi->Text = file.GetFileName();
