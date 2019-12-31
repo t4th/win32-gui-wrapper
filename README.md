@@ -42,6 +42,14 @@ I was pretty satisfied with the result, but it was just prove of concept learnin
 - C++ Builder, QT or other popular frameworks use code generation for static object creation. In my code I had to workaround such problems with dynamic objects and elements, like event callbacks
 
 ## TODO
+- documentation and pictures
+- examples (calculator, uart)
 - error handling
-- fix types
+- fix types - not native win32 in headers for potential port to other OS
 - callback should be changed (std::function or something)
+
+## How to use
+Since this is Windows only, use free Visual Studio 2019 to open solution file Win32_gui_wrapper.sln, build (ctrl+shift+b) all and Run (F5).
+
+## External
+Program uses Scintilla as thRichEdit component and SimpleGrid and thStringGrid.
