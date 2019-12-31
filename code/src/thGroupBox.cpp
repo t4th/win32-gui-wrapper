@@ -31,7 +31,7 @@ thGroupBox::thGroupBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     this->m_sWindowArgs.dwStyle =       WS_VISIBLE | WS_CHILD | BS_GROUPBOX | BS_NOTIFY;
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);;
     this->m_sWindowArgs.lpParam =       this;
 
     this->create();

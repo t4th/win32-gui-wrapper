@@ -40,7 +40,7 @@ thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
     this->m_sWindowArgs.dwStyle =       WS_VISIBLE | WS_CHILD;
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);;
     this->m_sWindowArgs.lpParam =       this;
 
     this->create();
@@ -75,7 +75,7 @@ LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
-    if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
+    if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case LBN_DBLCLK:
             MSG_LOG(TEXT("LBN_DBLCLK"));

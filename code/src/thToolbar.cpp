@@ -45,7 +45,7 @@ thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
     this->m_sWindowArgs.dwStyle =       WS_VISIBLE | WS_CHILD |  TBSTYLE_FLAT | TBSTYLE_TOOLTIPS; //WS_TABSTOP, CCS_NODIVIDER
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);;
     this->m_sWindowArgs.lpParam =       this;
 
     this->create();
@@ -102,7 +102,7 @@ LRESULT thToolbar::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
 
     pData = reinterpret_cast<NMHDR*>(a_lParam);
 
-    if (pData->idFrom == reinterpret_cast<WORD>(this->m_id)) {
+    if (pData->idFrom == static_cast<WORD>(this->m_id)) {
         //MSG_LOG(TEXT("%s - Not supported %X"), this->m_name.c_str(), pData->code);
         tResult = 1;
     }
@@ -247,7 +247,7 @@ thToolbarItem * thToolbarItemList::findItemById(UINT_PTR a_searchedId) {
     i = this->m_items.begin();
 
     for (; i != m_items.end(); i++) {
-        if (a_searchedId == reinterpret_cast<WORD>((*i)->m_id)) {
+        if (a_searchedId == static_cast<WORD>((*i)->m_id)) {
             pFoundItem = (*i);
             break;
         }

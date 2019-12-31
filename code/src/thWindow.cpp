@@ -37,7 +37,7 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY 
     this->Font.SetParent(this);
 
     m_sWindowArgs = { 0 };
-    m_sWindowArgs.hMenu = this->m_id;
+    m_sWindowArgs.hMenu = reinterpret_cast<HMENU>(this->m_id);;
     m_sWindowArgs.nX = a_posX;
     m_sWindowArgs.nY = a_posY;
     m_sWindowArgs.nWidth = CW_USEDEFAULT;
@@ -555,7 +555,7 @@ thWindow * const thWindow::findChildrenByID(WORD a_searchedId)
     i = this->m_children.begin();
 
     for (; i != m_children.end(); i++) {
-        if (a_searchedId == reinterpret_cast<WORD>((*i)->m_id)) {
+        if (a_searchedId == static_cast<WORD>((*i)->m_id)) {
             pFoundChildren = (*i);
             break;
         }

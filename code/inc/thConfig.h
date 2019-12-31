@@ -33,6 +33,7 @@
 #endif
 
 /* Options */
+#define ID_POOL_START        100
 #define TH_ID_MDI_FIRSTCHILD 50000
 
 /* Default application font settings */

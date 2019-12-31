@@ -18,10 +18,10 @@ typedef LRESULT (*thEventCallbackFunc_t)(thObject * const sender, thEventParams_
 class thObject
 {
 protected:
-    HMENU                           m_id;
+    DWORD                           m_id;   // windows limit this value to WORD size, but DWORD is used for easy limit check
     thString                        m_name; // set in c-tor of last class in derivating chain
 private:
-    static int                      m_idPool;
+    static DWORD                    m_idPool;
 public:
                                     thObject();
     virtual                         ~thObject();

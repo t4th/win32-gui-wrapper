@@ -1,16 +1,23 @@
 #include "thObject.h"
 
-#define ID_POOL_START   (int)100
-#define NO_MESSAGE      (uint32_t)-2333
 
-int thObject::m_idPool = ID_POOL_START;
+DWORD thObject::m_idPool = ID_POOL_START;
 
 thObject::thObject()
 {
     TH_ENTER_FUNCTION;
 
-    this->m_id = reinterpret_cast<HMENU>(m_idPool);
-    m_idPool += 1;
+    this->m_id = m_idPool;
+
+    if (m_idPool >= (WORD)0xFFFFU)
+    {
+        // out of ID pool
+        // todo: throw error
+    }
+    else
+    {
+        m_idPool++;
+    }
 
     TH_LEAVE_FUNCTION;
 }

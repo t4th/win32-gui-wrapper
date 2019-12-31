@@ -40,7 +40,7 @@ thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY 
     this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY;
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         this->m_id;
+    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);
     this->m_sWindowArgs.lpParam =       this;
 
     this->create();
@@ -74,7 +74,7 @@ LRESULT thButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
-    if (LOWORD(a_wParam) == reinterpret_cast<WORD>(this->m_id)) {
+    if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
         switch (HIWORD(a_wParam)) {
         case BN_CLICKED:
             MSG_LOG(TEXT("BN_CLICKED"));

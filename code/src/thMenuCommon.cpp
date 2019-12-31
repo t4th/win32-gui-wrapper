@@ -275,7 +275,7 @@ thMenuItem * thMenuItemList::findItemById(UINT_PTR a_searchedId) {
     i = this->m_items.begin();
 
     for (; i != m_items.end(); i++) {
-        if (a_searchedId == reinterpret_cast<WORD>((*i)->m_id)) {
+        if (a_searchedId == static_cast<WORD>((*i)->m_id)) {
             pFoundItem = (*i);
             break;
         }
