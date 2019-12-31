@@ -24,7 +24,7 @@ button->Height = 30;
 button->Anchors.Top = false;
 button->Anchors.Left = true;
 button->Anchors.Right = true;
-button->->OnClick = button_onClick;  // register callback
+button->OnClick = button_onClick;  // register callback
 
 form->Show();
 ```

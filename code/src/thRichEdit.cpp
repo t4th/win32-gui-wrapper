@@ -101,7 +101,7 @@ thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
     BOOL    fResult = FALSE;
     HMODULE hScintilla = NULL;
     
-    hScintilla = LoadLibrary(TEXT("..\\external\\scintilla\\win32\\Release\\SciLexer.DLL"));
+    hScintilla = LoadLibrary(TEXT("SciLexer.DLL"));
 
     if (hScintilla)
     {
