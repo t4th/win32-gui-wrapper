@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\code\src\thApplication.cpp" />
+    <ClCompile Include="..\code\src\thButton.cpp" />
+    <ClCompile Include="..\code\src\thCheckBox.cpp" />
+    <ClCompile Include="..\code\src\thComboBox.cpp" />
+    <ClCompile Include="..\code\src\thComboBoxItems.cpp" />
+    <ClCompile Include="..\code\src\thCommonDialog.cpp" />
+    <ClCompile Include="..\code\src\thEditBox.cpp" />
+    <ClCompile Include="..\code\src\thFile.cpp" />
+    <ClCompile Include="..\code\src\thFont.cpp" />
+    <ClCompile Include="..\code\src\thForm.cpp" />
+    <ClCompile Include="..\code\src\thGroupBox.cpp" />
+    <ClCompile Include="..\code\src\thHeight.cpp" />
+    <ClCompile Include="..\code\src\thImageList.cpp" />
+    <ClCompile Include="..\code\src\thLabel.cpp" />
+    <ClCompile Include="..\code\src\thListBox.cpp" />
+    <ClCompile Include="..\code\src\thListBoxItems.cpp" />
+    <ClCompile Include="..\code\src\thListView.cpp" />
+    <ClCompile Include="..\code\src\thListViewColumn.cpp" />
+    <ClCompile Include="..\code\src\thListViewItem.cpp" />
+    <ClCompile Include="..\code\src\thLogger.cpp" />
+    <ClCompile Include="..\code\src\thMDIChild.cpp" />
+    <ClCompile Include="..\code\src\thMDIClient.cpp" />
+    <ClCompile Include="..\code\src\thMemo.cpp" />
+    <ClCompile Include="..\code\src\thMenu.cpp" />
+    <ClCompile Include="..\code\src\thMenuCommon.cpp" />
+    <ClCompile Include="..\code\src\thObject.cpp" />
+    <ClCompile Include="..\code\src\thPopupMenu.cpp" />
+    <ClCompile Include="..\code\src\thPosX.cpp" />
+    <ClCompile Include="..\code\src\thPosY.cpp" />
+    <ClCompile Include="..\code\src\thRadioButton.cpp" />
+    <ClCompile Include="..\code\src\thRichEdit.cpp" />
+    <ClCompile Include="..\code\src\thString.cpp" />
+    <ClCompile Include="..\code\src\thStringGrid.cpp" />
+    <ClCompile Include="..\code\src\thText.cpp" />
+    <ClCompile Include="..\code\src\thToolbar.cpp" />
+    <ClCompile Include="..\code\src\thWidth.cpp" />
+    <ClCompile Include="..\code\src\thWin32App.cpp" />
+    <ClCompile Include="..\code\src\thWin32Logger.cpp" />
+    <ClCompile Include="..\code\src\thWindow.cpp" />
+    <ClCompile Include="..\example\basic_components\src\main.cpp" />
+    <ClCompile Include="..\external\simple_grid\simpleGrid.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\inc\thApplication.h" />
+    <ClInclude Include="..\code\inc\thButton.h" />
+    <ClInclude Include="..\code\inc\thCheckBox.h" />
+    <ClInclude Include="..\code\inc\thComboBox.h" />
+    <ClInclude Include="..\code\inc\thComboBoxItems.h" />
+    <ClInclude Include="..\code\inc\thCommonDialog.h" />
+    <ClInclude Include="..\code\inc\thConfig.h" />
+    <ClInclude Include="..\code\inc\thEditBox.h" />
+    <ClInclude Include="..\code\inc\thFile.h" />
+    <ClInclude Include="..\code\inc\thFont.h" />
+    <ClInclude Include="..\code\inc\thForm.h" />
+    <ClInclude Include="..\code\inc\thGroupBox.h" />
+    <ClInclude Include="..\code\inc\thHeight.h" />
+    <ClInclude Include="..\code\inc\thImageList.h" />
+    <ClInclude Include="..\code\inc\thItemList.h" />
+    <ClInclude Include="..\code\inc\thLabel.h" />
+    <ClInclude Include="..\code\inc\thListBox.h" />
+    <ClInclude Include="..\code\inc\thListBoxItems.h" />
+    <ClInclude Include="..\code\inc\thListView.h" />
+    <ClInclude Include="..\code\inc\thListViewColumn.h" />
+    <ClInclude Include="..\code\inc\thListViewItem.h" />
+    <ClInclude Include="..\code\inc\thLogger.h" />
+    <ClInclude Include="..\code\inc\thMDIChild.h" />
+    <ClInclude Include="..\code\inc\thMDIClient.h" />
+    <ClInclude Include="..\code\inc\thMemo.h" />
+    <ClInclude Include="..\code\inc\thMenu.h" />
+    <ClInclude Include="..\code\inc\thMenuCommon.h" />
+    <ClInclude Include="..\code\inc\thObject.h" />
+    <ClInclude Include="..\code\inc\thParam.h" />
+    <ClInclude Include="..\code\inc\thPopupMenu.h" />
+    <ClInclude Include="..\code\inc\thPosX.h" />
+    <ClInclude Include="..\code\inc\thPosY.h" />
+    <ClInclude Include="..\code\inc\thRadioButton.h" />
+    <ClInclude Include="..\code\inc\thResizable.h" />
+    <ClInclude Include="..\code\inc\thRichEdit.h" />
+    <ClInclude Include="..\code\inc\thString.h" />
+    <ClInclude Include="..\code\inc\thStringGrid.h" />
+    <ClInclude Include="..\code\inc\thText.h" />
+    <ClInclude Include="..\code\inc\thToolbar.h" />
+    <ClInclude Include="..\code\inc\thTypes.h" />
+    <ClInclude Include="..\code\inc\thWidth.h" />
+    <ClInclude Include="..\code\inc\thWin32App.h" />
+    <ClInclude Include="..\code\inc\thWin32Logger.h" />
+    <ClInclude Include="..\code\inc\thWindow.h" />
+    <ClInclude Include="..\code\inc\thWindowStyles.h" />
+    <ClInclude Include="..\external\scintilla\include\SciLexer.h" />
+    <ClInclude Include="..\external\scintilla\include\Scintilla.h" />
+    <ClInclude Include="..\external\simple_grid\simpleGrid.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\external\simple_grid\SimpleGrid_Documentation.chm" />
+    <None Include="..\README.md" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EA56CF28-F62A-44FB-86A4-00858A043516}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Win32_gui_refactor</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\code\inc;$(ProjectDir)..\external\scintilla\include;$(ProjectDir)..\external\simple_grid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

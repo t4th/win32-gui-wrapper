@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="code">
+      <UniqueIdentifier>{57566ad3-7d9c-40f4-a2e0-a5dc11df2ce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\inc">
+      <UniqueIdentifier>{f253a41e-b9f0-4e49-9051-4652ea59f674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="code\src">
+      <UniqueIdentifier>{d674de38-61d3-4027-910c-6d0a9e146ec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{5e5040a9-617b-491f-a744-dffc02d68435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\scintilla">
+      <UniqueIdentifier>{b00cf352-841a-4eef-8989-19fc33878079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\SimpleGrid">
+      <UniqueIdentifier>{7e2d1092-b5f7-42c9-88fd-09d675ca5f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="example">
+      <UniqueIdentifier>{2088623d-4218-4288-bbd9-1293bda357ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="example\basic_components">
+      <UniqueIdentifier>{d4d6b970-d46c-4d41-b1c2-67f1d684c520}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\code\src\thApplication.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thButton.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thCheckBox.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thComboBox.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thComboBoxItems.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thCommonDialog.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thEditBox.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thFile.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thFont.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thForm.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thGroupBox.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thHeight.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thImageList.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thLabel.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thListBox.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thListBoxItems.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thListView.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thListViewColumn.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thListViewItem.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thLogger.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thMDIChild.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thMDIClient.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thMemo.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thMenu.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thMenuCommon.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thObject.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thPopupMenu.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thPosX.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thPosY.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thRadioButton.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thRichEdit.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thString.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thStringGrid.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thText.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thToolbar.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thWidth.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thWin32App.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thWin32Logger.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\src\thWindow.cpp">
+      <Filter>code\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\example\basic_components\src\main.cpp">
+      <Filter>example\basic_components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\external\simple_grid\simpleGrid.cpp">
+      <Filter>external\SimpleGrid</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\inc\thItemList.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thLabel.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thListBox.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thListBoxItems.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thListView.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thListViewColumn.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thListViewItem.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thLogger.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thMDIChild.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thMDIClient.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thMemo.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thMenu.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thMenuCommon.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thObject.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thParam.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thPopupMenu.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thPosX.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thPosY.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thRadioButton.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thResizable.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thRichEdit.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thString.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thStringGrid.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thText.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thToolbar.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thTypes.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thWidth.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thWin32App.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thWin32Logger.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thWindow.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thWindowStyles.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thApplication.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thButton.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thCheckBox.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thComboBox.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thComboBoxItems.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thCommonDialog.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thConfig.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thEditBox.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thFile.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thFont.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thForm.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thGroupBox.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thHeight.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\inc\thImageList.h">
+      <Filter>code\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\scintilla\include\SciLexer.h">
+      <Filter>external\scintilla</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\scintilla\include\Scintilla.h">
+      <Filter>external\scintilla</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\simple_grid\simpleGrid.h">
+      <Filter>external\SimpleGrid</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\external\simple_grid\SimpleGrid_Documentation.chm">
+      <Filter>external\SimpleGrid</Filter>
+    </None>
+    <None Include="..\README.md" />
+  </ItemGroup>
+</Project>

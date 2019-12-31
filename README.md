@@ -16,19 +16,20 @@ form->X = 50;
 form->Y = 50;
 form->Text = L"Window caption name";
 form->SetMenu(menu1);
-form->OnDestroy = form_onDestroy; // callback
+form->OnDestroy = form_onDestroy; // register callback
 
 button = new thButton(form, 0, form->Height - 30);
 button->Width = form->Width;
 button->Height = 30;
-button->Anchors.Top = FALSE;
-button->Anchors.Left = TRUE;
-button->Anchors.Right = TRUE;
+button->Anchors.Top = false;
+button->Anchors.Left = true;
+button->Anchors.Right = true;
+button->->OnClick = button_onClick;  // register callback
 
 form->Show();
 ```
 ## Summary
-I was pretty satisfied with the result, but it was just prove of concept learning material, and it was never supposed to reach 1.0. Still it is now good source of win32 API examples. I am remember being proud of re-sizing and anchors :).
+I was pretty satisfied with the result, but it was just prove of concept learning material, and it was never supposed to reach 1.0. Still it is now good source of win32 API examples. I remember being the most proud of re-sizing and MDI :).
 
 ##### Good
 - It looks nice and is intuitive to use
