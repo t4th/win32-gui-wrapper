@@ -1,518 +1,88 @@
 #include "thWin32App.h"
-#include "thForm.h"
-#include "thButton.h"
-#include "thGroupBox.h"
-#include "thRadioButton.h"
-#include "thCheckBox.h"
-#include "thMenu.h"
-#include "thPopupMenu.h"
-#include "thLabel.h"
-#include "thComboBox.h"
-#include "thToolbar.h"
-#include "thMDIClient.h"
-#include "thMDIChild.h"
-#include "thEditBox.h"
-#include "thCommonDialog.h"
-#include "thFile.h"
-#include "thMemo.h"
-#include "thRichEdit.h"
-#include "thListView.h"
-#include "thListBox.h"
 
-#if 1
+// Enable Visual Styles from Common Controls 6 (ComCtl32).
 #pragma comment( linker, "/manifestdependency:\"type='win32' \
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' \
 language='*'\"")
-#endif
 
-// https://code.msdn.microsoft.com/CppWindowsCommonControls-9ea0de64
-// for linux http://www.gtk.org/
+thWin32Logger   g_logger;
 
-// new example
-// entry point
-
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nShowCmd)
+// Windows application entry point.
+int main()
 {
-    thWin32App MyApp;
+    thWin32App myApp;
 
-    MyApp.Init(hInst);
-
-    return MyApp.Run();
+    return myApp.Run();
 }
 
-thWin32Logger   m_oLogger;
-
-#if 0
-
-namespace MainWindow
+namespace local_data
 {
-    thForm *    pForm;
-    thButton *  pComboBoxButton;
+    // TODO: Make these smart pointers.
+    thForm *        form = 0;
+    thForm *        form2 = 0;
+    thForm *        form3 = 0;
+    thMDIClient *   mdiclient = 0;
 
-    LRESULT     Form_onDestroy(thWindow *);
-    LRESULT        ComboBoxButton_onClick(thObject * const, thEventParams_t);
+    thListView *    thListView1 = 0;
+    thButton *      button = 0;
+    thButton *      button4 = 0;
+    thButton *      button2 = 0;
+    thButton *      button3 = 0;
+    thRadioButton * rb1 = 0;
+    thRadioButton * rb2 = 0;
+    thCheckBox *    cb1 = 0;
+    thMenu *        menu1 = 0;
+    thMenu *        menu2 = 0;
+    thPopupMenu *   pop1 = 0;
+    thPopupMenu *   pop2 = 0;
+    thLabel *       label1 = 0;
+    thComboBox *    combo1 = 0;
+    thToolbar *     tb1 = 0;
+    thEditBox *     edit1 = 0;
+    thListBox *     listbox1 = 0;
+
+    std::vector< thMDIChild*> mdiChilds;
+
+    // hold mdi child pointer and RichEdit pointer
+    struct sTextMDIdata_t
+    {
+        thMDIChild * pMdi;
+        thRichEdit * pRichEdit;
+
+        sTextMDIdata_t() : pMdi(0), pRichEdit(0)
+        {}
+
+        ~sTextMDIdata_t()
+        {
+            delete pRichEdit;    // delete richEdit
+            delete pMdi;         // delete mdi child itself
+        }
+    };
+
+    std::vector< sTextMDIdata_t*> textMdiChilds; // list of mdi children which hold memo component
 }
 
-namespace ComboBoxWindow
-{
-    thForm *     pForm;
-    thComboBox * pComboBox;
-    thEditBox *  pInputEditBox;
-    thLabel *    pSelectionLabel;
-    thButton *   pAddButton;
-    thButton *   pRemoveButton;
-
-    LRESULT     Form_onClose(thWindow *);
-    LRESULT        ComboBox_onSelectChange(thObject * const, thEventParams_t);
-    LRESULT        RemoveButton_onClick(thObject * const, thEventParams_t);
-    LRESULT        AddButton_onClick(thObject * const, thEventParams_t);
-}
-
-// Application entry point
-void thWin32App::OnCreate()
-{
-    // create main window form
-    MainWindow::pForm = new thForm(0, 0, 0);
-    MainWindow::pForm->Text = TEXT("Example application");
-    MainWindow::pForm->X = 500;
-    MainWindow::pForm->Y = 200;
-    MainWindow::pForm->Width = 300;
-    MainWindow::pForm->Height = 600;
-#if 0 //not supported atm for thForm
-    MainWindow::pForm->Constraints.MaxHeight = 600;
-    MainWindow::pForm->Constraints.MinHeight = 600;
-    MainWindow::pForm->Constraints.MaxWidth = 300;
-    MainWindow::pForm->Constraints.MinWidth = 300;
-#endif
-    MainWindow::pForm->OnDestroy = MainWindow::Form_onDestroy; // onDestroy event
-    MainWindow::pForm->Show();
-
-    // create ComboBox example window
-    ComboBoxWindow::pForm = new thForm(MainWindow::pForm, 0, 0);
-    ComboBoxWindow::pForm->Text = TEXT("Example application");
-    ComboBoxWindow::pForm->X = 500;
-    ComboBoxWindow::pForm->Y = 200;
-    ComboBoxWindow::pForm->Width = 300;
-    ComboBoxWindow::pForm->Height = 300;
-    ComboBoxWindow::pForm->OnClose = ComboBoxWindow::Form_onClose;
-
-    // create ComboBox in ComboBox example window
-    ComboBoxWindow::pComboBox = new thComboBox(ComboBoxWindow::pForm, 20, 20);
-    ComboBoxWindow::pComboBox->Width = 180;
-    ComboBoxWindow::pComboBox->Anchors.Right = true;
-    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 1"));
-    ComboBoxWindow::pComboBox->Items.SetItemIndex(0);
-    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 2"));
-    ComboBoxWindow::pComboBox->Items.Add(TEXT("Test Item 3"));
-    ComboBoxWindow::pComboBox->OnSelectChange = ComboBoxWindow::ComboBox_onSelectChange;
-
-    ComboBoxWindow::pRemoveButton = new thButton(ComboBoxWindow::pForm, 210, 20);
-    ComboBoxWindow::pRemoveButton->Width = 70;
-    ComboBoxWindow::pRemoveButton->Text = TEXT("Remove");
-    ComboBoxWindow::pRemoveButton->Anchors.Left = false;
-    ComboBoxWindow::pRemoveButton->OnClick = ComboBoxWindow::RemoveButton_onClick;
-
-    ComboBoxWindow::pInputEditBox = new thEditBox(ComboBoxWindow::pForm, 20, 50);
-    ComboBoxWindow::pInputEditBox->Text = TEXT("Test Item 4");
-    ComboBoxWindow::pInputEditBox->Width = 180;
-    ComboBoxWindow::pInputEditBox->Anchors.Right = true;
-
-    ComboBoxWindow::pAddButton = new thButton(ComboBoxWindow::pForm, 210, 50);
-    ComboBoxWindow::pAddButton->Width = 70;
-    ComboBoxWindow::pAddButton->Text = TEXT("Add");
-    ComboBoxWindow::pAddButton->Anchors.Left = false;
-    ComboBoxWindow::pAddButton->OnClick = ComboBoxWindow::AddButton_onClick;
-
-    ComboBoxWindow::pSelectionLabel = new thLabel(ComboBoxWindow::pForm, 20, 70);
-    ComboBoxWindow::pSelectionLabel->Text = ComboBoxWindow::pComboBox->Items[0].GetText();
-    ComboBoxWindow::pSelectionLabel->Width = 180;
-    ComboBoxWindow::pSelectionLabel->Anchors.Right = true;
-
-    // create ComboBox example button
-    MainWindow::pComboBoxButton = new thButton(MainWindow::pForm, 20, 20);
-    MainWindow::pComboBoxButton->Text = TEXT("ComboBox example");
-    MainWindow::pComboBoxButton->Width = 260;
-    MainWindow::pComboBoxButton->Anchors.Right = true;
-    MainWindow::pComboBoxButton->OnClick = MainWindow::ComboBoxButton_onClick; // onClick event
-}
-
-// Application exit point
-void thWin32App::OnDestroy()
-{
-    delete MainWindow::pForm;
-    delete MainWindow::pComboBoxButton;
-    delete ComboBoxWindow::pForm;
-    delete ComboBoxWindow::pComboBox;
-    delete ComboBoxWindow::pInputEditBox;
-    delete ComboBoxWindow::pSelectionLabel;
-    delete ComboBoxWindow::pAddButton;
-    delete ComboBoxWindow::pRemoveButton;
-}
-
-// Event Callbacks:
-// Terminate application when window is destroyed
-static LRESULT MainWindow::Form_onDestroy(thWindow *) {
-    thWin32App::Terminate(0);
-    return 0;
-}
-
-LRESULT MainWindow::ComboBoxButton_onClick(thObject * const sender, thEventParams_t info){
-    if (ComboBoxWindow::pForm) {
-        ComboBoxWindow::pForm->Show();
-    }
-    return 1;
-}
-
-LRESULT ComboBoxWindow::Form_onClose(thWindow * sender) {
-    sender->Hide();
-    return 1; // return 0 would destroy the window
-}
-
-LRESULT ComboBoxWindow::ComboBox_onSelectChange(thObject * const sender, thEventParams_t info){
-    int nSelectedItem = ComboBoxWindow::pComboBox->Items.ItemIndex();
-    ComboBoxWindow::pSelectionLabel->Text = ComboBoxWindow::pComboBox->Items[nSelectedItem].GetText();
-    return 1;
-}
-
-LRESULT ComboBoxWindow::RemoveButton_onClick(thObject * const sender, thEventParams_t info){
-    ComboBoxWindow::pComboBox->Items.Remove(ComboBoxWindow::pComboBox->Items.ItemIndex());
-    ComboBoxWindow::pComboBox->Items.SetItemIndex(-1); // refresh comboBox
-    return 1;
-}
-
-LRESULT ComboBoxWindow::AddButton_onClick(thObject * const sender, thEventParams_t info){
-    ComboBoxWindow::pComboBox->Items.Add(ComboBoxWindow::pInputEditBox->Text);
-    return 1;
-}
-
-
-// old example
-#else
-
-thForm *        form = 0;
-thForm *        form2 = 0;
-thForm *        form3 = 0;
-thMDIClient *   mdiclient = 0;
-
-thListView *    thListView1 = 0;
-thButton *      button = 0;
-thButton *      button4 = 0;
-thButton *      button2 = 0;
-thButton *      button3 = 0;
-thRadioButton * rb1 = 0;
-thRadioButton * rb2 = 0;
-thCheckBox *    cb1 = 0;
-thMenu *        menu1 = 0;
-thMenu *        menu2 = 0;
-thPopupMenu *   pop1 = 0;
-thPopupMenu *   pop2 = 0;
-thLabel *       label1 = 0;
-thComboBox *    combo1 = 0;
-thToolbar *     tb1 = 0;
-thEditBox *     edit1 = 0;
-thListBox *     listbox1 = 0;
-
+LRESULT MDIChild_onDestroy( thWindow * pOwner);
+LRESULT Text_MDIChild_onDestroy( thWindow * pOwner);
+LRESULT Menu1_onClick( thObject * const sender, thEventParams_t info);
+LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info);
+LRESULT Form_onClose(thWindow * pOwner);
+LRESULT Form3_onDestroy(thWindow * pOwner);
+LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info);
+LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info);
+LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info);
 LRESULT Button_onClick(thObject * const sender, thEventParams_t info);
 LRESULT Button2_onClick(thObject * const sender, thEventParams_t info);
 
-std::vector<thMDIChild*> mdiChilds;
-
-// hold mdi child pointer and RichEdit pointer
-struct sTextMDIdata_t
-{
-    thMDIChild * pMdi;
-    thRichEdit * pRichEdit;
-
-    sTextMDIdata_t() : pMdi(0), pRichEdit(0)
-    {}
-};
-
-std::vector<sTextMDIdata_t*> textMdiChilds; // list of mdi children which hold memo component
-
-// on MDI destory event, clean up
-LRESULT MDIChild_onDestroy(thWindow * pOwner) {
-    LRESULT result = 0;
-
-    std::vector<thMDIChild*>::iterator i;
-
-    i = mdiChilds.begin();
-
-    for (; i != mdiChilds.end(); i++) {
-        if (pOwner == (*i)) {
-            delete pOwner; // delete Owner class which is created with 'new thMDIChild'
-            mdiChilds.erase(i);
-            break;
-        }
-    }
-
-    return result;
-}
-
-//on MDI destory event, it should destroy childen components
-LRESULT Text_MDIChild_onDestroy(thWindow * pOwner) {
-    LRESULT result = 0;
-
-    std::vector<sTextMDIdata_t*>::iterator i;
-
-    i = textMdiChilds.begin();
-
-    for (; i != textMdiChilds.end(); i++) {
-        if (pOwner == (*i)->pMdi) {
-            delete (*i)->pRichEdit; // delete richEdit
-            delete (*i)->pMdi;  // delete mdi child itself
-            delete (*i);        // delete structure that hold pointers to memo and mdi child
-            textMdiChilds.erase(i);
-            break;
-        }
-    }
-
-    return result;
-}
-
-//create mdi children
-LRESULT Menu1_onClick(thObject * const sender, thEventParams_t info){
-    thMDIChild * pNewchild = 0;
-
-    pNewchild = new thMDIChild(mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
-
-    if (pNewchild) {
-        pNewchild->OnDestroy = MDIChild_onDestroy; // bind onDestroy callback
-        pNewchild->Text = TEXT("MDI");
-        mdiChilds.push_back(pNewchild);
-    }
-    return 1;
-}
-
-LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info){
-    button->Text = TEXT("aa");
-    return 1;
-}
-
-// onClose event: instead of destorying form, hide it.
-LRESULT Form_onClose(thWindow * pOwner)
-{
-    TH_ENTER_FUNCTION;
-    LRESULT tResult = 0;
-    pOwner->Hide();
-    tResult = 1;    // returning 1 wont destroy object
-    TH_LEAVE_FUNCTION;
-    return tResult;
-}
-
-// closing main application form will close application
-LRESULT Form3_onDestroy(thWindow * pOwner)
-{
-    TH_ENTER_FUNCTION;
-    LRESULT tResult = 0;
-
-    // clean up MDI childs classes (this is already handled internally
-    // but for sake of readibility is here too)
-    std::vector<thMDIChild*>::iterator i;
-
-    i = mdiChilds.begin();
-
-    for (; i != mdiChilds.end(); i++) {
-        delete (*i);
-    }
-
-    ::PostQuitMessage(0); //close app
-
-    TH_LEAVE_FUNCTION;
-    return tResult;
-}
-
-typedef struct
-{
-    uint8_t code[4];
-    int     size;
-} BOM_LOOKUP_t;
-
-BOM_LOOKUP_t BOM_lookup[5] =
-{
-    { { 0x00, 0x00, 0xFE, 0xFF }, 4 }, // UTF-32, big-endian 
-    { { 0xFF, 0xFE, 0x00, 0x00 }, 4 }, // UTF - 32, little - endian
-    { { 0xFE, 0xFF, 0x00, 0x00 }, 2 }, // UTF - 16, big - endian
-    { { 0xFF, 0xFE, 0x00, 0x00 }, 2 }, // UTF - 16, little - endian
-    { { 0xEF, 0xBB, 0xBF, 0x00 }, 3 }, // UTF - 8
-};
-
-int Get_BOM_HeaderSize(uint8_t* p)
-{
-    int bom_size = 2;
-
-    for (int i = 0; i < 5; i++) {
-        if (0 == memcmp(p, BOM_lookup[i].code, BOM_lookup[i].size))
-        {
-            bom_size = BOM_lookup[i].size;
-            break;
-        }
-    }
-
-    return bom_size;
-}
-
-// open file in new MDI child int ASCII/UNICODE format
-LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info){
-    thOpenDialog openDialog;
-    thDialogFilterItem all(TEXT("All"), TEXT("*.*"));
-    thDialogFilterItem text;
-    text.Name = TEXT("Text");
-    text.Filter = TEXT("*.TXT");
-
-    openDialog.Filter.Add(all);
-    openDialog.Filter.Add(text);
-
-
-    // show Open File Dialog.
-    // if successed return true
-    if (openDialog.Show(form3))
-    {
-        sTextMDIdata_t * pNewchild = 0;
-
-        pNewchild = new sTextMDIdata_t;
-
-        if (pNewchild){
-            // Create MDI child Window
-            pNewchild->pMdi = new thMDIChild(mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
-
-            if (pNewchild->pMdi) {
-                pNewchild->pMdi->Width = (int)((double)form3->Width * 0.8);
-                pNewchild->pMdi->Height = (int)((double)form3->Height * 0.8);
-                pNewchild->pMdi->OnDestroy = Text_MDIChild_onDestroy; // register onDestroy Event
-
-                // Create RichEdit component in new MDI child Window
-                pNewchild->pRichEdit = new thRichEdit(pNewchild->pMdi, 0, 0);
-
-                if (pNewchild->pRichEdit) {
-                    pNewchild->pRichEdit->Width = pNewchild->pMdi->Width - 20;
-                    pNewchild->pRichEdit->Height = pNewchild->pMdi->Height - 50;
-                    pNewchild->pRichEdit->Anchors.Right = true;
-                    pNewchild->pRichEdit->Anchors.Bottom = true;
-
-                    // Open file selected in openDialog
-                    thFile file;
-                    file.Open(openDialog.FileName, thFile::DesiredAccess::generic_read, thFile::CreationDisposition::open_existing);
-
-                    if (file.IsOpen()) {
-                        pNewchild->pMdi->Text = file.GetFileName();
-
-                        uint32_t u32BufferSize = 0; // in bytes
-
-                        u32BufferSize = (uint32_t)file.GetFileSize();
-
-                        if (u32BufferSize) {
-                            uint8_t * buffer = NULL; // file read buffer
-
-                            buffer = new uint8_t[u32BufferSize];
-
-                            if (buffer) {
-                                uint32_t u32Result = 0; // file read result
-                                uint32_t u32BytesRead = 0;
-
-                                u32Result = file.Read((uint8_t*)buffer, u32BufferSize, u32BytesRead);
-
-                                if (0 == u32Result) {
-                                    // http://www.catch22.net/tuts/unicode-text-processing
-                                    BOOL fResult = false;
-
-                                    fResult = IsTextUnicode(buffer, (int)u32BytesRead, NULL);
-
-                                    if (fResult) {
-                                        // UNICODE
-                                        MSG_LOG(TEXT("UNICODE"));
-                                        //uint32_t bom_size = 0;
-                                        //bom_size = Get_BOM_HeaderSize(buffer);
-
-                                        std::wstring text((wchar_t*)buffer, u32BytesRead); // interpret as wide string; - 10 bytes of BOM header
-                                        #ifdef UNICODE
-                                            pNewchild->pRichEdit->Text = text;
-                                        #else
-                                            pNewchild->pRichEdit->Text = WStringToString(text);
-                                        #endif
-                                    }
-                                    else {
-                                        // ASCII
-                                        MSG_LOG(TEXT("ASCII"));
-                                        std::string text((char*)buffer, u32BytesRead); // interpret as ANSI string
-                                        #ifdef UNICODE
-                                            pNewchild->pRichEdit->Text = StringToWString(text);
-                                        #else
-                                            pNewchild->pRichEdit->Text = text;
-                                        #endif
-                                    }
-
-                                }
-                                delete[] buffer;
-                            }
-                        }
-                    }
-
-                    textMdiChilds.push_back(pNewchild);
-                }
-            }
-        }
-    }
-    return 1;
-}
-
-LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info){
-    mdiclient->Cascade();
-    return 1;
-}
-
-LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info){
-    mdiclient->TileHorizontal();
-    return 1;
-}
-
-LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info){
-    mdiclient->TileVertical();
-    return 1;
-}
-
-LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info){
-    mdiclient->ArrangeIcons();
-    return 1;
-}
-
-LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info){
-    form->Show();
-    return 1;
-}
-
-LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info){
-    form2->Show();
-    return 1;
-}
-
-LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
-{
-    switch (combo1->Items.ItemIndex()) {
-    case 0:
-        thListView1->SetView(thListView::eViewType_t::view_details);
-        break;
-    case 1:
-        thListView1->SetView(thListView::eViewType_t::view_icon);
-        break;
-    case 2:
-        thListView1->SetView(thListView::eViewType_t::view_list);
-        break;
-    case 3:
-        thListView1->SetView(thListView::eViewType_t::view_smallicon);
-        break;
-    case 4:
-        thListView1->SetView(thListView::eViewType_t::view_tile);
-        break;
-    default:
-        // not used
-        break;
-    }
-    return 1;
-}
-
 void thWin32App::OnCreate()
 {
+    using namespace local_data;
     TH_ENTER_FUNCTION;
 
     // window submenu
@@ -530,12 +100,12 @@ void thWin32App::OnCreate()
     // main menu
     menu1 = new thMenu();
 
-    menu1->Items.Add(TEXT("open file"));
+    menu1->Items.Add(TEXT("&open file"));
     menu1->Items[0]->OnClick = Menu2_FileOpen_onClick;
     menu1->Items.Add(TEXT("test name"));
-    menu1->Items[1]->Text = TEXT("Add mdi child");
+    menu1->Items[1]->Text = TEXT("&Add mdi child");
     menu1->Items[1]->OnClick = Menu1_onClick;
-    menu1->Items.Add(TEXT("Window"));
+    menu1->Items.Add(TEXT("&Window"));
     menu1->Items[2]->SubMenu = menu2;
     menu1->Items.Add(TEXT("form"));
     menu1->Items[3]->OnClick = Menu2_onClick5;
@@ -673,6 +243,7 @@ void thWin32App::OnCreate()
 
 void thWin32App::OnDestroy()
 {
+    using namespace local_data;
     TH_ENTER_FUNCTION;
 
     delete thListView1;
@@ -700,16 +271,282 @@ void thWin32App::OnDestroy()
     TH_LEAVE_FUNCTION;
 }
 
-// callbacks
+// On MDI destroy event - clean up.
+LRESULT MDIChild_onDestroy( thWindow * pOwner) {
+    LRESULT result = 0;
+    int position = 0;
 
+    for ( const auto i : local_data::mdiChilds)
+    {
+        if ( i == pOwner)
+        {
+            local_data::mdiChilds.erase( local_data::mdiChilds.begin() + position);
+            delete pOwner;
+            break;
+        }
+        ++position;
+    }
+
+    return result;
+}
+
+// On MDI destroy event, it should destroy childen components
+LRESULT Text_MDIChild_onDestroy( thWindow * pOwner)
+{
+    LRESULT result = 0;
+
+    int position = 0;
+
+    for ( const auto i : local_data::textMdiChilds)
+    {
+        if ( i->pMdi == pOwner)
+        {
+            local_data::textMdiChilds.erase( local_data::textMdiChilds.begin() + position);
+            delete pOwner;
+            break;
+        }
+        ++position;
+    }
+
+    return result;
+}
+
+//create mdi children
+LRESULT Menu1_onClick( thObject * const sender, thEventParams_t info)
+{
+    thMDIChild * pNewchild = 0;
+
+    pNewchild = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
+
+    if (pNewchild) {
+        pNewchild->OnDestroy = MDIChild_onDestroy; // bind onDestroy callback
+        pNewchild->Text = TEXT("MDI");
+        local_data::mdiChilds.push_back(pNewchild);
+    }
+    return 1;
+}
+
+LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info){
+    local_data::button->Text = TEXT("New button name");
+    return 1;
+}
+
+// onClose event: instead of destorying form, hide it.
+LRESULT Form_onClose(thWindow * pOwner)
+{
+    TH_ENTER_FUNCTION;
+    LRESULT tResult = 0;
+    pOwner->Hide();
+    tResult = 1;    // returning 1 wont destroy object
+    TH_LEAVE_FUNCTION;
+    return tResult;
+}
+
+// closing main application form will close application
+LRESULT Form3_onDestroy(thWindow * pOwner)
+{
+    TH_ENTER_FUNCTION;
+    LRESULT tResult = 0;
+
+    // clean up MDI childs classes (this is already handled internally
+    // but for sake of readibility is here too)
+    std::vector<thMDIChild*>::iterator i;
+
+    i = local_data::mdiChilds.begin();
+
+    for (; i != local_data::mdiChilds.end(); i++) {
+        delete (*i);
+    }
+
+    ::PostQuitMessage(0); //close app
+
+    TH_LEAVE_FUNCTION;
+    return tResult;
+}
+
+// open file in new MDI child int ASCII/UNICODE format
+LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info)
+{
+    thOpenDialog openDialog;
+    thDialogFilterItem all(TEXT("All"), TEXT("*.*"));
+    thDialogFilterItem text;
+    text.Name = TEXT("Text");
+    text.Filter = TEXT("*.TXT");
+
+    openDialog.Filter.Add(all);
+    openDialog.Filter.Add(text);
+
+
+    // show Open File Dialog.
+    // if successed return true
+    if ( openDialog.Show(local_data::form3))
+    {
+        local_data::sTextMDIdata_t * pNewchild = 0;
+
+        pNewchild = new local_data::sTextMDIdata_t;
+
+        if ( pNewchild)
+        {
+            // Create MDI child Window
+            pNewchild->pMdi = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
+
+            if ( pNewchild->pMdi)
+            {
+                pNewchild->pMdi->Width = (int)((double)local_data::form3->Width * 0.8f);
+                pNewchild->pMdi->Height = (int)((double)local_data::form3->Height * 0.8f);
+                pNewchild->pMdi->OnDestroy = Text_MDIChild_onDestroy;
+
+                // Create RichEdit component in new MDI child Window.
+                pNewchild->pRichEdit = new thRichEdit( pNewchild->pMdi, 0, 0);
+
+                if ( pNewchild->pRichEdit)
+                {
+                    pNewchild->pRichEdit->Width = pNewchild->pMdi->Width - 20;
+                    pNewchild->pRichEdit->Height = pNewchild->pMdi->Height - 50;
+                    pNewchild->pRichEdit->Anchors.Right = true;
+                    pNewchild->pRichEdit->Anchors.Bottom = true;
+
+                    thFile file;
+
+                    file.Open(
+                        openDialog.FileName,
+                        thFile::DesiredAccess::generic_read,
+                        thFile::CreationDisposition::open_existing
+                    );
+
+                    if ( file.IsOpen())
+                    {
+                        pNewchild->pMdi->Text = file.GetFileName();
+
+                        const auto file_size_in_bytes = file.GetFileSize();
+                        const uint32_t buffer_size_in_bytes = static_cast< uint32_t>( file_size_in_bytes);
+
+                        if ( buffer_size_in_bytes)
+                        {
+                            uint8_t * buffer = new uint8_t[ buffer_size_in_bytes]; // file read buffer
+
+                            if ( buffer)
+                            {
+                                uint32_t u32BytesRead = 0;
+
+                                uint32_t u32Result = file.Read((uint8_t*)buffer, buffer_size_in_bytes, u32BytesRead);
+
+                                if ( 0 == u32Result)
+                                {
+                                    BOOL fResult = IsTextUnicode( buffer, (int)u32BytesRead, NULL);
+
+                                    if ( fResult)
+                                    {
+                                        MSG_LOG( TEXT( "UNICODE"));
+
+                                        // Brute force memory copy, since its just an examples.
+                                        std::wstring text((wchar_t*)buffer, u32BytesRead); // interpret as wide string; - 10 bytes of BOM header
+
+                                        #ifdef UNICODE
+                                            pNewchild->pRichEdit->Text = text;
+                                        #else
+                                            pNewchild->pRichEdit->Text = WStringToString(text);
+                                        #endif
+                                    }
+                                    else
+                                    {
+                                        MSG_LOG( TEXT( "ASCII"));
+
+                                        // Brute force memory copy, since its just an examples.
+                                        std::string text((char*)buffer, u32BytesRead); // interpret as ANSI string
+
+                                        #ifdef UNICODE
+                                            pNewchild->pRichEdit->Text = StringToWString(text);
+                                        #else
+                                            pNewchild->pRichEdit->Text = text;
+                                        #endif
+                                    }
+
+                                }
+                                delete[] buffer;
+                            }
+                        }
+                    }
+
+                    local_data::textMdiChilds.push_back(pNewchild);
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info)
+{
+    local_data::mdiclient->Cascade();
+    return 1;
+}
+
+LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info)
+{
+    local_data::mdiclient->TileHorizontal();
+    return 1;
+}
+
+LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info)
+{
+    local_data::mdiclient->TileVertical();
+    return 1;
+}
+
+LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info)
+{
+    local_data::mdiclient->ArrangeIcons();
+    return 1;
+}
+
+LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info)
+{
+    local_data::form->Show();
+    return 1;
+}
+
+LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info)
+{
+    local_data::form2->Show();
+    return 1;
+}
+
+LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
+{
+    switch (local_data::combo1->Items.ItemIndex())
+    {
+    case 0:
+        local_data::thListView1->SetView(thListView::eViewType_t::view_details);
+        break;
+    case 1:
+        local_data::thListView1->SetView(thListView::eViewType_t::view_icon);
+        break;
+    case 2:
+        local_data::thListView1->SetView(thListView::eViewType_t::view_list);
+        break;
+    case 3:
+        local_data::thListView1->SetView(thListView::eViewType_t::view_smallicon);
+        break;
+    case 4:
+        local_data::thListView1->SetView(thListView::eViewType_t::view_tile);
+        break;
+    default:
+        // not used
+        break;
+    }
+    return 1;
+}
+
+
+
+// callbacks
 LRESULT Button_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
-    static int i = 0;
 
-    //combo1->Items.Add(edit1->Text);
-    thListView1->Items.Add(edit1->Text);
-    listbox1->Items.Add(edit1->Text);
+    local_data::thListView1->Items.Add(local_data::edit1->Text);
+    local_data::listbox1->Items.Add(local_data::edit1->Text);
 
     TH_LEAVE_FUNCTION;
     return 1;
@@ -718,14 +555,14 @@ LRESULT Button_onClick(thObject * const sender, thEventParams_t info)
 LRESULT Button2_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
-    for (int j = 0; j < thListView1->Items.GetCount(); j++) {
-        for (int i = 1; i < thListView1->Columns.GetCount(); i++) {
-            thListView1->Items[j]->SubItems[i].SetText(NumToString(i));
+    for (int j = 0; j < local_data::thListView1->Items.GetCount(); j++)
+    {
+        for (int i = 1; i < local_data::thListView1->Columns.GetCount(); i++)
+        {
+            local_data::thListView1->Items[j]->SubItems[i].SetText(NumToString(i));
         }
     }
-    //    thListView1->Items[0]->SetText(TEXT("asdasd"));
 
     TH_LEAVE_FUNCTION;
     return 1;
 }
-#endif

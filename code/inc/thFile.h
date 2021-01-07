@@ -23,28 +23,37 @@ public:
         open_existing,     // Opens a file or device, only if it exists
         truncate_existing  // Opens a file and truncates it so that its size is zero bytes, only if it exists
     };
-protected:
-    HANDLE              m_hHandle;
-    thString            m_filePath;
-    thString            m_fileDirectory;
-    thString            m_fileName;
-    thString            m_fileExtension;
-private:
+
 public:
                         thFile();
+
+                        thFile(
+                            thString                    a_filePath,
+                            thFile::DesiredAccess       a_DesiredAccess,
+                            thFile::CreationDisposition a_CreationDisposition
+                        );
+
     virtual             ~thFile();
 
-    uint32_t            Open(thString, thFile::DesiredAccess, thFile::CreationDisposition);
-    uint32_t            Write(uint8_t * const, uint32_t);
-    uint32_t            Read(uint8_t * const, uint32_t, uint32_t &);
+    uint32_t            Open( thString, thFile::DesiredAccess, thFile::CreationDisposition);
+    uint32_t            Write( uint8_t * const, uint32_t);
+    uint32_t            Read( uint8_t * const, uint32_t, uint32_t &);
 
-    bool_t              IsOpen(void);
-    void                Close(void);
+    bool_t              IsOpen();
+    void                Close();
     // deletefile
 
-    thString            GetFileName(void) const;
-    thString            GetFilePath(void) const;
-    thString            GetFileDirectory(void) const;
-    uint64_t            GetFileSize(void) const; // return file size in bytes
+    thString            GetFileName() const;
+    thString            GetFilePath() const;
+    thString            GetFileDirectory() const;
+    uint64_t            GetFileSize() const; // return file size in bytes
+
+protected:
+    HANDLE              m_hHandle{ NULL};
+    thString            m_filePath{};
+    thString            m_fileDirectory{};
+    thString            m_fileName{};
+    thString            m_fileExtension{};
+
 };
 

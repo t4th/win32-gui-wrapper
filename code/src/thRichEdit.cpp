@@ -72,6 +72,27 @@ static SScintillaColors g_rgbSyntaxCpp[] =
     { -1, 0 }
 };
 
+void thRichEdit::registerClass()
+{
+    // Register Scintilla classes.
+    // It must be done once in a lifetime of an application.
+    static bool once = true;
+
+    if ( true == once)
+    {
+        HINSTANCE   application_instance = GetModuleHandle( NULL);
+
+        if ( 0 != Scintilla_RegisterClasses( application_instance))
+        {
+            once = false;
+        }
+        else
+        {
+            MSG_ERROR( TEXT( "Scintilla_RegisterClasses failed with error = 0x%X"), GetLastError());
+        }
+    }
+}
+
 void thRichEdit::SetAStyle(int style, COLORREF fore, COLORREF back = RGB(0, 0, 0), int size = -1, const char *face = 0)
 {
     SendMessage(this->m_hWinHandle, SCI_STYLESETFORE, style, fore);
@@ -89,97 +110,83 @@ void thRichEdit::SetAStyle(int style, COLORREF fore, COLORREF back = RGB(0, 0, 0
 //    return _pScintillaFunc(_pScintillaPtr, static_cast<int>(Msg), static_cast<int>(wParam), static_cast<int>(lParam));
 //};
 
-thRichEdit::thRichEdit() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
 thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     BOOL    fResult = FALSE;
-    HMODULE hScintilla = NULL;
-    
-    hScintilla = LoadLibrary(TEXT("SciLexer.DLL"));
+    this->m_name = CLASS_NAME;
 
-    if (hScintilla)
-    {
-        this->m_name = CLASS_NAME;
+    this->m_sWindowArgs.dwExStyle = 0;
+    this->m_sWindowArgs.lpClassName =   WIN32_CLASS_NAME;
+    this->m_sWindowArgs.lpWindowName =  DEFAULT_TEXT;
+    this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN;
+    //    | ES_AUTOHSCROLL | WS_HSCROLL;
+    //ES_READONLY WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL
+    this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
+    this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
+    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);;
+    this->m_sWindowArgs.lpParam =       this;
 
-        this->m_sWindowArgs.dwExStyle = 0;
-        this->m_sWindowArgs.lpClassName =   WIN32_CLASS_NAME;
-        this->m_sWindowArgs.lpWindowName =  DEFAULT_TEXT;
-        this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | WS_CLIPCHILDREN;
-        //    | ES_AUTOHSCROLL | WS_HSCROLL;
-        //ES_READONLY WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL
-        this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
-        this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-        this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);;
-        this->m_sWindowArgs.lpParam =       this;
+    this->registerClass();
 
-        this->create();
+    this->create();
 
-        //_pScintillaFunc = (SCINTILLA_FUNC)::SendMessage(m_hWinHandle, SCI_GETDIRECTFUNCTION, 0, 0);
-        //_pScintillaPtr = (SCINTILLA_PTR)::SendMessage(m_hWinHandle, SCI_GETDIRECTPOINTER, 0, 0);
-        //
-        //if (!_pScintillaFunc)
-        //{
-        //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTFUNCTION message failed"));
-        //}
-        //
-        //if (!_pScintillaPtr)
-        //{
-        //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTPOINTER message failed"));
-        //}
+    //_pScintillaFunc = (SCINTILLA_FUNC)::SendMessage(m_hWinHandle, SCI_GETDIRECTFUNCTION, 0, 0);
+    //_pScintillaPtr = (SCINTILLA_PTR)::SendMessage(m_hWinHandle, SCI_GETDIRECTPOINTER, 0, 0);
+    //
+    //if (!_pScintillaFunc)
+    //{
+    //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTFUNCTION message failed"));
+    //}
+    //
+    //if (!_pScintillaPtr)
+    //{
+    //    MSG_ERROR(TEXT("ScintillaEditView::init : SCI_GETDIRECTPOINTER message failed"));
+    //}
 
 
-        // CPP lexer
-        SendMessage(this->m_hWinHandle, SCI_SETLEXER, SCLEX_CPP, 0);
+    // CPP lexer
+    SendMessage(this->m_hWinHandle, SCI_SETLEXER, SCLEX_CPP, 0);
 
-        // Set number of style bits to use
-        SendMessage(this->m_hWinHandle, SCI_SETSTYLEBITS, 5, 0);
+    // Set number of style bits to use
+    SendMessage(this->m_hWinHandle, SCI_SETSTYLEBITS, 5, 0);
 
-        // Set tab width
-        SendMessage(this->m_hWinHandle, SCI_SETTABWIDTH, 4, 0);
+    // Set tab width
+    SendMessage(this->m_hWinHandle, SCI_SETTABWIDTH, 4, 0);
 
-        // Set SCI_SETMARGINWIDTHN
-        //SendMessage(this->m_hWinHandle, SCI_SETMARGINWIDTHN, STYLE_LINENUMBER, 0);
+    // Set SCI_SETMARGINWIDTHN
+    //SendMessage(this->m_hWinHandle, SCI_SETMARGINWIDTHN, STYLE_LINENUMBER, 0);
         
-        // Set SETMARGINTYPEN
-        //SendMessage(this->m_hWinHandle, SCI_SETMARGINTYPEN, 0, 200);
+    // Set SETMARGINTYPEN
+    //SendMessage(this->m_hWinHandle, SCI_SETMARGINTYPEN, 0, 200);
 
-        // Use CPP keywords
-        SendMessage(this->m_hWinHandle, SCI_SETKEYWORDS, 0, (LPARAM)g_cppKeyWords);
+    // Use CPP keywords
+    SendMessage(this->m_hWinHandle, SCI_SETKEYWORDS, 0, (LPARAM)g_cppKeyWords);
 
-        // Set up the global default style. These attributes are used wherever no explicit choices are made.
-        SetAStyle(STYLE_DEFAULT, white, black, 10, "Courier New");
+    // Set up the global default style. These attributes are used wherever no explicit choices are made.
+    SetAStyle(STYLE_DEFAULT, white, black, 10, "Courier New");
 
-        // Set caret foreground color
-        SendMessage(this->m_hWinHandle, SCI_SETCARETFORE, RGB(255, 255, 255), 0);
+    // Set caret foreground color
+    SendMessage(this->m_hWinHandle, SCI_SETCARETFORE, RGB(255, 255, 255), 0);
 
-        // Set all styles
-        SendMessage(this->m_hWinHandle, SCI_STYLECLEARALL, 0, 0);
+    // Set all styles
+    SendMessage(this->m_hWinHandle, SCI_STYLECLEARALL, 0, 0);
 
-        // Set selection color
-        SendMessage(this->m_hWinHandle, SCI_SETSELBACK, TRUE, RGB(0, 0, 255));
+    // Set selection color
+    SendMessage(this->m_hWinHandle, SCI_SETSELBACK, TRUE, RGB(0, 0, 255));
 
-        // Set background color
-        //SendMessage(m_hWinHandle, SCI_STYLESETBACK, STYLE_DEFAULT, (LPARAM)RGB(0, 0, 0));
+    // Set background color
+    //SendMessage(m_hWinHandle, SCI_STYLESETBACK, STYLE_DEFAULT, (LPARAM)RGB(0, 0, 0));
 
-        //SendMessage(this->m_hWinHandle, SCI_SETTEXT, 0, (LPARAM)"asd111");
-        // Set syntax colors
-        for (long i = 0; g_rgbSyntaxCpp[i].iItem != -1; i++)
-            SetAStyle(g_rgbSyntaxCpp[i].iItem, g_rgbSyntaxCpp[i].rgb);
+    //SendMessage(this->m_hWinHandle, SCI_SETTEXT, 0, (LPARAM)"asd111");
+    // Set syntax colors
+    for (long i = 0; g_rgbSyntaxCpp[i].iItem != -1; i++)
+        SetAStyle(g_rgbSyntaxCpp[i].iItem, g_rgbSyntaxCpp[i].rgb);
 
-        fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
-        if (FALSE == fResult) {
-            MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
-        }
-    }
-    else {
-        MSG_ERROR(TEXT("thRichEdit:LoadLibrary - getlasterror=%u"), GetLastError());
+    if (FALSE == fResult) {
+        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -214,6 +221,14 @@ LRESULT thRichEdit::onSetText(LPARAM a_lParam)
 
     MSG_LOG(TEXT("%s::onSetText() - Leave"), this->m_name.c_str());
     //  TH_LEAVE_FUNCTION;
+    return tResult;
+}
+
+// return 0 will process this message further in Z-axis
+// return 1 will stop processing this msg
+LRESULT thRichEdit::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
+{
+    LRESULT tResult = 0; // use default scintila popup menu
     return tResult;
 }
 

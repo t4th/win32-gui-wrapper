@@ -13,6 +13,10 @@ int thForm::m_indexPool = 1;
 
 /* Prototypes */
 
+// TODO: fix this.
+// Main window pointer workaround.
+std::vector< thForm*> g_forms;
+
 // keep dx and dy after thForm resize
 typedef struct
 {
@@ -44,33 +48,41 @@ void thForm::init()
     this->m_sWindowArgs.nHeight =        DEFAULT_HEIGHT;
     this->m_sWindowArgs.hMenu =          0;
     this->m_sWindowArgs.lpParam =        this;
+
     TH_LEAVE_FUNCTION;
 }
 
 void thForm::registerClass()
 {
     TH_ENTER_FUNCTION;
-    WNDCLASSEX wClass = { 0 };
 
-    wClass.cbSize =         sizeof(WNDCLASSEX);
-    wClass.style =          0;//CS_HREDRAW | CS_VREDRAW;
-    wClass.lpfnWndProc =    static_cast<WNDPROC>(WinProc);
-    wClass.cbClsExtra =     NULL;
-    wClass.cbWndExtra =     sizeof(thForm*); // 4 bytes for 'this' pointer
-    wClass.hInstance =      this->m_sWindowArgs.hInstance;
-    wClass.hIcon =          NULL;
-    wClass.hCursor =        LoadCursor(NULL, IDC_ARROW);
-    wClass.hbrBackground =  (HBRUSH)COLOR_WINDOW;
-    wClass.lpszMenuName =   NULL;
-    wClass.lpszClassName =  this->m_sWindowArgs.lpClassName;
-    wClass.hIconSm =        NULL;
+    static bool once = true;
+
+    if ( true == once)
+    {
+        WNDCLASSEX window_class_ex = { 0 };
+
+        window_class_ex.cbSize =         sizeof( window_class_ex);
+        window_class_ex.style =          0; //CS_HREDRAW | CS_VREDRAW;
+        window_class_ex.lpfnWndProc =    static_cast< WNDPROC>( WinProc);
+        window_class_ex.cbClsExtra =     NULL;
+        window_class_ex.cbWndExtra =     sizeof( thForm*); // 4 bytes for 'this' pointer
+        window_class_ex.hInstance =      this->m_sWindowArgs.hInstance;
+        window_class_ex.hIcon =          NULL;
+        window_class_ex.hCursor =        LoadCursor( NULL, IDC_ARROW);
+        window_class_ex.hbrBackground =  reinterpret_cast< HBRUSH>( COLOR_WINDOW);
+        window_class_ex.lpszMenuName =   NULL;
+        window_class_ex.lpszClassName =  this->m_sWindowArgs.lpClassName;
+        window_class_ex.hIconSm =        NULL;
     
-    if (0 == RegisterClassEx(&wClass)) {
-        MSG_WARNING(TEXT("RegisterClassEx error: 0x%X"), GetLastError());
-        //todo: add UnregisterClass 
-    }
-    else {
-        MSG_SUCCESS(TEXT("Successfully registerd class with RegisterClassEx"));
+        if ( 0 != RegisterClassEx( &window_class_ex))
+        {
+            once = false;
+        }
+        else
+        {
+            MSG_WARNING( TEXT( "RegisterClassEx error: 0x%X"), GetLastError());
+        }
     }
     TH_LEAVE_FUNCTION;
 }
@@ -88,6 +100,9 @@ thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_po
     
     this->init();
     this->registerClass();
+
+    g_forms.push_back( this);
+
     this->create();
 
 #if 0
@@ -101,6 +116,18 @@ thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_po
 thForm::~thForm()
 {
     TH_ENTER_FUNCTION;
+
+    auto position = 0;
+    for ( const auto i: g_forms)
+    {
+        if (i == this)
+        {
+            g_forms.erase(g_forms.begin() + position);
+            break;
+        }
+        position++;
+    }
+
     TH_LEAVE_FUNCTION;
 }
 

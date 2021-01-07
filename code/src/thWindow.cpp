@@ -9,21 +9,6 @@
 /* Prototypes */
 LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
-thWindow::thWindow() : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL),
-Text(*this),
-Width(*this),
-Height(*this),
-X(*this),
-Y(*this)
-{
-    TH_ENTER_FUNCTION;
-    m_sWindowArgs = { 0 };
-    Constraints = { 0 };
-    Anchors = { true, false, false, true };
-    m_rcOldPosition = { 0 };
-    TH_LEAVE_FUNCTION;
-}
-
 thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
     : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL),
     Text(*this),
@@ -298,17 +283,16 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
     return tResult;
 }
 
-/*
-a_wParam - handle to the window user right clicked. this can be a child
-a_lParam - low-order word is X, high-order word is Y
-return 0 will process this message further in Z-axis
-return 1 will stop processing this msg
-*/
+
+// a_wParam - handle to the window user right clicked. this can be a child
+// a_lParam - low-order word is X, high-order word is Y
+// return 0 will process this message further in Z-axis
+// return 1 will stop processing this msg
 LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 {
     //TH_ENTER_FUNCTION;
     MSG_LOG(TEXT("%s::onContextMenu - Enter"), this->m_name.c_str());
-    LRESULT tResult = 1; // only check foremost window context menu
+    LRESULT tResult = 1;
     POINT   point = { 0 };
     HWND    hwnd = 0;
 
@@ -364,7 +348,7 @@ LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
 // note: An application should return zero if it processes this message.
 LRESULT thWindow::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
 {
-    LRESULT tResult = 1;
+    LRESULT tResult = 0;
 
     return tResult;
 }
@@ -426,7 +410,7 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
         tResult = this->onSetText(a_lParam);
         break;
     // http://msdn.microsoft.com/en-us/library/windows/desktop/ff468861%28v=vs.85%29.aspx
-#if 1
+#if 0
     case WM_KEYUP:
         break;
     case WM_KEYDOWN:

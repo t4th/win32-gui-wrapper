@@ -27,7 +27,7 @@ public:
 
     ~thItemList()
     {
-        std::vector<Titem*>::iterator i;
+        typename std::vector<Titem*>::iterator i;
 
         i = m_items.begin();
 

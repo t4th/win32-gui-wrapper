@@ -19,12 +19,6 @@
     <Filter Include="external\SimpleGrid">
       <UniqueIdentifier>{7e2d1092-b5f7-42c9-88fd-09d675ca5f28}</UniqueIdentifier>
     </Filter>
-    <Filter Include="example">
-      <UniqueIdentifier>{2088623d-4218-4288-bbd9-1293bda357ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="example\basic_components">
-      <UniqueIdentifier>{d4d6b970-d46c-4d41-b1c2-67f1d684c520}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\code\src\thApplication.cpp">
@@ -143,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="..\code\src\thWindow.cpp">
       <Filter>code\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\example\basic_components\src\main.cpp">
-      <Filter>example\basic_components</Filter>
     </ClCompile>
     <ClCompile Include="..\external\simple_grid\simpleGrid.cpp">
       <Filter>external\SimpleGrid</Filter>

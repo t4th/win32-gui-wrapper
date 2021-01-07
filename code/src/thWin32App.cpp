@@ -2,82 +2,87 @@
 #include "thWindow.h"
 #include "thMDIChild.h"
 
-thWin32App::thWin32App() : m_hInstance(0), m_hAccel(0), m_mainWindow(0), m_MDIclient(0)
+// TODO: Fix this workarounds. Those two global variables should be held in thWin32App.
+// Note: Win32 application assumes there is always only one MDI client object.
+extern thMDIClient *            g_pMDI_client;
+extern std::vector< thForm*>    g_forms;
+
+namespace
 {
-    TH_ENTER_FUNCTION;
+    void translateMessage( MSG a_message)
+    {
+            BOOL message_translated = FALSE;
 
-    TH_LEAVE_FUNCTION;
-}
+            // Capture default shortcuts for MDI client (like ctrl + tab).
+            if ( g_pMDI_client)
+            {
+                HWND mdi_client_handle = g_pMDI_client->GetHandle();
+            
+                message_translated = TranslateMDISysAccel( mdi_client_handle, &a_message);
+            }
 
-thWin32App::~thWin32App()
-{
-    TH_ENTER_FUNCTION;
+            if ( FALSE == message_translated)
+            {
+                // Each thForm key press must be translated separately.
+                // Otherwise TAB key wont switch Focus, etc.
+                for ( const auto i: g_forms)
+                {
+                    HWND form_handle = i->GetHandle();
+                    message_translated = IsDialogMessage( form_handle, &a_message);
 
-    TH_LEAVE_FUNCTION;
-}
+                    if ( FALSE != message_translated)
+                    {
+                        break;
+                    }
+                }
+            }
 
-void thWin32App::Init(HINSTANCE a_hInstance)
-{
-    TH_ENTER_FUNCTION;
-    m_hInstance = a_hInstance;
-
-#if 0
-    m_hAccel = LoadAccelerators(m_hInstance, APPLICATION_NAME);
-
-    if (0 == m_hAccel) {
-        MSG_ERROR(TEXT("LoadAccelerators failed with error: 0x%X"), GetLastError());
+            if ( FALSE == message_translated)
+            {
+                TranslateMessage( &a_message);
+                DispatchMessage( &a_message);
+            }
     }
-#endif
-
-    TH_LEAVE_FUNCTION;
 }
 
-void thWin32App::Terminate(int a_nExitCode = 0)
+void thWin32App::Terminate( int a_nExitCode = 0)
 {
     TH_ENTER_FUNCTION;
 
-    ::PostQuitMessage(a_nExitCode);
+    ::PostQuitMessage( a_nExitCode);
 
     TH_LEAVE_FUNCTION;
 }
-extern thMDIClient * gmdic;
+
 int thWin32App::Run()
 {
     TH_ENTER_FUNCTION;
 
-    MSG     msg = { 0 };
-    BOOL    fMsgTranslated = FALSE;
-    HACCEL  hAccel;
-
-    if (0 == m_hInstance) {
-        m_hInstance = GetModuleHandle(NULL);
-    }
+    bool        exit_application = false;
+    MSG         message = { 0 };
 
     this->OnCreate();
 
-    // Load accelerator table
+    while ( false == exit_application)
+    {
+        BOOL is_message_received = GetMessage( &message, NULL, 0, 0);
 
-    hAccel = LoadAccelerators(m_hInstance, APPLICATION_NAME);
-
-    while (GetMessage(&msg, NULL, 0, 0) != FALSE) {
-        fMsgTranslated = FALSE; //http://msdn.microsoft.com/en-us/library/windows/desktop/ms644926%28v=vs.85%29.aspx
-
-        if (gmdic) {
-            fMsgTranslated = TranslateMDISysAccel(gmdic->GetHandle(), &msg);
-        }
-
-        if (m_mainWindow && FALSE == fMsgTranslated) {
-            fMsgTranslated = TranslateAccelerator(m_mainWindow->GetHandle(), hAccel, &msg);
-        }
-
-        if (FALSE == fMsgTranslated)
+        switch ( is_message_received)
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+        case 0:
+            // WM_QUIT message.
+            exit_application = true;
+            break;
+        case -1:
+            // This is hilarious, but win32 BOOL can actually return -1,
+            // which indicate that error occurred.
+            break;
+        default:
+            // Normal message.
+            translateMessage( message);
+            break;
         }
-    }
-
-    this->OnDestroy();
+    };
 
     TH_LEAVE_FUNCTION;
 

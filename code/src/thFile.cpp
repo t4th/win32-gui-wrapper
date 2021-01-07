@@ -2,23 +2,32 @@
 #include "thFile.h"
 
 
-thFile::thFile() :
-    m_hHandle(NULL),
-    m_filePath{},
-    m_fileDirectory{},
-    m_fileName{},
-    m_fileExtension{}
+thFile::thFile()
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
 
+thFile::thFile(
+    thString                    a_filePath,
+    thFile::DesiredAccess       a_DesiredAccess,
+    thFile::CreationDisposition a_CreationDisposition
+)
+{
+    uint32_t u32Result = this->Open( a_filePath, a_DesiredAccess, a_CreationDisposition);
+
+    if ( u32Result)
+    {
+        // Result is omitted since its c-tor.
+    }
+}
 
 thFile::~thFile()
 {
     TH_ENTER_FUNCTION;
 
-    if (this->IsOpen()) {
+    if ( this->IsOpen())
+    {
         this->Close();
     }
 
@@ -26,118 +35,137 @@ thFile::~thFile()
 }
 
 // return 0 if no error
-uint32_t thFile::Open(thString a_filePath, thFile::DesiredAccess a_DesiredAccess, thFile::CreationDisposition a_CreationDisposition)
+uint32_t thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, thFile::CreationDisposition a_CreationDisposition)
 {
-    const static DWORD DesiredAccess[] = {GENERIC_READ, GENERIC_WRITE, GENERIC_EXECUTE, GENERIC_ALL};
-    const static DWORD CreationDisposition[] = {CREATE_ALWAYS, CREATE_NEW, OPEN_ALWAYS, OPEN_EXISTING, TRUNCATE_EXISTING};
+    constexpr DWORD DesiredAccess[] = {GENERIC_READ, GENERIC_WRITE, GENERIC_EXECUTE, GENERIC_ALL};
+    constexpr DWORD CreationDisposition[] = {CREATE_ALWAYS, CREATE_NEW, OPEN_ALWAYS, OPEN_EXISTING, TRUNCATE_EXISTING};
+
+    auto desired_access_index = static_cast< uint8_t>( a_DesiredAccess);
+    auto desired_disposition_index = static_cast< uint8_t>( a_CreationDisposition);
 
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
 
-    if (NULL == m_hHandle) {
-        m_hHandle = CreateFile(a_filePath.c_str(),
-            DesiredAccess[static_cast<int>(a_DesiredAccess)],
+    if ( NULL == m_hHandle)
+    {
+        m_hHandle = CreateFile(
+            a_filePath.c_str(),
+            DesiredAccess[ desired_access_index],
             0,
             NULL,
-            CreationDisposition[static_cast<int>(a_CreationDisposition)],
+            CreationDisposition[ desired_disposition_index],
             FILE_ATTRIBUTE_NORMAL,
-            NULL);
+            NULL
+        );
 
-        if (INVALID_HANDLE_VALUE == m_hHandle) {
+        if ( INVALID_HANDLE_VALUE == m_hHandle)
+        {
             u32Result = GetLastError();
-            MSG_ERROR(TEXT("CloseHandle failed with error = 0x%X"), u32Result);
+            MSG_ERROR( TEXT( "CloseHandle failed with error = 0x%X"), u32Result);
         }
-        else {
+        else
+        {
             m_filePath = a_filePath;
 
-            wchar_t drive[_MAX_DRIVE]{};
-            wchar_t dir[_MAX_DIR]{};
-            wchar_t fname[_MAX_FNAME]{};
-            wchar_t ext[_MAX_EXT]{};
+            wchar_t drive[ _MAX_DRIVE]{};
+            wchar_t dir[ _MAX_DIR]{};
+            wchar_t fname[ _MAX_FNAME]{};
+            wchar_t ext[ _MAX_EXT]{};
             errno_t err{};
 
-            // https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/splitpath-s-wsplitpath-s?redirectedfrom=MSDN&view=vs-2019
-            err = _tsplitpath_s( a_filePath.c_str(), drive, _MAX_DRIVE, dir, _MAX_DIR, fname,
-                _MAX_FNAME, ext, _MAX_EXT );
+            err = _tsplitpath_s(
+                a_filePath.c_str(),
+                drive,
+                _MAX_DRIVE,
+                dir,
+                _MAX_DIR,
+                fname,
+                _MAX_FNAME, ext, _MAX_EXT
+            );
 
-            if (err != 0)
+            if ( 0 != err)
             {
-                MSG_ERROR(TEXT("Error splitting the path. Error code %d."), err);
+                MSG_ERROR( TEXT( "Error splitting the path. Error code %d."), err);
             }
             else
             {
-                m_fileDirectory = thString(dir);
-                m_fileName = thString(fname);
-                m_fileExtension = thString(ext);
+                m_fileDirectory = std::move( thString( dir));
+                m_fileName = std::move( thString( fname));
+                m_fileExtension = std::move( thString( ext));
             }
 
-            MSG_SUCCESS(TEXT("File opened successfully"));
+            MSG_SUCCESS( TEXT( "File opened successfully"));
         }
     }
-    else {
+    else
+    {
         this->Close();
-        u32Result = this->Open(a_filePath, a_DesiredAccess, a_CreationDisposition);
+        u32Result = this->Open( a_filePath, a_DesiredAccess, a_CreationDisposition);
     }
 
     TH_LEAVE_FUNCTION;
     return u32Result;
 }
 
-uint32_t thFile::Write(uint8_t * const a_inputBuffer, uint32_t a_BytesToWrite)
+uint32_t thFile::Write( uint8_t * const a_inputBuffer, uint32_t a_BytesToWrite)
 {
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
     BOOL     fResult = FALSE;
 
     DWORD dwBytesWritten = 0;
-    fResult = WriteFile(m_hHandle, a_inputBuffer, a_BytesToWrite, &dwBytesWritten, NULL);
+    fResult = WriteFile( m_hHandle, a_inputBuffer, a_BytesToWrite, &dwBytesWritten, NULL);
 
-    if (FALSE == fResult) {
+    if ( FALSE == fResult)
+    {
         u32Result = GetLastError();
-        MSG_ERROR(TEXT("WriteFile failed with error = 0x%X"), u32Result);
+        MSG_ERROR( TEXT( "WriteFile failed with error = 0x%X"), u32Result);
     }
 
     TH_LEAVE_FUNCTION;
     return u32Result;
 }
 
-uint32_t thFile::Read(uint8_t * const a_ouputBuffer, uint32_t a_bytesToRead, uint32_t & a_dwBytesRead)
+uint32_t thFile::Read( uint8_t * const a_ouputBuffer, uint32_t a_bytesToRead, uint32_t & a_dwBytesRead)
 {
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
     BOOL     fResult = FALSE;
 
-    fResult = ReadFile(m_hHandle, a_ouputBuffer, a_bytesToRead, (LPDWORD)&a_dwBytesRead, NULL);
+    fResult = ReadFile( m_hHandle, a_ouputBuffer, a_bytesToRead, (LPDWORD)&a_dwBytesRead, NULL);
 
-    if (FALSE == fResult) {
+    if ( FALSE == fResult)
+    {
         u32Result = GetLastError();
-        MSG_ERROR(TEXT("ReadFile failed with error = 0x%X"), u32Result);
+        MSG_ERROR( TEXT( "ReadFile failed with error = 0x%X"), u32Result);
     }
 
     TH_LEAVE_FUNCTION;
     return u32Result;
 }
 
-bool_t thFile::IsOpen(void)
+bool_t thFile::IsOpen()
 {
     bool_t fResult = FALSE;
 
-    if (m_hHandle) {
+    if ( m_hHandle)
+    {
         fResult = TRUE;
     }
 
     return fResult;
 }
 
-void thFile::Close(void)
+void thFile::Close()
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = 0;
 
-    fResult = CloseHandle(m_hHandle);
+    fResult = CloseHandle( m_hHandle);
 
-    if (0 == fResult) {
-        MSG_ERROR(TEXT("CloseHandle failed with error = 0x%X"), GetLastError());
+    if ( 0 == fResult)
+    {
+        MSG_ERROR( TEXT( "CloseHandle failed with error = 0x%X"), GetLastError());
     }
     else
     {
@@ -147,7 +175,7 @@ void thFile::Close(void)
     TH_LEAVE_FUNCTION;
 }
 
-thString thFile::GetFileName(void) const
+thString thFile::GetFileName() const
 {
     TH_ENTER_FUNCTION;
 
@@ -155,59 +183,38 @@ thString thFile::GetFileName(void) const
     return this->m_fileName + this->m_fileExtension;
 }
 
-thString thFile::GetFilePath(void) const
+thString thFile::GetFilePath() const
 {
     TH_ENTER_FUNCTION;
     thString    oFilePath;
-    BOOL        fResult = FALSE;
-
-#if 0
-    const DWORD numElts = MAX_PATH;
-
-    size_t size = sizeof(FILE_NAME_INFO)+sizeof(WCHAR)*numElts;
-
-        FILE_NAME_INFO *info = reinterpret_cast<FILE_NAME_INFO *>(malloc(size));
-        info->FileNameLength = numElts;
-
-    if (INVALID_HANDLE_VALUE != m_hHandle) {
-        fResult = GetFileInformationByHandleEx(m_hHandle, FileNameInfo, info, size);
-
-        if (fResult) {
-            MSG_SUCCESS(TEXT("File path is: %s"), info->FileName);
-                //tFullDirInfo.FileName);
-        }
-        else {
-            MSG_ERROR(TEXT("GetFileInformationByHandleEx failed with error = 0x%X"), GetLastError());
-        }
-    }
-
-    free(info);
-#endif
-
-#if 1
     DWORD       dwResult = 0;
-    TCHAR       sBuffer[MAX_PATH] = { 0 };
+    TCHAR       sBuffer[ MAX_PATH];
     
-    if (INVALID_HANDLE_VALUE != m_hHandle) {
-        dwResult = GetFinalPathNameByHandle(m_hHandle, sBuffer, MAX_PATH, FILE_NAME_OPENED | VOLUME_NAME_DOS);
+    if ( INVALID_HANDLE_VALUE != m_hHandle)
+    {
+        dwResult = GetFinalPathNameByHandle(
+            m_hHandle,
+            sBuffer,
+            MAX_PATH,
+            FILE_NAME_OPENED | VOLUME_NAME_DOS
+        );
     
-        if (dwResult < MAX_PATH)
+        if ( dwResult < MAX_PATH)
         {
-            MSG_SUCCESS(TEXT("The final path is: %s"), sBuffer);
+            MSG_SUCCESS( TEXT( "The final path is: %s"), sBuffer);
 
-            oFilePath = thString(sBuffer);
+            oFilePath = std::move( thString( sBuffer));
         }
         else {
-            MSG_ERROR(TEXT("The required buffer size is %d"), dwResult);
+            MSG_ERROR( TEXT( "The required buffer size is %d"), dwResult);
         }
     }
-#endif
 
     TH_LEAVE_FUNCTION;
     return oFilePath;
 }
 
-thString thFile::GetFileDirectory(void) const
+thString thFile::GetFileDirectory() const
 {
     TH_ENTER_FUNCTION;
 
@@ -215,21 +222,22 @@ thString thFile::GetFileDirectory(void) const
     return this->m_fileDirectory;
 }
 
-uint64_t thFile::GetFileSize(void) const
+uint64_t thFile::GetFileSize() const
 {
     TH_ENTER_FUNCTION;
-    LARGE_INTEGER tSize = { 0 };
+    LARGE_INTEGER tSize;
     uint64_t u64FileSize = 0;
-    BOOL fResult = FALSE;
 
-    fResult = GetFileSizeEx(m_hHandle, &tSize);
+    BOOL fResult = GetFileSizeEx( m_hHandle, &tSize);
 
-    if (fResult) {
-        u64FileSize = (uint64_t)tSize.QuadPart;
-        MSG_SUCCESS(TEXT("File size: %ull"), u64FileSize);
+    if ( fResult)
+    {
+        u64FileSize = static_cast<uint64_t> ( tSize.QuadPart);
+        MSG_SUCCESS( TEXT( "File size: %ull"), u64FileSize);
     }
-    else {
-        MSG_ERROR(TEXT("GetFileSizeEx failed with error = 0x%X"), GetLastError());
+    else
+    {
+        MSG_ERROR( TEXT( "GetFileSizeEx failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;

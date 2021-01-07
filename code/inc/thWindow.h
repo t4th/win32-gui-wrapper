@@ -26,6 +26,7 @@ protected:
     thWindow *              m_pParent;
     HWND                    m_hWinHandle; // TODO: move to private and make public GetHandle() method
 
+    // TODO: Remove.
     struct {
         DWORD       dwExStyle;
         LPCTSTR     lpClassName;
@@ -49,7 +50,7 @@ protected:
     virtual LRESULT         onSetText(LPARAM);    // WM_SETTEXT
     virtual LRESULT         onResize(HWND, WPARAM, LPARAM); // WM_SIZE
     virtual LRESULT         onGetMinMax(LPARAM);    // WM_GETMINMAXINFO
-    LRESULT                 onContextMenu(WPARAM, LPARAM); //WM_CONTEXTMENU
+    virtual LRESULT         onContextMenu(WPARAM, LPARAM); //WM_CONTEXTMENU
     virtual LRESULT         onKeyDown(WPARAM, LPARAM); //WM_KEYDOWN
 
     LRESULT                 processMessage(HWND, UINT, WPARAM, LPARAM);
@@ -67,14 +68,14 @@ protected:
     thWindow * const        findChildrenByHwnd(HWND);
 private:
     std::vector<thWindow*>  m_children;
-                            thWindow();
 
     // old child window position. Used by Anchors.
     RECT                    m_rcOldPosition;
 
     void                    GetRect(RECT &);
 public:
-                            thWindow(thWindow *, int, int);
+                            thWindow() = delete;
+                            thWindow( thWindow *, int, int);
     virtual                 ~thWindow();
 
     thText                  Text;

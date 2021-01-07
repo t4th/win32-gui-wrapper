@@ -11,8 +11,9 @@
 
 /* Local Memory */
 int thMDIClient::m_indexPool = 1;
-thMDIClient * gmdic = 0;
-/* Prototypes */
+thMDIClient * g_pMDI_client = nullptr;
+
+// TODO: Creating protection for creating only 1 MDI client.
 
 thMDIClient::thMDIClient() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
 {
@@ -42,14 +43,17 @@ thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
     this->create();
 
-    if (a_pParent) {
+    if ( a_pParent)
+    {
         a_pParent->m_hMDIClient = this->m_hWinHandle;
     }
-    gmdic = this;
+
+    g_pMDI_client = this;
 
     fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
-    if (FALSE == fResult) {
+    if ( FALSE == fResult)
+    {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
