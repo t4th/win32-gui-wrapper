@@ -5,7 +5,7 @@ Still it is now good source of some win32 gui API examples. I remember being the
 
 ## Update
 1/7/2021
-I have created this code when I was pretty much C++ beginner and Win32 was already called ancient and even though I got some start ;).
+I have created this code when I was pretty much C++ beginner and Win32 was already called ancient and even though I got some stars ;).
 Since I made it was almost almost 10 years ago my coding style and knowledge evolved accordingly and I decided to clean it up a bit.
 There are quite the bugs and bad practices in this project, but hopefully I will clean some in free time.
 
@@ -18,16 +18,16 @@ For example:
 thForm *   form = 0;
 thButton * button = 0
 
-form = new thForm(0, 0, 0);
+form = new thForm( 0, 0, 0); // Parent, X-position, Y-position
 form->Width = 800;
 form->Height = 800;
 form->X = 50;
 form->Y = 50;
 form->Text = L"Window caption name";
-form->SetMenu(menu1);
+form->SetMenu( menu1);
 form->OnDestroy = form_onDestroy; // register callback
 
-button = new thButton(form, 0, form->Height - 30);
+button = new thButton( form, 0, form->Height - 30);
 button->Width = form->Width;
 button->Height = 30;
 button->Anchors.Top = false;
