@@ -1,13 +1,11 @@
 ## Experimental win32 GUI wrapper in C++
 This is fun little project I did when learning win32 GUI API and C++.
 I was pretty satisfied with the result, but it was just prove of concept learning material, and it was never supposed to reach 1.0.
-Still it is now good source of some win32 gui API examples. I remember being the most proud of re-sizing and MDI :).
+Still, it is now good source of some win32 API examples. I remember being the most proud of working re-sizing and MDI :).
 
 ## Update
 1/7/2021
-I have created this code when I was pretty much C++ beginner and Win32 was already called ancient and even though I got some stars ;).
-Since I made it was almost almost 10 years ago my coding style and knowledge evolved accordingly and I decided to clean it up a bit.
-There are quite the bugs and bad practices in this project, but hopefully I will clean some in free time.
+I have created this project when I was pretty much C++ beginner and Win32 was already called ancient. Still, I got some stars recently, which motivated me to check it again :). Since I am way more experienced than 10 years ago, I found quite the amount of bugs and bad practices, which hopefully I will fix in my spare time.
 
 ## Goal
 My original goal was to wrap native Windows C code with C++ classes like in Borland C++ Builder (now Embarcadero).
@@ -51,9 +49,10 @@ form->Show();
 
 ## TODO
 - documentation and pictures
-- examples (calculator, uart)
-- error handling
-- callback should be changed (std::function or something)
+- create examples (calculator, uart)
+- implement proper error handling
+- change function pointer to std::function
+- change raw pointers to smart pointers
 
 ## How to use
 Project is using external components which are built into static libraries. Win32 Gui itself is also built into library.
