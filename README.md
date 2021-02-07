@@ -57,7 +57,7 @@ form->Show();
 ## How to use
 Project is using external components which are built into static libraries. Win32 Gui itself is also built into library.
 Since this is Windows only, use free Visual Studio 2019 to open solution file Win32_gui_wrapper.sln:
-- select x86 as solution platform
+- select solution platform
 - build (ctrl+shift+b) all and Run (F5)
 - You must select example project as startup project for Run (F5) to work
 
