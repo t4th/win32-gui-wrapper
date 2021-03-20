@@ -12,13 +12,13 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thRadioButton() = delete;
-                            thRadioButton(thWindow *, int, int);
+                            thRadioButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thRadioButton();
 
-    thEventCallbackFunc_t   OnClick; // = BN_CLICKED,
-    thEventCallbackFunc_t   OnDisable; // = BN_DISABLE,
-    thEventCallbackFunc_t   OnDoubleClicked; // = BN_DOUBLECLICKED,
-    thEventCallbackFunc_t   OnSetFocus; // = BN_SETFOCUS,
-    thEventCallbackFunc_t   OnKillFocus; // = BN_KILLFOCUS
+    thEventCallbackFunc_t   OnClick{nullptr};
+    thEventCallbackFunc_t   OnDisable{nullptr};
+    thEventCallbackFunc_t   OnDoubleClicked{nullptr};
+    thEventCallbackFunc_t   OnSetFocus{nullptr};
+    thEventCallbackFunc_t   OnKillFocus{nullptr};
 };
 

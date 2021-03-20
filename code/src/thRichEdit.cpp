@@ -110,7 +110,9 @@ void thRichEdit::SetAStyle(int style, COLORREF fore, COLORREF back = RGB(0, 0, 0
 //    return _pScintillaFunc(_pScintillaPtr, static_cast<int>(Msg), static_cast<int>(wParam), static_cast<int>(lParam));
 //};
 
-thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX, int a_posY)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     BOOL    fResult = FALSE;

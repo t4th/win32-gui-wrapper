@@ -18,6 +18,6 @@ private:
 public:
 
                             thRichEdit() = delete;
-                            thRichEdit(thWindow *, int, int);
+                            thRichEdit(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thRichEdit();
 };

@@ -12,16 +12,11 @@ int thRadioButton::m_indexPool = 1;
 
 /* Prototypes */
 
-thRadioButton::thRadioButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thRadioButton::thRadioButton(thWindow * a_pParent, int a_posX , int a_posY)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
-
-    OnClick = NULL; // = BN_CLICKED,
-    OnDisable = NULL; // = BN_DISABLE,
-    OnDoubleClicked = NULL; // = BN_DOUBLECLICKED,
-    OnSetFocus = NULL; // = BN_SETFOCUS,
-    OnKillFocus = NULL; // = BN_KILLFOCUS
 
     this->m_name = CLASS_NAME;
 
@@ -36,7 +31,7 @@ thRadioButton::thRadioButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, i
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -131,9 +126,7 @@ LRESULT thRadioButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_
         }
     }
     else { //search through children
-        thRadioButton *  pFoundChildren = NULL;
-
-        pFoundChildren = reinterpret_cast<thRadioButton*>(findChildrenByID(LOWORD(a_wParam)));
+        thRadioButton * pFoundChildren = reinterpret_cast<thRadioButton*>(findChildrenByID(LOWORD(a_wParam)));
 
         if (pFoundChildren) {
             tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -148,9 +141,7 @@ LRESULT thRadioButton::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_w
 {
     //TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
-    NMHDR * pData = 0;
-
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
+    NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
 #if 0
     if (pData) {
