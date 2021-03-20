@@ -10,7 +10,7 @@ class thListBoxItems
     friend class            thListBox; // share setParent
 protected:
 private:
-    const thListBox *       m_pParent; // dont set it explicitly. Use SetParent instead.
+    const thListBox *       m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
 
     void                    setParent(thListBox const * const);
 public:
@@ -30,12 +30,12 @@ class thListBoxItem
 {
 protected:
 private:
-    const thListBox *       m_pParent; // dont set it explicitly. Use SetParent instead.
-    thString                m_text;
-    int                     m_nIndex;
+    const thListBox *       m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
+    thString                m_text{};
+    int                     m_nIndex{-1};
 
-                            thListBoxItem(void);
 public:
+                            thListBoxItem(void) = delete;
                             thListBoxItem(const thListBox *, int);
                             ~thListBoxItem(void);
 

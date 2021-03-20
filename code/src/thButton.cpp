@@ -11,23 +11,12 @@
 /* Local Memory */
 int thButton::m_indexPool = 1;
 
-thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : 
+thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    : 
     thWindow(a_pParent, a_posX, a_posY),
     DefaultPushStyle(*this)
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
-
-    OnClick = NULL; // = BN_CLICKED,
-    OnPaint = NULL; // = BN_PAINT,
-    OnHilite = NULL; // = BN_HILITE,
-    OnUnhilite = NULL; // = BN_UNHILITE,
-    OnDisable = NULL; // = BN_DISABLE,
-    OnPushed = NULL; // = BN_HILITE,
-    OnUnpushed = NULL; // = BN_UNHILITE,
-    OnDoubleClicked = NULL; // = BN_DOUBLECLICKED,
-    OnSetFocus = NULL; // = BN_SETFOCUS,
-    OnKillFocus = NULL; // = BN_KILLFOCUS
 
     this->m_name = CLASS_NAME;
 
@@ -42,7 +31,7 @@ thButton::thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY 
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -75,56 +64,56 @@ LRESULT thButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
         switch (HIWORD(a_wParam)) {
         case BN_CLICKED:
             MSG_LOG(TEXT("BN_CLICKED"));
-            if (NULL != OnClick) {
+            if (nullptr != OnClick) {
                 OnClick(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_PAINT:
             MSG_LOG(TEXT("BN_PAINT"));
-            if (NULL != OnPaint) {
+            if (nullptr != OnPaint) {
                 OnPaint(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_HILITE: //PUSHED
             MSG_LOG(TEXT("PUSHED"));
-            if (NULL != OnPushed) {
+            if (nullptr != OnPushed) {
                 OnPushed(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_UNHILITE: //UNPUSHED
             MSG_LOG(TEXT("UNPUSHED"));
-            if (NULL != OnUnpushed) {
+            if (nullptr != OnUnpushed) {
                 OnUnpushed(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_DISABLE:
             MSG_LOG(TEXT("BN_DISABLE"));
-            if (NULL != OnDisable) {
+            if (nullptr != OnDisable) {
                 OnDisable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_DOUBLECLICKED:
             MSG_LOG(TEXT("BN_DOUBLECLICKED"));
-            if (NULL != OnDoubleClicked) {
+            if (nullptr != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_SETFOCUS:
             MSG_LOG(TEXT("BN_SETFOCUS"));
-            if (NULL != OnSetFocus) {
+            if (nullptr != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_KILLFOCUS:
             MSG_LOG(TEXT("BN_KILLFOCUS"));
-            if (NULL != OnKillFocus) {
+            if (nullptr != OnKillFocus) {
                 OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
@@ -136,7 +125,7 @@ LRESULT thButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
     }
 #if 0
     else { //search through children
-        thButton *  pFoundChildren = NULL;
+        thButton *  pFoundChildren = nullptr;
 
         pFoundChildren = reinterpret_cast<thButton*>(findChildrenByID(LOWORD(a_wParam)));
 

@@ -15,10 +15,10 @@ public:
                             thCheckBox(thWindow *, int, int);
                             ~thCheckBox();
 
-    thEventCallbackFunc_t   OnClick; // = BN_CLICKED,
-    thEventCallbackFunc_t   OnDisable; // = BN_DISABLE,
-    thEventCallbackFunc_t   OnDoubleClicked; // = BN_DOUBLECLICKED,
-    thEventCallbackFunc_t   OnSetFocus; // = BN_SETFOCUS,
-    thEventCallbackFunc_t   OnKillFocus; // = BN_KILLFOCUS
+    thEventCallbackFunc_t   OnClick{nullptr};
+    thEventCallbackFunc_t   OnDisable{nullptr};
+    thEventCallbackFunc_t   OnDoubleClicked{nullptr};
+    thEventCallbackFunc_t   OnSetFocus{nullptr};
+    thEventCallbackFunc_t   OnKillFocus{nullptr};
 };
 

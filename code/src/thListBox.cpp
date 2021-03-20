@@ -11,26 +11,14 @@
 /* Local Memory */
 int thListBox::m_indexPool = 1;
 
-/* Prototypes */
-
-thListBox::thListBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+/* Definitions */
+thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
-{
-    TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
 
     Items.setParent(this);
-
-    this->OnDoubleClicked = NULL;
-    this->OnKillFocus = NULL;
-    this->OnItemSelectedCancel = NULL;
-    this->OnSelectionChange = NULL;
-    this->OnSetFocus = NULL;
 
     this->m_name =          CLASS_NAME;
 
@@ -45,7 +33,7 @@ thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -79,35 +67,35 @@ LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
         switch (HIWORD(a_wParam)) {
         case LBN_DBLCLK:
             MSG_LOG(TEXT("LBN_DBLCLK"));
-            if (NULL != OnDoubleClicked) {
+            if (nullptr != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_KILLFOCUS:
             MSG_LOG(TEXT("LBN_KILLFOCUS"));
-            if (NULL != OnKillFocus) {
+            if (nullptr != OnKillFocus) {
                 OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SELCANCEL:
             MSG_LOG(TEXT("LBN_SELCANCEL"));
-            if (NULL != OnItemSelectedCancel) {
+            if (nullptr != OnItemSelectedCancel) {
                 OnItemSelectedCancel(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SELCHANGE:
             MSG_LOG(TEXT("LBN_SELCHANGE"));
-            if (NULL != OnSelectionChange) {
+            if (nullptr != OnSelectionChange) {
                 OnSelectionChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case LBN_SETFOCUS:
             MSG_LOG(TEXT("LBN_SETFOCUS"));
-            if (NULL != OnSetFocus) {
+            if (nullptr != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
@@ -118,9 +106,7 @@ LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
         }
     }
     else { //search through children
-        thListBox *  pFoundChildren = NULL;
-
-        pFoundChildren = reinterpret_cast<thListBox*>(findChildrenByID(LOWORD(a_wParam)));
+        thListBox *  pFoundChildren = reinterpret_cast<thListBox*>(findChildrenByID(LOWORD(a_wParam)));
 
         if (pFoundChildren) {
             tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);

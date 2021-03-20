@@ -30,34 +30,42 @@ void thMDIChild::init()
 void thMDIChild::registerClass()
 {
     TH_ENTER_FUNCTION;
-    WNDCLASSEX wClass = { 0 };
+    static bool once = true; // Register this class once in a lifetime of application. Lazy implementation.
 
-    wClass.cbSize =         sizeof(WNDCLASSEX);
-    wClass.style =          0;//CS_HREDRAW | CS_VREDRAW;
-    wClass.lpfnWndProc =    static_cast<WNDPROC>(MDIChildProc);
-    wClass.cbClsExtra =     NULL;
-    wClass.cbWndExtra =     sizeof(thMDIChild*); // 4 bytes for 'this' pointer
-    wClass.hInstance =      this->m_sWindowArgs.hInstance;
-    wClass.hIcon =          NULL;
-    wClass.hCursor =        LoadCursor(NULL, IDC_ARROW);
-    wClass.hbrBackground =  (HBRUSH)COLOR_WINDOW;
-    wClass.lpszMenuName =   NULL;
-    wClass.lpszClassName =  this->m_sWindowArgs.lpClassName;
-    wClass.hIconSm =        NULL;
+    if ( true == once)
+    {
+        WNDCLASSEX wClass = { 0 };
+
+        wClass.cbSize =         sizeof(WNDCLASSEX);
+        wClass.style =          0;//CS_HREDRAW | CS_VREDRAW;
+        wClass.lpfnWndProc =    static_cast<WNDPROC>(MDIChildProc);
+        wClass.cbClsExtra =     NULL;
+        wClass.cbWndExtra =     sizeof(thMDIChild*); // 4 bytes for 'this' pointer
+        wClass.hInstance =      this->m_sWindowArgs.hInstance;
+        wClass.hIcon =          NULL;
+        wClass.hCursor =        LoadCursor(NULL, IDC_ARROW);
+        wClass.hbrBackground =  (HBRUSH)COLOR_WINDOW;
+        wClass.lpszMenuName =   NULL;
+        wClass.lpszClassName =  this->m_sWindowArgs.lpClassName;
+        wClass.hIconSm =        NULL;
     
-    if (0 == RegisterClassEx(&wClass)) {
-        MSG_WARNING(TEXT("RegisterClassEx error: 0x%X"), GetLastError());
-        //todo: add UnregisterClass 
-    }
-    else {
-        MSG_SUCCESS(TEXT("Successfully registerd class with RegisterClassEx"));
-        m_isFirstRegWin = TRUE;
-        //fMainApplicationWindow = true; //firstly created form is the main form
+        if (0 == RegisterClassEx(&wClass)) {
+            MSG_WARNING(TEXT("RegisterClassEx error: 0x%X"), GetLastError());
+            //todo: add UnregisterClass 
+        }
+        else {
+            MSG_SUCCESS(TEXT("Successfully registerd class with RegisterClassEx"));
+            once = false;
+            //fMainApplicationWindow = true; //firstly created form is the main form
+        }
     }
     TH_LEAVE_FUNCTION;
 }
 
-thMDIChild::thMDIChild(thMDIClient * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : m_isFirstRegWin(FALSE), m_menu(NULL), thWindow(a_pParent, a_posX, a_posY)
+thMDIChild::thMDIChild(thMDIClient * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    :
+    m_menu(NULL),
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     
@@ -97,7 +105,7 @@ LRESULT thMDIChild::onClose()
     LRESULT tResult = 0;
 
     if (OnClose) {
-        tResult = OnClose(this);
+        tResult = OnClose(this,{});
     }
 
     MSG_LOG(TEXT("%s::onClose() - Leave"), this->m_name.c_str());

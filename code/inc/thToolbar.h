@@ -52,8 +52,7 @@ public:
     //caption
     thToolbarText               Text;
 
-    thEventCallbackFunc_t       OnClick;
-    //int                         RegisterCallback(uint32_t, eventCallbackFunc_t);
+    thEventCallbackFunc_t       OnClick{nullptr};
 };
 
 class thToolbarItemList
@@ -72,7 +71,7 @@ public:
     void                         Add(thString);
  // void                         Insert(thToolbarItem &);
  // void                         Remove(uint32_t);
-    uint32_t                     Size();
+    size_t                       Size();
     int                          LastIndex;
 
     thToolbarItem * const        operator[](uint32_t);

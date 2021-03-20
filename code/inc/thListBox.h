@@ -9,19 +9,28 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thListBox();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thListBox() = delete;
                             thListBox(thWindow *, int, int);
                             ~thListBox();
 
     thListBoxItems          Items;
 
-    thEventCallbackFunc_t   OnDoubleClicked; // User has double-clicked an item in a list box.
-    thEventCallbackFunc_t   OnKillFocus; // Listbox lost focus
-    thEventCallbackFunc_t   OnItemSelectedCancel; // user has canceled the selection in a list box
-    thEventCallbackFunc_t   OnSelectionChange; // selection in a list box has changed as a result of user input
-    thEventCallbackFunc_t   OnSetFocus; // list box has received the keyboard focus
+    // User has double-clicked an item in a list box.
+    thEventCallbackFunc_t   OnDoubleClicked{nullptr};
+
+    // Listbox lost focus
+    thEventCallbackFunc_t   OnKillFocus{nullptr};
+
+    // user has canceled the selection in a list box
+    thEventCallbackFunc_t   OnItemSelectedCancel{nullptr};
+
+    // selection in a list box has changed as a result of user input
+    thEventCallbackFunc_t   OnSelectionChange{nullptr};
+
+    // list box has received the keyboard focus
+    thEventCallbackFunc_t   OnSetFocus{nullptr};
 };
 

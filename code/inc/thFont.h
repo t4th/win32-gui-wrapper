@@ -8,9 +8,9 @@ class thFont
 {
 protected:
 private:
-    const thWindow *    m_pParent;
-    LOGFONT             m_sLogicalFont; // handle to a logical font
-    HFONT               m_sFont;
+    const thWindow *    m_pParent{nullptr};
+    LOGFONT             m_sLogicalFont{0}; // handle to a logical font
+    HFONT               m_sFont{NULL};
 
     void                set(void);
 public:
@@ -18,9 +18,7 @@ public:
     virtual             ~thFont();
 
     // public interface
-    //Name
     void                SetName(thString);
-    //Size
     void                SetSize(uint32_t);
 
     // non public interface

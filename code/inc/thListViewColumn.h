@@ -9,12 +9,12 @@ class thListViewColumn
 {
 protected:
 private:
-    const thListView *  m_pParent; // set in c-tor
+    const thListView *  m_pParent{nullptr}; // set in c-tor
     thString            m_text;
     int                 m_index;
 
-                        thListViewColumn();
 public:
+                        thListViewColumn() = delete;
                         thListViewColumn(const thListView *, const thString &);
                         ~thListViewColumn();
 

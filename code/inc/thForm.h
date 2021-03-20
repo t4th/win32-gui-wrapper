@@ -9,41 +9,41 @@ class thForm : public thWindow
     friend class thMDIClient;
 protected:
 private:
-    static int          m_indexPool;
-    thMenu *            m_menu;
-    HWND                m_hMDIClient;
+    static int              m_indexPool;
+    thMenu *                m_menu;
+    HWND                    m_hMDIClient;
 
-                        thForm();
-    virtual void        init();
-    void                registerClass();
+    virtual void            init();
+    void                    registerClass();
 
-    LRESULT             onCreate();                 // WM_CREATE
-//    LRESULT             onNCCreate();               // WM_NCCREATE
-    LRESULT             onClose();                  // WM_CLOSE
-    LRESULT             onGetMinMax(LPARAM);    // WM_GETMINMAXINFO
+    LRESULT                 onCreate();                 // WM_CREATE
+//    LRESULT                 onNCCreate();               // WM_NCCREATE
+    LRESULT                 onClose();                  // WM_CLOSE
+    LRESULT                 onGetMinMax(LPARAM);    // WM_GETMINMAXINFO
 #if 0
-    virtual LRESULT     onResize(HWND, WPARAM, LPARAM); // WM_SIZE
+    virtual LRESULT         onResize(HWND, WPARAM, LPARAM); // WM_SIZE
 #endif
 
-    virtual LRESULT     processMenuCommandMessage(HWND, UINT, WPARAM, LPARAM);
+    virtual LRESULT         processMenuCommandMessage(HWND, UINT, WPARAM, LPARAM);
 
-    int                 getDebugIndex();
+    int                     getDebugIndex();
 
 #if 0
-    int                 m_dOldWidth;
-    int                 m_dOldHeight;
+    int                     m_dOldWidth;
+    int                     m_dOldHeight;
 #endif
 public:
-                        thForm(thWindow *, int, int);
-                        ~thForm();
+                            thForm() = delete;
+                            thForm(thWindow *, int, int);
+                            ~thForm();
 
-    thResizable         Resizable;
+    thResizable             Resizable;
 
-                        /* Menu */
-    void                SetMenu(thMenu * const);
-    BOOL                IsMenuEnabled(void);
-    void                ClearMenu(void);
+                            /* Menu */
+    void                    SetMenu(thMenu * const);
+    BOOL                    IsMenuEnabled(void);
+    void                    ClearMenu(void);
 
-    thCallbackFunc_t    OnClose;
+    thEventCallbackFunc_t   OnClose{nullptr};
 };
 

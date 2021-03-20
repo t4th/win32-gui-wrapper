@@ -13,18 +13,9 @@ int thEditBox::m_indexPool = 1;
 
 /* Prototypes */
 
-thEditBox::thEditBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
 thEditBox::thEditBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
-
-    this->OnKeyDown = NULL;
 
     this->m_name = CLASS_NAME;
 
@@ -39,7 +30,7 @@ thEditBox::thEditBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, reinterpret_cast<DWORD_PTR>(this));
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -75,7 +66,7 @@ LRESULT thEditBox::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
     LRESULT tResult = 0;
 
     MSG_LOG(TEXT("WM_KEYDOWN"));
-    if (NULL != OnKeyDown) {
+    if (nullptr != OnKeyDown) {
         tResult = this->OnKeyDown(this, { 0, a_wParam, a_lParam });
     }
     else {
@@ -98,9 +89,7 @@ LRESULT thEditBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
 {
     //TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
-    NMHDR * pData = 0;
-
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
+    NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
         MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);

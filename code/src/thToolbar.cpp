@@ -81,9 +81,7 @@ LRESULT thToolbar::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0; // should return 1 if used by app
 
-    thToolbarItem * pItem = NULL;
-
-    pItem = this->Items.findItemById(LOWORD(a_wParam));
+    thToolbarItem * pItem = this->Items.findItemById(LOWORD(a_wParam));
 
     if (pItem) {
         tResult = pItem->processCommandMessage(a_uMsg, a_wParam, a_lParam);
@@ -107,9 +105,7 @@ LRESULT thToolbar::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
         tResult = 1;
     }
     else {
-        thToolbarItem * pItem = NULL;
-
-        pItem = this->Items.findItemById(pData->idFrom);
+        thToolbarItem * pItem = this->Items.findItemById(pData->idFrom);
 
         if (pItem) {
             tResult = pItem->processNotifyMessage(a_uMsg, a_wParam, a_lParam);
@@ -157,8 +153,7 @@ thToolbarItem::thToolbarItem(thToolbar & a_parent)
     m_parent(a_parent),
     m_data{},
     m_changedata{},
-    Text(*this),
-    OnClick(NULL)
+    Text(*this)
 {
     TH_ENTER_FUNCTION;
     m_data.idCommand = (int)this->m_id;
@@ -171,7 +166,7 @@ thToolbarItem::thToolbarItem(thToolbar & a_parent)
     SendMessage(m_parent.m_hWinHandle, TB_BUTTONSTRUCTSIZE, (WPARAM)sizeof(TBBUTTON), 0);
     //SendMessage(this->hWinHandle, TB_SETBUTTONSIZE, 0, MAKELPARAM(12, 12));
     SendMessage(m_parent.m_hWinHandle, TB_SETBITMAPSIZE, 0, MAKELPARAM(0, 0));
-    BOOL s = SendMessage(m_parent.m_hWinHandle, TB_ADDBUTTONS, 1, (LPARAM)&(m_data));
+    LRESULT result = SendMessage(m_parent.m_hWinHandle, TB_ADDBUTTONS, 1, (LPARAM)&(m_data));
     TH_LEAVE_FUNCTION;
 }
 
@@ -190,7 +185,7 @@ LRESULT thToolbarItem::processCommandMessage(UINT a_uMsg, WPARAM a_wParam, LPARA
     MSG_LOG(TEXT("Toolbar Item CLICKED, Id=%d"), this->m_id);
 
     // for now: only button click event
-    if (NULL != OnClick) {
+    if (nullptr != OnClick) {
         OnClick(this, { a_uMsg, a_wParam, a_lParam });
     }
 
@@ -242,7 +237,7 @@ thToolbarItemList::~thToolbarItemList() {
 thToolbarItem * thToolbarItemList::findItemById(UINT_PTR a_searchedId) {
     //TH_ENTER_FUNCTION;
     std::vector<thToolbarItem*>::iterator i;
-    thToolbarItem * pFoundItem = NULL;
+    thToolbarItem * pFoundItem = nullptr;
 
     i = this->m_items.begin();
 
@@ -289,14 +284,14 @@ void thToolbarItemList::Remove(uint32_t a_u32ItemIndex) {
 }
 #endif
 
-uint32_t thToolbarItemList::Size() {
+size_t thToolbarItemList::Size() {
     TH_ENTER_FUNCTION;
-    uint32_t u32Size = 0;
+    size_t size = 0;
 
-    u32Size = this->m_items.size();
+    size = this->m_items.size();
 
     TH_LEAVE_FUNCTION;
-    return u32Size;
+    return size;
 }
 
 thToolbarItem * const thToolbarItemList::operator[](uint32_t a_u32ItemIndex) {

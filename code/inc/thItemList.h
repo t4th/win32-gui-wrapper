@@ -61,7 +61,7 @@ public:
         m_items.erase(a_nIndex);
     }
 
-    int  GetCount(void) const
+    size_t  GetCount(void) const
     {
         return m_items.size();
     }
@@ -98,7 +98,7 @@ public:
         m_items.erase(a_nIndex);
     }
 
-    int  GetCount(void) const
+    size_t  GetCount(void) const
     {
         return m_items.size();
     }

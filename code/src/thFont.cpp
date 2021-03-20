@@ -1,9 +1,8 @@
 #include "thFont.h"
 #include "thWindow.h"
 
-thFont::thFont() : m_pParent(NULL), m_sFont(NULL)
+thFont::thFont()
 {
-    ZeroMemory(&m_sLogicalFont, sizeof(LOGFONT));
 }
 
 thFont::~thFont()
@@ -80,7 +79,7 @@ void thFont::SetSize(uint32_t a_newsize)
 void thFont::SetParent(const thWindow * const a_pParent)
 {
     if (a_pParent) {
-        if (NULL == m_pParent) {
+        if (nullptr == m_pParent) {
             m_pParent = a_pParent;
         }
         else {

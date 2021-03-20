@@ -10,7 +10,10 @@
 LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
 thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
-    : m_pParent(NULL), m_hWinHandle(NULL), PopupMenu(NULL), OnDestroy(NULL),
+    :
+    m_pParent(nullptr),
+    m_hWinHandle(NULL),
+    PopupMenu(nullptr),
     Text(*this),
     Width(*this),
     Height(*this),
@@ -155,7 +158,7 @@ LRESULT thWindow::onDestroy()
     LRESULT tResult = 0;
 
     if (OnDestroy) {
-        tResult = OnDestroy(this);
+        tResult = OnDestroy(this, {});
     }
 
     MSG_LOG(TEXT("%s::onDestroy() - Leave"), name.c_str());

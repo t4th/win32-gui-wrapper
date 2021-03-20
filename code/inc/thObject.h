@@ -14,9 +14,11 @@ typedef struct
     LPARAM  lParam;
 } thEventParams_t;
 
+typedef LRESULT thResult_t;
+
 class thObject;
 
-typedef std::function<LRESULT (thObject * const sender, thEventParams_t info)> thEventCallbackFunc_t;
+typedef std::function<thResult_t (thObject * const sender, thEventParams_t info)> thEventCallbackFunc_t;
 
 class thObject
 {

@@ -13,21 +13,12 @@ int thLabel::m_indexPool = 1;
 
 /* Prototypes */
 
-thLabel::thLabel() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+
+thLabel::thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
-thLabel::thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
-{
-    TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
-
-    this->OnClick =         NULL; // = STN_CLICKED,
-    this->OnDoubleClicked = NULL; // = STN_DBLCLK,
-    this->OnDisable =       NULL; // = STN_DISABLE,
-    this->OnEnable =        NULL; // = STN_ENABLE,
 
     this->m_name =          CLASS_NAME;
 
@@ -42,7 +33,7 @@ thLabel::thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = 
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -75,28 +66,28 @@ LRESULT thLabel::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
         switch (HIWORD(a_wParam)) {
         case STN_CLICKED:
             MSG_LOG(TEXT("STN_CLICKED"));
-            if (NULL != OnClick) {
+            if (nullptr != OnClick) {
                 OnClick(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_DBLCLK:
             MSG_LOG(TEXT("STN_DBLCLK"));
-            if (NULL != OnDoubleClicked) {
+            if (nullptr != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_DISABLE: //PUSHED
             MSG_LOG(TEXT("STN_DISABLE"));
-            if (NULL != OnDisable) {
+            if (nullptr != OnDisable) {
                 OnDisable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case STN_ENABLE: //UNPUSHED
             MSG_LOG(TEXT("STN_ENABLE"));
-            if (NULL != OnEnable) {
+            if (nullptr != OnEnable) {
                 OnEnable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
@@ -107,9 +98,7 @@ LRESULT thLabel::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
         }
     }
     else { //search through children
-        thLabel *  pFoundChildren = NULL;
-
-        pFoundChildren = reinterpret_cast<thLabel*>(findChildrenByID(LOWORD(a_wParam)));
+        thLabel *  pFoundChildren = reinterpret_cast<thLabel*>(findChildrenByID(LOWORD(a_wParam)));
 
         if (pFoundChildren) {
             tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -124,9 +113,7 @@ LRESULT thLabel::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam,
 {
     //TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
-    NMHDR * pData = 0;
-
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
+    NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
     if (pData) {
         MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);

@@ -8,16 +8,16 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thLabel();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thLabel() = delete;
                             thLabel(thWindow *, int, int);
                             ~thLabel();
 
-    thEventCallbackFunc_t   OnClick;          // = STN_CLICKED,
-    thEventCallbackFunc_t   OnDoubleClicked;  // = STN_DBLCLK,
-    thEventCallbackFunc_t   OnDisable;        // = STN_DISABLE,
-    thEventCallbackFunc_t   OnEnable;         // = STN_ENABLE,
+    thEventCallbackFunc_t   OnClick{nullptr};
+    thEventCallbackFunc_t   OnDoubleClicked{nullptr};
+    thEventCallbackFunc_t   OnDisable{nullptr};
+    thEventCallbackFunc_t   OnEnable{nullptr};
 };
 

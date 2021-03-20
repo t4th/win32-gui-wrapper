@@ -7,12 +7,13 @@
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 25
+
 /* Local Memory */
 int thGroupBox::m_indexPool = 1;
 
 /* Prototypes */
 
-thGroupBox::thGroupBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
+thGroupBox::thGroupBox() : thWindow(nullptr, CW_USEDEFAULT, CW_USEDEFAULT)
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
@@ -21,7 +22,6 @@ thGroupBox::thGroupBox() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
 thGroupBox::thGroupBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
 
     this->m_name = CLASS_NAME;
 
@@ -36,7 +36,7 @@ thGroupBox::thGroupBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -71,56 +71,56 @@ LRESULT thGroupBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
         switch (HIWORD(a_wParam)) {
         case BN_CLICKED:
             MSG_LOG(TEXT("BN_CLICKED"));
-            if (NULL != OnClick) {
+            if (nullptr != OnClick) {
                 OnClick(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_PAINT:
             MSG_LOG(TEXT("BN_PAINT"));
-            if (NULL != OnPaint) {
+            if (nullptr != OnPaint) {
                 OnPaint(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_HILITE: //PUSHED
             MSG_LOG(TEXT("PUSHED"));
-            if (NULL != OnPushed) {
+            if (nullptr != OnPushed) {
                 OnPushed(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_UNHILITE: //UNPUSHED
             MSG_LOG(TEXT("UNPUSHED"));
-            if (NULL != OnUnpushed) {
+            if (nullptr != OnUnpushed) {
                 OnUnpushed(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_DISABLE:
             MSG_LOG(TEXT("BN_DISABLE"));
-            if (NULL != OnDisable) {
+            if (nullptr != OnDisable) {
                 OnDisable(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_DOUBLECLICKED:
             MSG_LOG(TEXT("BN_DOUBLECLICKED"));
-            if (NULL != OnDoubleClicked) {
+            if (nullptr != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_SETFOCUS:
             MSG_LOG(TEXT("BN_SETFOCUS"));
-            if (NULL != OnSetFocus) {
+            if (nullptr != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case BN_KILLFOCUS:
             MSG_LOG(TEXT("BN_KILLFOCUS"));
-            if (NULL != OnKillFocus) {
+            if (nullptr != OnKillFocus) {
                 OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
@@ -132,9 +132,7 @@ LRESULT thGroupBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
     }
     else {
          //search through children
-        thWindow * pFoundChildren = NULL;
-
-        pFoundChildren = findChildrenByID(LOWORD(a_wParam));
+        thWindow * pFoundChildren = findChildrenByID(LOWORD(a_wParam));
 
         if (pFoundChildren) {
             tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -153,9 +151,7 @@ LRESULT thGroupBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
 {
     //TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
-    NMHDR * pData = 0;
-
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
+    NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
 
 #if 0

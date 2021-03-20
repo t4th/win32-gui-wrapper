@@ -13,7 +13,7 @@ class thListViewSubItemList
 {
 protected:
 private:
-    const thListViewItem *  m_pParent; // dont set it explicitly. Use SetParent instead.
+    const thListViewItem *  m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
     thString                m_text;
 
 public:
@@ -29,12 +29,12 @@ class thListViewItem
 {
 protected:
 private:
-    const thListView *      m_pParent; // dont set it explicitly. Use SetParent instead.
+    const thListView *      m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
     thString                m_text;
     int                     m_index;
-
-                            thListViewItem();
 public:
+
+                            thListViewItem() = delete;
                             thListViewItem(const thListView *, const thString &);
                             ~thListViewItem();
 
@@ -44,7 +44,10 @@ public:
     thListViewSubItemList   SubItems;
 
     void                    SetText(thString);
+
+#if 0
     thString                GetText(void);
+#endif
 };
 
 
@@ -53,15 +56,17 @@ class thListViewSubItem
 {
 protected:
 private:
-    const thListViewItem *  m_pParent; // dont set it explicitly. Use SetParent instead.
+    const thListViewItem *  m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
     thString                m_text;
     int                     m_nParentColumn;
-
-                            thListViewSubItem(void);
 public:
+                            thListViewSubItem(void) = delete;
                             thListViewSubItem(const thListViewItem *, int);
                             ~thListViewSubItem(void);
 
     void                    SetText(thString);
+
+#if 0
     thString                GetText(void);
+#endif
 };

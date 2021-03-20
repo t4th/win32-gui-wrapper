@@ -1,14 +1,9 @@
 #include "thListViewItem.h"
 #include "thListView.h"
 
-thListViewItem::thListViewItem()
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
-thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_itemText) : m_index(-1)
+thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_itemText)
+    :
+    m_index(-1)
 {
     TH_ENTER_FUNCTION;
 
@@ -24,7 +19,7 @@ thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_
         dItemCount = ListView_GetItemCount(this->m_pParent->GetHandle());
 
         lvItem.mask = LVIF_TEXT; // set text mask
-        lvItem.cchTextMax = m_text.size(); // buffer size
+        lvItem.cchTextMax = static_cast<int>(m_text.size()); // buffer size
         lvItem.iItem = dItemCount; // insert new item at the end
         lvItem.iSubItem = 0; // must be 0
         lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());
@@ -32,7 +27,7 @@ thListViewItem::thListViewItem(const thListView * a_pParent, const thString & a_
         result = ListView_InsertItem(this->m_pParent->GetHandle(), &lvItem);
 
         if (-1 != result) {
-            m_index = result;
+            m_index = static_cast<int>(result);
         }
         else {
             MSG_ERROR(TEXT("ListView_InsertItem failed with error = 0x%X"), GetLastError());
@@ -78,7 +73,7 @@ void thListViewItem::SetText(thString a_itemText)
     m_text = a_itemText;
 
     lvItem.mask = LVIF_TEXT; // set text mask
-    lvItem.cchTextMax = m_text.size(); // buffer size
+    lvItem.cchTextMax = static_cast<int>(m_text.size()); // buffer size
     lvItem.iItem = m_index; // insert new item at the end
     lvItem.iSubItem = 0;
     lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());
@@ -93,7 +88,7 @@ void thListViewItem::SetText(thString a_itemText)
     TH_LEAVE_FUNCTION;
 }
 
-// sub item list
+// Sub item list.
 thListViewSubItemList::thListViewSubItemList()
 {
     TH_ENTER_FUNCTION;
@@ -125,18 +120,14 @@ thListViewSubItem thListViewSubItemList::operator[](int a_nColumn)
 }
 
 
-// sub item
-thListViewSubItem::thListViewSubItem()
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
+// Sub item definitiopns.
 thListViewSubItem::thListViewSubItem(const thListViewItem * a_pParent, int a_nColumn)
+    :
+    m_pParent{nullptr},
+    m_nParentColumn{a_nColumn}
 {
     TH_ENTER_FUNCTION;
-    m_nParentColumn = a_nColumn;
+    
 
     if (a_pParent) {
         m_pParent = a_pParent;
@@ -157,7 +148,7 @@ void thListViewSubItem::SetText(thString a_itemText)
     m_text = a_itemText;
 
     lvItem.mask = LVIF_TEXT; // set text mask
-    lvItem.cchTextMax = m_text.size(); // buffer size
+    lvItem.cchTextMax = static_cast<int>(m_text.size()); // buffer size
     lvItem.iItem = m_pParent->GetIndex(); //parent item index
     lvItem.iSubItem = m_nParentColumn;
     lvItem.pszText = const_cast<LPTSTR>(m_text.c_str());

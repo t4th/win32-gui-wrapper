@@ -1,11 +1,6 @@
 #include "thListViewColumn.h"
 #include "thListView.h"
 
-thListViewColumn::thListViewColumn()
-{
-    m_index = 0;
-}
-
 thListViewColumn::thListViewColumn(const thListView * a_pParent, const thString & a_itemText)
 {
     TH_ENTER_FUNCTION;

@@ -24,15 +24,6 @@ typedef struct
     int Height;
 } thDifference_t;
 
-thForm::thForm() : m_menu(NULL), m_hMDIClient(NULL), OnClose(NULL), thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT),
-Resizable(*this)
-// m_dOldWidth(0), m_dOldHeight(0)
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
 void thForm::init()
 {
     TH_ENTER_FUNCTION;
@@ -56,7 +47,7 @@ void thForm::registerClass()
 {
     TH_ENTER_FUNCTION;
 
-    static bool once = true;
+    static bool once = true; // Register this class once in a lifetime of application. Lazy implementation.
 
     if ( true == once)
     {
@@ -90,11 +81,9 @@ void thForm::registerClass()
 thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
     :
     thWindow(a_pParent, a_posX, a_posY),
-    m_menu(NULL),
-    m_hMDIClient(NULL),
-    OnClose(NULL),
+    m_menu(nullptr),
+    m_hMDIClient(nullptr),
     Resizable(*this)
-// m_dOldWidth(0), m_dOldHeight(0),
 {
     TH_ENTER_FUNCTION;
     
@@ -136,18 +125,19 @@ LRESULT thForm::onCreate()
     TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
 
-
     TH_LEAVE_FUNCTION;
     return tResult;
 }
 
-//LRESULT thForm::onNCCreate()
-//{
-//    TH_ENTER_FUNCTION;
-//    LRESULT tResult = 0;
-//    TH_LEAVE_FUNCTION;
-//    return tResult;
-//}
+#if 0
+LRESULT thForm::onNCCreate()
+{
+    TH_ENTER_FUNCTION;
+    LRESULT tResult = 0;
+    TH_LEAVE_FUNCTION;
+    return tResult;
+}
+#endif
 
 LRESULT thForm::onClose()
 {
@@ -156,7 +146,7 @@ LRESULT thForm::onClose()
     LRESULT tResult = 0;
 
     if (OnClose) {
-        tResult = OnClose(this);
+        tResult = OnClose(this, {});
     }
 
     MSG_LOG(TEXT("%s::onClose() - Leave"), this->m_name.c_str());

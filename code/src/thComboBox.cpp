@@ -20,21 +20,11 @@ int thComboBox::m_indexPool = 1;
 /* Prototypes */
 
 thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
-    : thWindow(a_pParent, a_posX, a_posY),
+    :
+    thWindow(a_pParent, a_posX, a_posY),
     Items(*this)
 {
     TH_ENTER_FUNCTION;
-
-    OnSelectChange = NULL;
-    OnDoubleClicked = NULL;
-    OnSetFocus = NULL;
-    OnKillFocus = NULL;
-    OnEditChange = NULL;
-    OnEditUpdate = NULL;
-    OnDropdown = NULL;
-    OnCloseUp = NULL;
-    OnItemSelected = NULL;
-    OnItemSelectedCancel = NULL;
 
     this->m_name = CLASS_NAME;
 
@@ -49,8 +39,7 @@ thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
     this->create();
 
-    BOOL fResult = FALSE;
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -107,70 +96,70 @@ LRESULT thComboBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
             break;
         case CBN_SELCHANGE:
             MSG_LOG(TEXT("CBN_SELCHANGE"));
-            if (NULL != OnSelectChange) {
+            if (nullptr != OnSelectChange) {
                 OnSelectChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_DBLCLK:
             MSG_LOG(TEXT("CBN_DBLCLK"));
-            if (NULL != OnDoubleClicked) {
+            if (nullptr != OnDoubleClicked) {
                 OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SETFOCUS: //UNPUSHED
             MSG_LOG(TEXT("CBN_SETFOCUS"));
-            if (NULL != OnSetFocus) {
+            if (nullptr != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_KILLFOCUS:
             MSG_LOG(TEXT("CBN_KILLFOCUS"));
-            if (NULL != OnSetFocus) {
+            if (nullptr != OnSetFocus) {
                 OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_EDITCHANGE:
             MSG_LOG(TEXT("CBN_EDITCHANGE"));
-            if (NULL != OnEditChange) {
+            if (nullptr != OnEditChange) {
                 OnEditChange(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_EDITUPDATE:
             MSG_LOG(TEXT("CBN_EDITUPDATE"));
-            if (NULL != OnEditUpdate) {
+            if (nullptr != OnEditUpdate) {
                 OnEditUpdate(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_DROPDOWN:
             MSG_LOG(TEXT("CBN_DROPDOWN"));
-            if (NULL != OnDropdown) {
+            if (nullptr != OnDropdown) {
                 OnDropdown(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_CLOSEUP:
             MSG_LOG(TEXT("CBN_CLOSEUP"));
-            if (NULL != OnCloseUp) {
+            if (nullptr != OnCloseUp) {
                 OnCloseUp(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SELENDOK:
             MSG_LOG(TEXT("CBN_SELENDOK"));
-            if (NULL != OnItemSelected) {
+            if (nullptr != OnItemSelected) {
                 OnItemSelected(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
             break;
         case CBN_SELENDCANCEL:
             MSG_LOG(TEXT("CBN_SELENDCANCEL"));
-            if (NULL != OnItemSelectedCancel) {
+            if (nullptr != OnItemSelectedCancel) {
                 OnItemSelectedCancel(this, { a_uMsg, a_wParam, a_lParam });
             }
             tResult = 1;
@@ -181,7 +170,7 @@ LRESULT thComboBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
         }
     }
     else { //search through children
-        thComboBox *  pFoundChildren = NULL;
+        thComboBox *  pFoundChildren = nullptr;
 
         pFoundChildren = reinterpret_cast<thComboBox*>(findChildrenByID(LOWORD(a_wParam)));
 

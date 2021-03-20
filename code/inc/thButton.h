@@ -18,16 +18,16 @@ public:
 
     thBS_DefaultPush        DefaultPushStyle; // Change Button look
 
-    thEventCallbackFunc_t   OnClick; // = BN_CLICKED,
-    thEventCallbackFunc_t   OnPaint; // = BN_PAINT,
-    thEventCallbackFunc_t   OnHilite; // = BN_HILITE,
-    thEventCallbackFunc_t   OnUnhilite; // = BN_UNHILITE,
-    thEventCallbackFunc_t   OnDisable; // = BN_DISABLE,
-    thEventCallbackFunc_t   OnPushed; // = BN_HILITE,
-    thEventCallbackFunc_t   OnUnpushed; // = BN_UNHILITE,
-    thEventCallbackFunc_t   OnDoubleClicked; // = BN_DOUBLECLICKED,
-    thEventCallbackFunc_t   OnSetFocus; // = BN_SETFOCUS,
-    thEventCallbackFunc_t   OnKillFocus; // = BN_KILLFOCUS
+    thEventCallbackFunc_t   OnClick{nullptr};
+    thEventCallbackFunc_t   OnPaint{nullptr};
+    thEventCallbackFunc_t   OnHilite{nullptr};
+    thEventCallbackFunc_t   OnUnhilite{nullptr};
+    thEventCallbackFunc_t   OnDisable{nullptr};
+    thEventCallbackFunc_t   OnPushed{nullptr};
+    thEventCallbackFunc_t   OnUnpushed{nullptr};
+    thEventCallbackFunc_t   OnDoubleClicked{nullptr};
+    thEventCallbackFunc_t   OnSetFocus{nullptr};
+    thEventCallbackFunc_t   OnKillFocus{nullptr};
 
 };
 

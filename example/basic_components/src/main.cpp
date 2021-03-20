@@ -8,11 +8,11 @@ language='*'\"")
 
 thWin32Logger   g_logger;
 
+thWin32App      myApp;
+
 // Windows application entry point.
 int main()
 {
-    thWin32App myApp;
-
     return myApp.Run();
 }
 
@@ -63,22 +63,22 @@ namespace local_data
     std::vector< sTextMDIdata_t*> textMdiChilds; // list of mdi children which hold memo component
 }
 
-LRESULT MDIChild_onDestroy( thWindow * pOwner);
-LRESULT Text_MDIChild_onDestroy( thWindow * pOwner);
-LRESULT Menu1_onClick( thObject * const sender, thEventParams_t info);
-LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info);
-LRESULT Form_onClose(thWindow * pOwner);
-LRESULT Form3_onDestroy(thWindow * pOwner);
-LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info);
-LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info);
-LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info);
-LRESULT Button_onClick(thObject * const sender, thEventParams_t info);
-LRESULT Button2_onClick(thObject * const sender, thEventParams_t info);
+thResult_t MDIChild_onDestroy( thObject * pOwner, thEventParams_t info);
+thResult_t Text_MDIChild_onDestroy( thObject * pOwner, thEventParams_t info);
+thResult_t Menu1_onClick( thObject * const sender, thEventParams_t info);
+thResult_t Toolbar1_onClick(thObject * const sender, thEventParams_t info);
+thResult_t Form_onClose(thObject * pOwner, thEventParams_t info);
+thResult_t Form3_onDestroy(thObject * pOwner, thEventParams_t info);
+thResult_t Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick1(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick2(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick3(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick4(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick5(thObject * const sender, thEventParams_t info);
+thResult_t Menu2_onClick6(thObject * const sender, thEventParams_t info);
+thResult_t ComboBox1_onSelChange(thObject * const sender, thEventParams_t info);
+thResult_t Button_onClick(thObject * const sender, thEventParams_t info);
+thResult_t Button2_onClick(thObject * const sender, thEventParams_t info);
 
 void thWin32App::OnCreate()
 {
@@ -272,8 +272,8 @@ void thWin32App::OnDestroy()
 }
 
 // On MDI destroy event - clean up.
-LRESULT MDIChild_onDestroy( thWindow * pOwner) {
-    LRESULT result = 0;
+thResult_t MDIChild_onDestroy( thObject * pOwner, thEventParams_t info) {
+    thResult_t result = 0;
     int position = 0;
 
     for ( const auto i : local_data::mdiChilds)
@@ -291,9 +291,9 @@ LRESULT MDIChild_onDestroy( thWindow * pOwner) {
 }
 
 // On MDI destroy event, it should destroy childen components
-LRESULT Text_MDIChild_onDestroy( thWindow * pOwner)
+thResult_t Text_MDIChild_onDestroy( thObject * pOwner, thEventParams_t info)
 {
-    LRESULT result = 0;
+    thResult_t result = 0;
 
     int position = 0;
 
@@ -312,11 +312,9 @@ LRESULT Text_MDIChild_onDestroy( thWindow * pOwner)
 }
 
 //create mdi children
-LRESULT Menu1_onClick( thObject * const sender, thEventParams_t info)
+thResult_t Menu1_onClick( thObject * const sender, thEventParams_t info)
 {
-    thMDIChild * pNewchild = 0;
-
-    pNewchild = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
+    thMDIChild * pNewchild = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
 
     if (pNewchild) {
         pNewchild->OnDestroy = MDIChild_onDestroy; // bind onDestroy callback
@@ -326,27 +324,33 @@ LRESULT Menu1_onClick( thObject * const sender, thEventParams_t info)
     return 1;
 }
 
-LRESULT Toolbar1_onClick(thObject * const sender, thEventParams_t info){
+thResult_t Toolbar1_onClick(thObject * const sender, thEventParams_t info){
     local_data::button->Text = TEXT("New button name");
     return 1;
 }
 
 // onClose event: instead of destorying form, hide it.
-LRESULT Form_onClose(thWindow * pOwner)
+thResult_t Form_onClose(thObject * pOwner, thEventParams_t info)
 {
+    thResult_t tResult = 0;
+
     TH_ENTER_FUNCTION;
-    LRESULT tResult = 0;
-    pOwner->Hide();
-    tResult = 1;    // returning 1 wont destroy object
+    {    
+        thWindow * parent = reinterpret_cast<thWindow*>(pOwner);
+
+        parent->Hide();
+
+        tResult = 1;    // returning 1 wont destroy object
+    }
     TH_LEAVE_FUNCTION;
     return tResult;
 }
 
 // closing main application form will close application
-LRESULT Form3_onDestroy(thWindow * pOwner)
+thResult_t Form3_onDestroy(thObject * pOwner, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
-    LRESULT tResult = 0;
+    thResult_t tResult = 0;
 
     // clean up MDI childs classes (this is already handled internally
     // but for sake of readibility is here too)
@@ -358,14 +362,14 @@ LRESULT Form3_onDestroy(thWindow * pOwner)
         delete (*i);
     }
 
-    ::PostQuitMessage(0); //close app
+    myApp.Terminate(0);
 
     TH_LEAVE_FUNCTION;
     return tResult;
 }
 
 // open file in new MDI child int ASCII/UNICODE format
-LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info)
 {
     thOpenDialog openDialog;
     thDialogFilterItem all(TEXT("All"), TEXT("*.*"));
@@ -476,43 +480,43 @@ LRESULT Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info)
     return 1;
 }
 
-LRESULT Menu2_onClick1(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick1(thObject * const sender, thEventParams_t info)
 {
     local_data::mdiclient->Cascade();
     return 1;
 }
 
-LRESULT Menu2_onClick2(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick2(thObject * const sender, thEventParams_t info)
 {
     local_data::mdiclient->TileHorizontal();
     return 1;
 }
 
-LRESULT Menu2_onClick3(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick3(thObject * const sender, thEventParams_t info)
 {
     local_data::mdiclient->TileVertical();
     return 1;
 }
 
-LRESULT Menu2_onClick4(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick4(thObject * const sender, thEventParams_t info)
 {
     local_data::mdiclient->ArrangeIcons();
     return 1;
 }
 
-LRESULT Menu2_onClick5(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick5(thObject * const sender, thEventParams_t info)
 {
     local_data::form->Show();
     return 1;
 }
 
-LRESULT Menu2_onClick6(thObject * const sender, thEventParams_t info)
+thResult_t Menu2_onClick6(thObject * const sender, thEventParams_t info)
 {
     local_data::form2->Show();
     return 1;
 }
 
-LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
+thResult_t ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
 {
     switch (local_data::combo1->Items.ItemIndex())
     {
@@ -541,7 +545,7 @@ LRESULT ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
 
 
 // callbacks
-LRESULT Button_onClick(thObject * const sender, thEventParams_t info)
+thResult_t Button_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
 
@@ -552,7 +556,7 @@ LRESULT Button_onClick(thObject * const sender, thEventParams_t info)
     return 1;
 }
 
-LRESULT Button2_onClick(thObject * const sender, thEventParams_t info)
+thResult_t Button2_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
     for (int j = 0; j < local_data::thListView1->Items.GetCount(); j++)

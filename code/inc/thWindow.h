@@ -16,8 +16,6 @@ class thPosX;
 class thPosY;
 class thPopupMenu;
 
-typedef LRESULT(*thCallbackFunc_t)(thWindow * pOwner);
-
 class thWindow : public thObject
 {
     friend LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
@@ -110,7 +108,7 @@ public:
 
     virtual void            SetFocus(void);
 
-    thCallbackFunc_t        OnDestroy;
+    thEventCallbackFunc_t   OnDestroy;
 
     thWindow *              GetParent() const;
 

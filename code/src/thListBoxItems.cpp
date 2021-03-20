@@ -94,19 +94,13 @@ void thListBoxItems::SetItemIndex(int a_nItemIndex)
     TH_LEAVE_FUNCTION;
 }
 
-thListBoxItem::thListBoxItem(void)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
 thListBoxItem::~thListBoxItem(void)
 {
     TH_ENTER_FUNCTION;
     TH_LEAVE_FUNCTION;
 }
 
-thListBoxItem::thListBoxItem(const thListBox * a_pParent, int a_nItem) : m_nIndex(-1)
+thListBoxItem::thListBoxItem(const thListBox * a_pParent, int a_nItem)
 {
     TH_ENTER_FUNCTION;
     m_nIndex = a_nItem;
@@ -136,23 +130,20 @@ thString thListBoxItem::GetText(void)
 {
     TH_ENTER_FUNCTION;
     thString    result;
-    TCHAR *     pBuffer = 0;
     int         nLen = 0;
 
     nLen = ListBox_GetTextLen(this->m_pParent->GetHandle(), m_nIndex);
 
     if (nLen > 0)
     {
-        pBuffer = new TCHAR[nLen + 1]; //+1 for '\0'
+        std::unique_ptr<TCHAR[]> buffer( new TCHAR[nLen + 1]); //+1 for '\0'
 
-        if (CB_ERR == ListBox_GetText(this->m_pParent->GetHandle(), m_nIndex, pBuffer)) {
+        if (CB_ERR == ListBox_GetText(this->m_pParent->GetHandle(), m_nIndex, buffer.get())) {
             MSG_ERROR(TEXT("ListBox_GetLBText failed with error = 0x%X"), GetLastError());
         }
         else {
-            result = thString(pBuffer, nLen);
+            result = thString(buffer.get(), nLen);
         }
-
-        delete[] pBuffer;
     }
 
     TH_LEAVE_FUNCTION;
