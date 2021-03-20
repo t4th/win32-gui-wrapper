@@ -42,25 +42,18 @@ namespace local_data
     thEditBox *     edit1 = 0;
     thListBox *     listbox1 = 0;
 
-    std::vector< thMDIChild*> mdiChilds;
+    // Hold Empty window MDIChild objects.
+    std::vector< std::unique_ptr< thMDIChild>> mdiChilds;
 
-    // hold mdi child pointer and RichEdit pointer
+    // Define single Text window MDIChild object.
     struct sTextMDIdata_t
     {
-        thMDIChild * pMdi;
-        thRichEdit * pRichEdit;
-
-        sTextMDIdata_t() : pMdi(0), pRichEdit(0)
-        {}
-
-        ~sTextMDIdata_t()
-        {
-            delete pRichEdit;    // delete richEdit
-            delete pMdi;         // delete mdi child itself
-        }
+        std::unique_ptr< thMDIChild> m_MdiChild{};
+        std::unique_ptr< thRichEdit> m_RichEdit{};
     };
 
-    std::vector< sTextMDIdata_t*> textMdiChilds; // list of mdi children which hold memo component
+    // Hold Text window MDIChild objects.
+    std::vector< std::unique_ptr< sTextMDIdata_t>> textMdiChilds;
 }
 
 thResult_t MDIChild_onDestroy( thObject * pOwner, thEventParams_t info);
@@ -271,17 +264,17 @@ void thWin32App::OnDestroy()
     TH_LEAVE_FUNCTION;
 }
 
-// On MDI destroy event - clean up.
+// This is common callback for ALL MDIChilds.
 thResult_t MDIChild_onDestroy( thObject * pOwner, thEventParams_t info) {
     thResult_t result = 0;
     int position = 0;
-
-    for ( const auto i : local_data::mdiChilds)
+    
+    // Find MDIChild that was just destroyed.
+    for ( const auto & i : local_data::mdiChilds)
     {
-        if ( i == pOwner)
+        if ( i.get() == pOwner)
         {
             local_data::mdiChilds.erase( local_data::mdiChilds.begin() + position);
-            delete pOwner;
             break;
         }
         ++position;
@@ -290,19 +283,19 @@ thResult_t MDIChild_onDestroy( thObject * pOwner, thEventParams_t info) {
     return result;
 }
 
-// On MDI destroy event, it should destroy childen components
+// This is common callback for ALL text MDIChilds.
 thResult_t Text_MDIChild_onDestroy( thObject * pOwner, thEventParams_t info)
 {
     thResult_t result = 0;
 
     int position = 0;
-
-    for ( const auto i : local_data::textMdiChilds)
+    
+    // Find MDIChild that was just destroyed.
+    for ( const auto & i : local_data::textMdiChilds)
     {
-        if ( i->pMdi == pOwner)
+        if ( i->m_MdiChild.get() == pOwner)
         {
             local_data::textMdiChilds.erase( local_data::textMdiChilds.begin() + position);
-            delete pOwner;
             break;
         }
         ++position;
@@ -311,21 +304,22 @@ thResult_t Text_MDIChild_onDestroy( thObject * pOwner, thEventParams_t info)
     return result;
 }
 
-//create mdi children
 thResult_t Menu1_onClick( thObject * const sender, thEventParams_t info)
 {
-    thMDIChild * pNewchild = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
-
-    if (pNewchild) {
-        pNewchild->OnDestroy = MDIChild_onDestroy; // bind onDestroy callback
-        pNewchild->Text = TEXT("MDI");
-        local_data::mdiChilds.push_back(pNewchild);
-    }
+    // Create new thMDIChild object. Assign mdiclient as parent.
+    local_data::mdiChilds.push_back( std::unique_ptr< thMDIChild>(
+        new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT))
+    );
+    
+    local_data::mdiChilds.back().get()->OnDestroy =  MDIChild_onDestroy; // bind onDestroy callback;
+    local_data::mdiChilds.back().get()->Text =  TEXT("MDI");
+    
     return 1;
 }
 
 thResult_t Toolbar1_onClick(thObject * const sender, thEventParams_t info){
     local_data::button->Text = TEXT("New button name");
+
     return 1;
 }
 
@@ -336,7 +330,7 @@ thResult_t Form_onClose(thObject * pOwner, thEventParams_t info)
 
     TH_ENTER_FUNCTION;
     {    
-        thWindow * parent = reinterpret_cast<thWindow*>(pOwner);
+        thWindow * parent = dynamic_cast<thWindow*>(pOwner);
 
         parent->Hide();
 
@@ -346,23 +340,15 @@ thResult_t Form_onClose(thObject * pOwner, thEventParams_t info)
     return tResult;
 }
 
-// closing main application form will close application
+// Closing main application form will close application.
 thResult_t Form3_onDestroy(thObject * pOwner, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
     thResult_t tResult = 0;
 
-    // clean up MDI childs classes (this is already handled internally
-    // but for sake of readibility is here too)
-    std::vector<thMDIChild*>::iterator i;
+    local_data::mdiChilds.clear();
 
-    i = local_data::mdiChilds.begin();
-
-    for (; i != local_data::mdiChilds.end(); i++) {
-        delete (*i);
-    }
-
-    myApp.Terminate(0);
+    myApp.Terminate(0); // Close the application.
 
     TH_LEAVE_FUNCTION;
     return tResult;
@@ -371,111 +357,110 @@ thResult_t Form3_onDestroy(thObject * pOwner, thEventParams_t info)
 // open file in new MDI child int ASCII/UNICODE format
 thResult_t Menu2_FileOpen_onClick(thObject * const sender, thEventParams_t info)
 {
+    thDialogFilterItem all( TEXT( "All"), TEXT(" *.*"));
+    thDialogFilterItem text( TEXT( "Text"), TEXT(" *.TXT"));
+    
     thOpenDialog openDialog;
-    thDialogFilterItem all(TEXT("All"), TEXT("*.*"));
-    thDialogFilterItem text;
-    text.Name = TEXT("Text");
-    text.Filter = TEXT("*.TXT");
 
-    openDialog.Filter.Add(all);
-    openDialog.Filter.Add(text);
+    openDialog.Filter.Add( all);
+    openDialog.Filter.Add( text);
 
-
-    // show Open File Dialog.
-    // if successed return true
-    if ( openDialog.Show(local_data::form3))
+    // Show Open File Dialog and if successed return true.
+    if ( openDialog.Show( local_data::form3))
     {
-        local_data::sTextMDIdata_t * pNewchild = 0;
+        local_data::textMdiChilds.push_back(
+            std::unique_ptr< local_data::sTextMDIdata_t>( new local_data::sTextMDIdata_t())
+        );
 
-        pNewchild = new local_data::sTextMDIdata_t;
+        local_data::sTextMDIdata_t & textMdiData = *local_data::textMdiChilds.back().get();
 
-        if ( pNewchild)
+        // Create MDI child Window
+        textMdiData.m_MdiChild = std::unique_ptr< thMDIChild>(
+            new thMDIChild( local_data::mdiclient)
+            );
+
+        // Create reference for ease-of-use
+        thMDIChild & newMdiChild = *textMdiData.m_MdiChild.get();
+
+        newMdiChild.Width = ( int)( (double) local_data::form3->Width * 0.8f);
+        newMdiChild.Height = ( int)( (double) local_data::form3->Height * 0.8f);
+        newMdiChild.OnDestroy = Text_MDIChild_onDestroy;
+
+        // Create RichEdit component in new MDI child Window.
+        textMdiData.m_RichEdit = std::unique_ptr< thRichEdit>(
+            new thRichEdit( &newMdiChild, 0, 0)
+            );
+
+        // Create reference for ease-of-use
+        thRichEdit & newRichEdit= *textMdiData.m_RichEdit.get();
+
+        newRichEdit.Width = newMdiChild.Width - 20;
+        newRichEdit.Height = newMdiChild.Height - 50;
+        newRichEdit.Anchors.Right = true;
+        newRichEdit.Anchors.Bottom = true;
+
+        thFile file;
+
+        file.Open(
+            openDialog.FileName,
+            thFile::DesiredAccess::generic_read,
+            thFile::CreationDisposition::open_existing
+        );
+
+        if ( file.IsOpen())
         {
-            // Create MDI child Window
-            pNewchild->pMdi = new thMDIChild( local_data::mdiclient, CW_USEDEFAULT, CW_USEDEFAULT);
+            // Set caption of MdiChild form.
+            newMdiChild.Text = file.GetFileName();
 
-            if ( pNewchild->pMdi)
+            const auto file_size_in_bytes = file.GetFileSize();
+            const size_t buffer_size_in_bytes = static_cast< size_t>( file_size_in_bytes);
+
+            if ( buffer_size_in_bytes)
             {
-                pNewchild->pMdi->Width = (int)((double)local_data::form3->Width * 0.8f);
-                pNewchild->pMdi->Height = (int)((double)local_data::form3->Height * 0.8f);
-                pNewchild->pMdi->OnDestroy = Text_MDIChild_onDestroy;
+                std::unique_ptr< uint8_t[]> read_buffer( new uint8_t[ buffer_size_in_bytes]);
 
-                // Create RichEdit component in new MDI child Window.
-                pNewchild->pRichEdit = new thRichEdit( pNewchild->pMdi, 0, 0);
+                size_t number_of_bytes_read = 0;
 
-                if ( pNewchild->pRichEdit)
+                constexpr uint32_t file_read_without_error = 0;
+
+                const uint32_t file_read_result = file.Read( read_buffer.get(), buffer_size_in_bytes, number_of_bytes_read);
+
+                if ( file_read_without_error == file_read_result)
                 {
-                    pNewchild->pRichEdit->Width = pNewchild->pMdi->Width - 20;
-                    pNewchild->pRichEdit->Height = pNewchild->pMdi->Height - 50;
-                    pNewchild->pRichEdit->Anchors.Right = true;
-                    pNewchild->pRichEdit->Anchors.Bottom = true;
+                    BOOL isTextUnicode = IsTextUnicode( read_buffer.get(), static_cast< int>( number_of_bytes_read), NULL);
 
-                    thFile file;
-
-                    file.Open(
-                        openDialog.FileName,
-                        thFile::DesiredAccess::generic_read,
-                        thFile::CreationDisposition::open_existing
-                    );
-
-                    if ( file.IsOpen())
+                    if ( isTextUnicode)
                     {
-                        pNewchild->pMdi->Text = file.GetFileName();
+                        // interpret as wide string; - 10 bytes of BOM header
+                        MSG_LOG( TEXT( "UNICODE"));
 
-                        const auto file_size_in_bytes = file.GetFileSize();
-                        const uint32_t buffer_size_in_bytes = static_cast< uint32_t>( file_size_in_bytes);
+                        // Brute force memory copy, since its just an examples.
+                        thString text( reinterpret_cast< TCHAR*>( read_buffer.get()), number_of_bytes_read);
 
-                        if ( buffer_size_in_bytes)
-                        {
-                            uint8_t * buffer = new uint8_t[ buffer_size_in_bytes]; // file read buffer
-
-                            if ( buffer)
-                            {
-                                uint32_t u32BytesRead = 0;
-
-                                uint32_t u32Result = file.Read((uint8_t*)buffer, buffer_size_in_bytes, u32BytesRead);
-
-                                if ( 0 == u32Result)
-                                {
-                                    BOOL fResult = IsTextUnicode( buffer, (int)u32BytesRead, NULL);
-
-                                    if ( fResult)
-                                    {
-                                        MSG_LOG( TEXT( "UNICODE"));
-
-                                        // Brute force memory copy, since its just an examples.
-                                        std::wstring text((wchar_t*)buffer, u32BytesRead); // interpret as wide string; - 10 bytes of BOM header
-
-                                        #ifdef UNICODE
-                                            pNewchild->pRichEdit->Text = text;
-                                        #else
-                                            pNewchild->pRichEdit->Text = WStringToString(text);
-                                        #endif
-                                    }
-                                    else
-                                    {
-                                        MSG_LOG( TEXT( "ASCII"));
-
-                                        // Brute force memory copy, since its just an examples.
-                                        std::string text((char*)buffer, u32BytesRead); // interpret as ANSI string
-
-                                        #ifdef UNICODE
-                                            pNewchild->pRichEdit->Text = StringToWString(text);
-                                        #else
-                                            pNewchild->pRichEdit->Text = text;
-                                        #endif
-                                    }
-
-                                }
-                                delete[] buffer;
-                            }
-                        }
+                        #ifdef UNICODE
+                            newRichEdit.Text = text;
+                        #else
+                            pNewchild->pRichEdit->Text = WStringToString(text);
+                        #endif
                     }
+                    else
+                    {
+                        // interpret as ANSI string
+                        MSG_LOG( TEXT( "ASCII"));
 
-                    local_data::textMdiChilds.push_back(pNewchild);
+                        // Brute force memory copy, since its just an examples.
+                        std::string text( reinterpret_cast< char*>( read_buffer.get()), number_of_bytes_read);
+
+                        #ifdef UNICODE
+                            newRichEdit.Text = StringToWString(text);
+                        #else
+                            pNewchild->pRichEdit->Text = text;
+                        #endif
+                    }
                 }
             }
         }
+        
     }
     return 1;
 }
@@ -518,7 +503,7 @@ thResult_t Menu2_onClick6(thObject * const sender, thEventParams_t info)
 
 thResult_t ComboBox1_onSelChange(thObject * const sender, thEventParams_t info)
 {
-    switch (local_data::combo1->Items.ItemIndex())
+    switch ( local_data::combo1->Items.ItemIndex())
     {
     case 0:
         local_data::thListView1->SetView(thListView::eViewType_t::view_details);
@@ -549,8 +534,8 @@ thResult_t Button_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
 
-    local_data::thListView1->Items.Add(local_data::edit1->Text);
-    local_data::listbox1->Items.Add(local_data::edit1->Text);
+    local_data::thListView1->Items.Add( local_data::edit1->Text);
+    local_data::listbox1->Items.Add( local_data::edit1->Text);
 
     TH_LEAVE_FUNCTION;
     return 1;
@@ -559,11 +544,12 @@ thResult_t Button_onClick(thObject * const sender, thEventParams_t info)
 thResult_t Button2_onClick(thObject * const sender, thEventParams_t info)
 {
     TH_ENTER_FUNCTION;
-    for (int j = 0; j < local_data::thListView1->Items.GetCount(); j++)
+
+    for ( int j = 0; j < local_data::thListView1->Items.GetCount(); j++)
     {
-        for (int i = 1; i < local_data::thListView1->Columns.GetCount(); i++)
+        for ( int i = 1; i < local_data::thListView1->Columns.GetCount(); i++)
         {
-            local_data::thListView1->Items[j]->SubItems[i].SetText(NumToString(i));
+            local_data::thListView1->Items[ j]->SubItems[ i].SetText( NumToString( i));
         }
     }
 

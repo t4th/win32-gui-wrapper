@@ -62,8 +62,7 @@ protected:
     // children windows accessors
     void                    addChildrenWindow(thWindow *);
     void                    removeChildrenWindow(thWindow *);
-    thWindow * const        findChildrenByID(WORD);
-    thWindow * const        findChildrenByHwnd(HWND);
+    thWindow *              findChildrenByID(const WORD);
 private:
     std::vector<thWindow*>  m_children;
 
@@ -73,7 +72,7 @@ private:
     void                    GetRect(RECT &);
 public:
                             thWindow() = delete;
-                            thWindow( thWindow *, int, int);
+                            thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
     virtual                 ~thWindow();
 
     thText                  Text;
@@ -108,7 +107,7 @@ public:
 
     virtual void            SetFocus(void);
 
-    thEventCallbackFunc_t   OnDestroy;
+    thEventCallbackFunc_t   OnDestroy{nullptr};
 
     thWindow *              GetParent() const;
 

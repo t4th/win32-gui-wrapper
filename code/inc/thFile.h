@@ -36,8 +36,8 @@ public:
     virtual             ~thFile();
 
     uint32_t            Open( thString, thFile::DesiredAccess, thFile::CreationDisposition);
-    uint32_t            Write( uint8_t * const, uint32_t);
-    uint32_t            Read( uint8_t * const, uint32_t, uint32_t &);
+    uint32_t            Write( uint8_t * const, size_t);
+    uint32_t            Read( uint8_t * const, size_t, size_t &);
 
     bool_t              IsOpen();
     void                Close();

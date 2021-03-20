@@ -29,8 +29,8 @@ public:
     thString    Name;      // Name displayedin in Open/save Dialog Filter ComboBox
     thString    Filter;    // Filter used for given Filter Name selected in Open/save File dialogBox
 
-                thDialogFilterItem(thString name, thString filter) : Name(name), Filter(filter) {}
-                thDialogFilterItem() {}
+                thDialogFilterItem( thString name, thString filter) : Name(name), Filter(filter) {}
+                thDialogFilterItem() = delete;
                 ~thDialogFilterItem() {}
 };
 

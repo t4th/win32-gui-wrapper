@@ -9,7 +9,7 @@
 /* Prototypes */
 LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
-thWindow::thWindow(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY)
     :
     m_pParent(nullptr),
     m_hWinHandle(NULL),
@@ -194,74 +194,65 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
     //TH_ENTER_FUNCTION;
     LRESULT tResult = 0;
 
-    std::vector<thWindow*>::iterator i;
-    
-    i = this->m_children.begin();
-
     // loop through this window children
-    for (; i != m_children.end(); i++) {
-        if ((0 == dynamic_cast<thForm*>(*i)) && (0 == dynamic_cast<thMDIChild*>(*i))) {
-            RECT    rcCurPos = { 0 };
+    for ( const auto & i: m_children) {
+        if ( ( nullptr == dynamic_cast< thForm*>(i) &&
+             ( nullptr == dynamic_cast< thMDIChild*>(i)))) {
+            RECT rcCurPos = { 0 };
 
-            (*i)->GetRect(rcCurPos);
+            i->GetRect(rcCurPos);
 
             LONG newX = rcCurPos.left;
             LONG newY = rcCurPos.top;
-            LONG newW = (*i)->Width;
-            LONG newH = (*i)->Height;
+            LONG newW = i->Width;
+            LONG newH = i->Height;
 
-            if (false == (*i)->Anchors.Left) {
-                if (rcCurPos.right > (*i)->m_rcOldPosition.right) {
-                    newX += (rcCurPos.right - (*i)->m_rcOldPosition.right);
+            if (false == i->Anchors.Left) {
+                if (rcCurPos.right > i->m_rcOldPosition.right) {
+                    newX += (rcCurPos.right - i->m_rcOldPosition.right);
                 }
                 else {
-                    newX -= ((*i)->m_rcOldPosition.right - rcCurPos.right);
+                    newX -= (i->m_rcOldPosition.right - rcCurPos.right);
                 }
 
-                if ((*i)->m_pParent) {
-                    rcCurPos.right = (*i)->m_pParent->Width - (newX + (LONG)(*i)->Width);
+                if (i->m_pParent) {
+                    rcCurPos.right = i->m_pParent->Width - (newX + (LONG)i->Width);
                 }
             }
 
-            if (false == (*i)->Anchors.Top) {
-                if (rcCurPos.bottom > (*i)->m_rcOldPosition.bottom) {
-                    newY += (rcCurPos.bottom - (*i)->m_rcOldPosition.bottom);
+            if (false == i->Anchors.Top) {
+                if (rcCurPos.bottom > i->m_rcOldPosition.bottom) {
+                    newY += (rcCurPos.bottom - i->m_rcOldPosition.bottom);
                 }
                 else {
-                    newY -= ((*i)->m_rcOldPosition.bottom - rcCurPos.bottom);
+                    newY -= (i->m_rcOldPosition.bottom - rcCurPos.bottom);
                 }
 
-                if ((*i)->m_pParent) {
-                    rcCurPos.bottom = (*i)->m_pParent->Height - (newX + (LONG)(*i)->Height);
+                if (i->m_pParent) {
+                    rcCurPos.bottom = i->m_pParent->Height - (newX + (LONG)i->Height);
                 }
             }
 
-#if 1
-            if (true == (*i)->Anchors.Right) {
-                if (rcCurPos.right > (*i)->m_rcOldPosition.right) {
-                    newW += (rcCurPos.right - (*i)->m_rcOldPosition.right);
+            if (true == i->Anchors.Right) {
+                if (rcCurPos.right > i->m_rcOldPosition.right) {
+                    newW += (rcCurPos.right - i->m_rcOldPosition.right);
                 }
                 else {
-                    newW -= ((*i)->m_rcOldPosition.right - rcCurPos.right);
+                    newW -= (i->m_rcOldPosition.right - rcCurPos.right);
                 }
             }
-#endif
 
-#if 1
-            if (true == (*i)->Anchors.Bottom) {
-                if (rcCurPos.bottom > (*i)->m_rcOldPosition.bottom) {
-                    newH += (rcCurPos.bottom - (*i)->m_rcOldPosition.bottom);
+            if (true == i->Anchors.Bottom) {
+                if (rcCurPos.bottom > i->m_rcOldPosition.bottom) {
+                    newH += (rcCurPos.bottom - i->m_rcOldPosition.bottom);
                 }
                 else {
-                    newH -= ((*i)->m_rcOldPosition.bottom - rcCurPos.bottom);
+                    newH -= (i->m_rcOldPosition.bottom - rcCurPos.bottom);
                 }
             }
-#endif
 
-            BOOL fResult = FALSE;
-
-            fResult = SetWindowPos(
-                (*i)->m_hWinHandle,
+            BOOL fResult = SetWindowPos(
+                i->m_hWinHandle,
                 NULL,
                 newX,
                 newY,
@@ -316,9 +307,7 @@ LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
 {
     //TH_ENTER_FUNCTION;
     LRESULT      tResult = 1;
-    MINMAXINFO * sInfo = 0;
-
-    sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
+    MINMAXINFO * sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
 
     if (sInfo) {
         if (this->Constraints.MaxWidth) {
@@ -491,21 +480,19 @@ void thWindow::addChildrenWindow(thWindow * a_pChildren)
 {
     TH_ENTER_FUNCTION;
 
-    if (a_pChildren) {
-        std::vector<thWindow*>::iterator i;
-        BOOL isDublicateFound = FALSE;
+    if ( a_pChildren) {
+        bool isDublicateFound = false;
 
-        i = this->m_children.begin();
-        
-        for (; i != m_children.end(); i++) { // check for dublicates
-            if (a_pChildren == (*i)) {
-                isDublicateFound = TRUE;
+        // check for dublicates
+        for (const auto & i: m_children) {
+            if (a_pChildren == i) {
+                isDublicateFound = true;
                 break;
             }
         }
 
-        if (FALSE == isDublicateFound) {
-            this->m_children.push_back(a_pChildren);
+        if ( false == isDublicateFound) {
+            this->m_children.push_back( a_pChildren);
         }
     }
 
@@ -517,52 +504,28 @@ void thWindow::removeChildrenWindow(thWindow * a_pChildren)
 {
     TH_ENTER_FUNCTION;
 
-    if (a_pChildren) {
-        std::vector<thWindow*>::iterator i;
-
-        i = this->m_children.begin();
-
-        for (; i != m_children.end(); i++) {
-            if (a_pChildren == (*i)) {
-                m_children.erase(i);
+    if ( a_pChildren) {
+        int position = 0;
+        for ( const auto & i: m_children) {
+            if ( a_pChildren == i) {
+                m_children.erase( m_children.begin() + position);
                 break;
             }
+            ++position;
         }
     }
 
     TH_LEAVE_FUNCTION;
 }
 
-thWindow * const thWindow::findChildrenByID(WORD a_searchedId)
+thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
 {
     TH_ENTER_FUNCTION;
-    std::vector<thWindow*>::iterator i;
-    thWindow * pFoundChildren = NULL;
+    thWindow * pFoundChildren = nullptr;
 
-    i = this->m_children.begin();
-
-    for (; i != m_children.end(); i++) {
-        if (a_searchedId == static_cast<WORD>((*i)->m_id)) {
-            pFoundChildren = (*i);
-            break;
-        }
-    }
-    TH_LEAVE_FUNCTION;
-
-    return pFoundChildren;
-}
-
-thWindow * const thWindow::findChildrenByHwnd(HWND a_hSearched)
-{
-    TH_ENTER_FUNCTION;
-    std::vector<thWindow*>::iterator i;
-    thWindow * pFoundChildren = NULL;
-
-    i = this->m_children.begin();
-
-    for (; i != m_children.end(); i++) {
-        if (a_hSearched == (*i)->m_hWinHandle) {
-            pFoundChildren = (*i);
+    for (const auto & i : m_children) {
+        if ( a_searchedId == static_cast<WORD>(i->m_id)) {
+            pFoundChildren = i;
             break;
         }
     }

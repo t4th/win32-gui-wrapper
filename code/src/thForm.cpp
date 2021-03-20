@@ -78,7 +78,7 @@ void thForm::registerClass()
     TH_LEAVE_FUNCTION;
 }
 
-thForm::thForm(thWindow * a_pParent = NULL, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+thForm::thForm(thWindow * a_pParent, int a_posX, int a_posY)
     :
     thWindow(a_pParent, a_posX, a_posY),
     m_menu(nullptr),

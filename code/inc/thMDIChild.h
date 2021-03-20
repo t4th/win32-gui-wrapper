@@ -21,7 +21,7 @@ private:
     int                     getDebugIndex();
 public:
                             thMDIChild() = delete;
-                            thMDIChild(thMDIClient *, int, int);
+                            thMDIChild(thMDIClient * a_pParent = nullptr, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thMDIChild();
 
 #if 0

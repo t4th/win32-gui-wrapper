@@ -107,7 +107,7 @@ uint32_t thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAcces
     return u32Result;
 }
 
-uint32_t thFile::Write( uint8_t * const a_inputBuffer, uint32_t a_BytesToWrite)
+uint32_t thFile::Write( uint8_t * const a_inputBuffer, size_t a_BytesToWrite)
 {
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
@@ -126,7 +126,7 @@ uint32_t thFile::Write( uint8_t * const a_inputBuffer, uint32_t a_BytesToWrite)
     return u32Result;
 }
 
-uint32_t thFile::Read( uint8_t * const a_ouputBuffer, uint32_t a_bytesToRead, uint32_t & a_dwBytesRead)
+uint32_t thFile::Read( uint8_t * const a_ouputBuffer, size_t a_bytesToRead, size_t & a_dwBytesRead)
 {
     TH_ENTER_FUNCTION;
     uint32_t u32Result = 0;
