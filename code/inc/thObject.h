@@ -2,7 +2,11 @@
 #include "thTypes.h"
 #include "thConfig.h"
 
+#include <functional>
+
 /* Callback event parameters */
+
+// TODO: dont use windows specyfic types in output API!
 typedef struct
 {
     UINT    msg;
@@ -12,8 +16,7 @@ typedef struct
 
 class thObject;
 
-// TODO: dont use windows specyfic types in output API!
-typedef LRESULT (*thEventCallbackFunc_t)(thObject * const sender, thEventParams_t info);
+typedef std::function<LRESULT (thObject * const sender, thEventParams_t info)> thEventCallbackFunc_t;
 
 class thObject
 {

@@ -9,7 +9,7 @@ extern std::vector< thForm*>    g_forms;
 
 namespace
 {
-    void translateMessage( MSG a_message)
+    void translateMessage( MSG & a_message)
     {
             BOOL message_translated = FALSE;
 
