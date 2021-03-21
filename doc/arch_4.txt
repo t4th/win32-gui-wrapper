@@ -1,0 +1,54 @@
+@startuml
+class thParam
+{
+}
+
+class thSetGetStyle
+{
+}
+
+thParam <|-- thSetGetStyle
+
+class thResizable
+{
+}
+
+thSetGetStyle <|-- thResizable
+
+class thBS_DefaultPush
+{
+}
+
+thSetGetStyle <|-- thBS_DefaultPush
+
+class thHeight
+{
+}
+
+thParam <|-- thHeight
+
+class thWidth
+{
+}
+
+thParam <|-- thWidth
+
+class thPosX
+{
+}
+
+thParam <|-- thPosX
+
+class thPosY
+{
+}
+
+thParam <|-- thPosY
+
+class thText
+{
+}
+
+thParam <|-- thText
+
+@enduml

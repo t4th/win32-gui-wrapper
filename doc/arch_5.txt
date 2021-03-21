@@ -1,0 +1,25 @@
+@startuml
+class thListView
+{
+}
+
+class thListViewColumn
+{
+}
+
+thListViewColumn *-u- thListView
+
+class thListViewItem
+{
+}
+
+thListViewItem *-u- thListView
+
+class thItemList<class Titem, class Tparent>
+{
+}
+
+thItemList <|.u. thListViewColumn : <<use>>
+thItemList <|.u. thListViewItem : <<use>>
+
+@enduml

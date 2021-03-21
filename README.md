@@ -4,6 +4,9 @@ I was pretty satisfied with the result, but it was just prove of concept learnin
 Still, it is now good source of some win32 API examples. I remember being the most proud of working re-sizing and MDI :).
 
 ## Update
+21/03/2021
+Due to some new stars I added some architecture overview and smart pointers. Still, this project was done on the fly and it is obvious when reading source. There are no clear instance owners and memory leaks are guaranteed.
+
 1/7/2021
 I have created this project when I was pretty much C++ beginner and Win32 was already called ancient. Still, I got some stars recently, which motivated me to check it again :). Since I am way more experienced than 10 years ago, I found quite the amount of bugs and bad practices, which hopefully I will fix in my spare time.
 
@@ -48,7 +51,8 @@ form->Show();
 - C++ Builder, QT or other popular frameworks use code generation for static object creation. In my code I had to workaround such problems with dynamic objects and elements, like event callbacks
 
 ## TODO
-- documentation and pictures
+- architecture overview
+- documentation
 - create examples (calculator, uart)
 - implement proper error handling
 - change function pointer to std::function
@@ -65,3 +69,25 @@ Usage examples can be selected in solution explorer from within VS.
 
 ## External
 Program uses Scintilla as thRichEdit component and SimpleGrid and thStringGrid.
+
+## Architecture
+This is architecture overview just to have an idea what is going on.
+
+All visual components are based on thWindow class, which is handling common functionalities.
+![Alt arch](/doc/arch_1.png?raw=true)
+
+![Alt arch](/doc/arch_2.png?raw=true)
+
+thWindow inherit from thObject so all instances created during runtime can be factorized.
+
+There are also visual components that are not windows:
+![Alt arch](/doc/arch_3.png?raw=true)
+
+And there are classes that are not thObjects at all:
+![Alt arch](/doc/arch_6.png?raw=true)
+
+Parameters are mostly handled my thParam.
+![Alt arch](/doc/arch_4.png?raw=true)
+
+Some objects though need specialized parameters, for example thListView:
+![Alt arch](/doc/arch_5.png?raw=true)

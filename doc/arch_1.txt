@@ -1,0 +1,54 @@
+@startuml
+class thObject
+{
+}
+
+class thWindow
+{
+}
+
+thObject <|-- thWindow
+
+class thForm
+{
+}
+
+thWindow <|-- thForm
+
+class thButton
+{
+}
+
+thWindow <|-- thButton
+
+class thRadioButton
+{
+}
+
+thWindow <|-- thRadioButton
+
+class thGroupBox
+{
+}
+
+thWindow <|-- thGroupBox
+
+class thEditBox
+{
+}
+
+thWindow <|-- thEditBox
+
+class thComboBox
+{
+}
+
+thWindow <|-- thComboBox
+
+class thToolbar
+{
+}
+
+thWindow <|-- thToolbar
+
+@enduml

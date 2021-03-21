@@ -1,0 +1,26 @@
+@startuml
+class thFile
+{
+}
+
+class thCommonDialog
+{
+}
+
+class thOpenDialog
+{
+}
+
+thCommonDialog <|-- thOpenDialog
+
+class thLogger
+{
+}
+
+class thWin32Logger
+{
+}
+
+thLogger <|-- thWin32Logger
+
+@enduml

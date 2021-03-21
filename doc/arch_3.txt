@@ -1,0 +1,30 @@
+@startuml
+class thObject
+{
+}
+
+class thMenuCommon
+{
+}
+
+thObject <|-- thMenuCommon
+
+class thMenu
+{
+}
+
+thMenuCommon <|-- thMenu
+
+class thPopupMenu
+{
+}
+
+thMenuCommon <|-- thPopupMenu
+
+class thToolbarItem
+{
+}
+
+thObject <|-- thToolbarItem
+
+@enduml

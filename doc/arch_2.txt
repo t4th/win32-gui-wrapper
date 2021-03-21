@@ -1,0 +1,61 @@
+@startuml
+class thObject
+{
+}
+
+class thWindow
+{
+}
+
+thObject <|-- thWindow
+
+class thLabel
+{
+}
+
+thWindow <|-- thLabel
+
+
+class thListBox
+{
+}
+
+thWindow <|-- thListBox
+
+class thListView
+{
+}
+
+thWindow <|-- thListView
+
+class thMDIClient
+{
+}
+
+thWindow <|-- thMDIClient
+
+class thMDIChild
+{
+}
+
+thWindow <|-- thMDIChild
+
+class thMemo
+{
+}
+
+thWindow <|-- thMemo
+
+class thRichEdit
+{
+}
+
+thWindow <|-- thRichEdit
+
+class thStringGrid
+{
+}
+
+thWindow <|-- thStringGrid
+
+@enduml
