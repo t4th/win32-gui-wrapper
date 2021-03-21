@@ -159,6 +159,11 @@ LRESULT thWindow::onDestroy()
 
     if (OnDestroy) {
         tResult = OnDestroy(this, {});
+
+        if ( 0 != tResult)
+        {
+            PostQuitMessage(0);
+        }
     }
 
     MSG_LOG(TEXT("%s::onDestroy() - Leave"), name.c_str());

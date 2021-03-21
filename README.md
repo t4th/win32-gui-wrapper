@@ -1,11 +1,11 @@
 ## Experimental win32 GUI wrapper in C++
 This is fun little project I did when learning win32 GUI API and C++.
-I was pretty satisfied with the result, but it was just prove of concept learning material, and it was never supposed to reach 1.0.
+I was pretty satisfied with the result, but it was just **prove of concept** learning material, and it was never supposed to reach 1.0.
 Still, it is now good source of some win32 API examples. I remember being the most proud of working re-sizing and MDI :).
 
 ## Update
 21/03/2021
-Due to some new stars I added some architecture overview and smart pointers. Still, this project was done on the fly and it is obvious when reading source. There are no clear instance owners and memory leaks are guaranteed.
+Due to some new stars I added some architecture overview, smart pointers where applicable and calculator example. Still, this project was done on the fly and it is obvious when reading the source code. There are no clear instance owners and memory leaks are guaranteed.
 
 1/7/2021
 I have created this project when I was pretty much C++ beginner and Win32 was already called ancient. Still, I got some stars recently, which motivated me to check it again :). Since I am way more experienced than 10 years ago, I found quite the amount of bugs and bad practices, which hopefully I will fix in my spare time.
@@ -53,7 +53,7 @@ form->Show();
 ## TODO
 - architecture overview
 - documentation
-- create examples (calculator, uart)
+- ~~create examples (calculator)~~
 - implement proper error handling
 - change function pointer to std::function
 - change raw pointers to smart pointers
@@ -66,6 +66,10 @@ Since this is Windows only, use free Visual Studio 2019 to open solution file Wi
 - You must select example project as startup project for Run (F5) to work
 
 Usage examples can be selected in solution explorer from within VS.
+
+## Example
+Example int32 calculator.
+![Alt arch](/doc/calc_example.png?raw=true)
 
 ## External
 Program uses Scintilla as thRichEdit component and SimpleGrid and thStringGrid.
