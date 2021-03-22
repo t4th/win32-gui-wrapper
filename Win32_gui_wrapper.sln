@@ -17,6 +17,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "basic_components_example", 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "calculator_example", "example\calculator\msvc\project1.vcxproj", "{39F70F34-A863-4F2D-9559-E320DAA47291}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EA56CF28-F62A-44FB-86A4-00858A043516} = {EA56CF28-F62A-44FB-86A4-00858A043516}
+		{FBE04237-9C7B-4973-9C60-505975998B39} = {FBE04237-9C7B-4973-9C60-505975998B39}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
