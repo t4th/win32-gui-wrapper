@@ -55,16 +55,16 @@ form->Show();
 - documentation
 - ~~create examples (calculator)~~
 - implement proper error handling
-- change function pointer to std::function
+- ~~change function pointer to std::function~~
 - change raw pointers to smart pointers
 
 ## How to use
 Project is using external components which are built into static libraries. Win32 Gui itself is also built into library.
-Since this is Windows only, use free Visual Studio 2019 to open solution file Win32_gui_wrapper.sln:
-- select solution platform
+Since this is Windows only, use free Visual Studio Community to open solution file Win32_gui_wrapper.sln:
+- select solution platform (like x64)
+- You **MUST** select example project as startup project for Run (F5) to work (right mouse button on project name in solution explorer, andchoose "Set as startup project" in the menu)
 - build (ctrl+shift+b) all and Run (F5)
-- You must select example project as startup project for Run (F5) to work
-- amount of logs is configured with TH_DEBUG_LEVEL in thConfig.h. Set it to 1 for optimal logs and 2 for ALL logs.
+- amount of logs is configured with TH_DEBUG_LEVEL in thConfig.h. Set it to 1 for optimal logs and 2 for ALL logs. It can slow application startup due to amount of logs.
 
 Usage examples can be selected in solution explorer from within VS.
 
@@ -73,7 +73,7 @@ Example int32 calculator.
 ![Alt arch](/doc/calc_example.png?raw=true)
 
 ## External
-Program uses Scintilla as thRichEdit component and SimpleGrid and thStringGrid.
+Program uses Scintilla as thRichEdit component and SimpleGrid as thStringGrid.
 
 ## Architecture
 This is architecture overview just to have an idea what is going on.
