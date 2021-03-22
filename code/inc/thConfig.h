@@ -25,9 +25,16 @@
 #endif
 
 #if TH_DEBUG_LEVEL > 1
-#define TH_ENTER_FUNCTION thWin32Logger::Printf("%s - Enter", __FUNCTION__)
-#define TH_LEAVE_FUNCTION thWin32Logger::Printf("%s - Leave", __FUNCTION__)
+#define TH_ENTER_OBJECT_FUNCTION thWin32Logger::PrintfObjectEnter(L"%s::%s - ", this->m_name.c_str(), _T(__FUNCTION__))
+#define TH_LEAVE_OBJECT_FUNCTION thWin32Logger::PrintfObjectLeave(L"%s::%s - ", this->m_name.c_str(), _T(__FUNCTION__))
+
+#define TH_ENTER_FUNCTION thWin32Logger::PrintfObjectEnter(L"%s - ", _T(__FUNCTION__))
+#define TH_LEAVE_FUNCTION thWin32Logger::PrintfObjectLeave(L"%s - ", _T(__FUNCTION__))
+
 #else
+#define TH_ENTER_OBJECT_FUNCTION 
+#define TH_LEAVE_OBJECT_FUNCTION 
+
 #define TH_ENTER_FUNCTION
 #define TH_LEAVE_FUNCTION
 #endif
@@ -38,5 +45,6 @@
 
 /* Default application font settings */
 #define TH_DEF_APP_FONT_NAME TEXT("Calibri")
+
 /* Size in Points */
 #define TH_DEF_APP_FONT_SIZE 9

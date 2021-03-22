@@ -196,33 +196,32 @@ thRichEdit::thRichEdit(thWindow * a_pParent, int a_posX, int a_posY)
 
 thRichEdit::~thRichEdit()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thRichEdit::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thRichEdit::onSetText(LPARAM a_lParam)
 {
-    //  TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     std::wstring text((wchar_t*)a_lParam);
-    MSG_LOG(TEXT("%s::onSetText() - Enter"), this->m_name.c_str());
+
     //SendMessage(this->m_hWinHandle, SCI_SETCODEPAGE, 0, SC_CP_UTF8);
     SendMessage(this->m_hWinHandle, SCI_SETTEXT, 0, (LPARAM)(WStringToString(text).c_str()));
     //SendMessage(this->m_hWinHandle, SCI_EMPTYUNDOBUFFER, 0, 0);
     
     tResult = 1;
 
-    MSG_LOG(TEXT("%s::onSetText() - Leave"), this->m_name.c_str());
-    //  TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -236,16 +235,16 @@ LRESULT thRichEdit::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 
 LRESULT thRichEdit::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thRichEdit::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = 0;
 
@@ -255,6 +254,6 @@ LRESULT thRichEdit::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     //    MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

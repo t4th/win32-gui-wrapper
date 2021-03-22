@@ -15,10 +15,10 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thStringGrid();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                            thStringGrid() = delete;
                             thStringGrid(thWindow *, int, int);
                             ~thStringGrid();
 

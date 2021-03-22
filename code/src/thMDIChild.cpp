@@ -29,7 +29,7 @@ void thMDIChild::init()
 
 void thMDIChild::registerClass()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     static bool once = true; // Register this class once in a lifetime of application. Lazy implementation.
 
     if ( true == once)
@@ -59,7 +59,7 @@ void thMDIChild::registerClass()
             //fMainApplicationWindow = true; //firstly created form is the main form
         }
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 thMDIChild::thMDIChild(thMDIClient * a_pParent, int a_posX, int a_posY)
@@ -67,35 +67,35 @@ thMDIChild::thMDIChild(thMDIClient * a_pParent, int a_posX, int a_posY)
     m_menu(NULL),
     thWindow(a_pParent, a_posX, a_posY)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     
     this->init();
     this->registerClass();
     this->create();
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 thMDIChild::~thMDIChild()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 LRESULT thMDIChild::onCreate()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 // NCCreate must return 1! If not, CreateWindowEx won't create window and will return NULL
 LRESULT thMDIChild::onNCCreate()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 1;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -116,9 +116,9 @@ LRESULT thMDIChild::onClose()
 // If an application processes this message, it should return zero. 
 LRESULT thMDIChild::onResize(HWND a_hwnd)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 1;
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 #endif
@@ -126,12 +126,12 @@ LRESULT thMDIChild::onResize(HWND a_hwnd)
 #if 0
 LRESULT thMDIChild::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
     
 //    tResult = SendMessage((HWND)a_lParam, WM_COMMAND, a_wParam, a_lParam);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 #endif
@@ -141,7 +141,7 @@ LRESULT thMDIChild::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
 // lParam - a handle to the menu for the item selected
 LRESULT thMDIChild::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
 
     if (m_menu) {
@@ -154,24 +154,24 @@ LRESULT thMDIChild::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 #endif
 
 int thMDIChild::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 #if 0
 void thMDIChild::SetMenu(thMenu * const a_pMenu)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     if (NULL != a_pMenu) {
         if (a_pMenu != m_menu) {
@@ -201,12 +201,12 @@ void thMDIChild::SetMenu(thMenu * const a_pMenu)
         MSG_ERROR(TEXT("Empty input pointer!"));
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thMDIChild::ClearMenu(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     BOOL fResult = false;
 
     fResult = ::SetMenu(this->m_hWinHandle, NULL);
@@ -219,12 +219,12 @@ void thMDIChild::ClearMenu(void)
         m_menu = NULL;
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 BOOL thMDIChild::IsMenuEnabled(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     BOOL    fResult = false;
     HMENU   hMenu = 0;
 
@@ -234,7 +234,7 @@ BOOL thMDIChild::IsMenuEnabled(void)
         fResult = true;
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return fResult;
 }
 #endif

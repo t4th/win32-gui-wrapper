@@ -11,15 +11,11 @@
 
 /* Local Memory */
 int thMDIClient::m_indexPool = 1;
+
+// TODO: fix this workaound, because Win32 message dispatcher was designed for only 1 MDI Client.
 thMDIClient * g_pMDI_client = nullptr;
 
 // TODO: Creating protection for creating only 1 MDI client.
-
-thMDIClient::thMDIClient() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
 
 thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
     : thWindow(a_pParent, a_posX, a_posY)

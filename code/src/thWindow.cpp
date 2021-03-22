@@ -51,14 +51,14 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY)
 
 thWindow::~thWindow()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::create()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     createDebugName();
 
     if (NULL == m_hWinHandle) {
@@ -121,38 +121,38 @@ void thWindow::create()
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 LRESULT thWindow::onCreate()
 {
-    //TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
 
-    //TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 // NCCreate must return 1! If not, CreateWindowEx won't create window and will return NULL
 LRESULT thWindow::onNCCreate()
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 1;
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thWindow::onClose()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thWindow::onDestroy()
 {
-//  TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     thString name = this->m_name;
     MSG_LOG(TEXT("%s::onDestroy() - Enter"), name.c_str());
     LRESULT tResult = 0;
@@ -167,27 +167,27 @@ LRESULT thWindow::onDestroy()
     }
 
     MSG_LOG(TEXT("%s::onDestroy() - Leave"), name.c_str());
-//  TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 thWindow * thWindow::GetParent() const
 {
-      TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return this->m_pParent;
 }
 
 // a_lParam is pointer to char* ended with \0
 LRESULT thWindow::onSetText(LPARAM a_lParam)
 {
-    //  TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     thString name = this->m_name;
-    MSG_LOG(TEXT("%s::onSetText() - Enter"), name.c_str());
+
     LRESULT tResult = 0;
 
-    MSG_LOG(TEXT("%s::onSetText() - Leave"), name.c_str());
-    //  TH_LEAVE_FUNCTION;
+
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -196,7 +196,7 @@ LRESULT thWindow::onSetText(LPARAM a_lParam)
 // a_lParam - high-order word is new height
 LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
 
     // loop through this window children
@@ -278,7 +278,7 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
         }
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -289,8 +289,8 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 // return 1 will stop processing this msg
 LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
-    MSG_LOG(TEXT("%s::onContextMenu - Enter"), this->m_name.c_str());
+    TH_ENTER_OBJECT_FUNCTION;
+
     LRESULT tResult = 1;
     POINT   point = { 0 };
     HWND    hwnd = 0;
@@ -302,15 +302,15 @@ LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
         PopupMenu->Show(hwnd, point);
     }
 
-    MSG_LOG(TEXT("%s::onContextMenu - Leave"), this->m_name.c_str());
-    //TH_LEAVE_FUNCTION;
+
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 // thForm need specialised version
 LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT      tResult = 1;
     MINMAXINFO * sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
 
@@ -336,7 +336,7 @@ LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
         }
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -353,7 +353,7 @@ LRESULT thWindow::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
 LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     LRESULT tResult = 0;
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
 
     switch (a_uMsg) {
     case WM_NOTIFY:
@@ -416,38 +416,38 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
 #endif
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thWindow::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
 //  thWindow *  pFoundChildren = NULL;
 
     tResult = SendMessage((HWND)a_lParam, WM_COMMAND, a_wParam, a_lParam);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thWindow::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
 
     if (PopupMenu) {
         tResult = PopupMenu->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
     NMHDR *     pData = NULL;
 
@@ -456,7 +456,7 @@ LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
         tResult = SendMessage(pData->hwndFrom, WM_NOTIFY, a_wParam, a_lParam);
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -466,7 +466,7 @@ LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
 */
 void thWindow::createDebugName()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     TCHAR   szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
     int     dIndex = 0;
 
@@ -478,12 +478,12 @@ void thWindow::createDebugName()
     else {
         this->m_name += thString(szNameIndex);
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::addChildrenWindow(thWindow * a_pChildren)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     if ( a_pChildren) {
         bool isDublicateFound = false;
@@ -501,13 +501,13 @@ void thWindow::addChildrenWindow(thWindow * a_pChildren)
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 
 void thWindow::removeChildrenWindow(thWindow * a_pChildren)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     if ( a_pChildren) {
         int position = 0;
@@ -520,12 +520,12 @@ void thWindow::removeChildrenWindow(thWindow * a_pChildren)
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     thWindow * pFoundChildren = nullptr;
 
     for (const auto & i : m_children) {
@@ -534,7 +534,7 @@ thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
             break;
         }
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 
     return pFoundChildren;
 }
@@ -542,7 +542,7 @@ thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
 #if 0
 void thWindow::destroyChildren()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     std::vector<thWindow*>::iterator i;
 
     i = this->m_children.begin();
@@ -553,45 +553,45 @@ void thWindow::destroyChildren()
             (*i) = NULL;
         }
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 #endif
 
 void thWindow::Show(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     ShowWindow(this->m_hWinHandle, SW_SHOWNORMAL);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::Hide(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     ShowWindow(this->m_hWinHandle, SW_HIDE);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::Enable(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     EnableWindow(this->m_hWinHandle, TRUE);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::Disable(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     EnableWindow(this->m_hWinHandle, FALSE);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::Destroy(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     BOOL fResult = FALSE;
 
     fResult = DestroyWindow(this->m_hWinHandle);
@@ -600,12 +600,12 @@ void thWindow::Destroy(void)
         MSG_ERROR(TEXT("DestroyWindow failed with error = 0x%X"), GetLastError());
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::SetFocus(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     HWND fResult = NULL;
 
     fResult = ::SetFocus(this->m_hWinHandle);
@@ -614,22 +614,22 @@ void thWindow::SetFocus(void)
         MSG_ERROR(TEXT("SetFocus failed with error = 0x%X"), GetLastError());
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 // Store current position in m_rcOldPosition. m_rcOldPosition is used when resizing
 void thWindow::StoreCurrentRect(void)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     this->GetRect(this->m_rcOldPosition);
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
 }
 
 // store current window position in argument
 // @param [out] a_rcOutput
 void thWindow::GetRect(RECT & a_rcOutput)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     if (m_pParent) {
         a_rcOutput.left = this->X;
         a_rcOutput.top = this->Y;
@@ -640,7 +640,7 @@ void thWindow::GetRect(RECT & a_rcOutput)
             a_rcOutput.left, a_rcOutput.top, a_rcOutput.bottom, a_rcOutput.right);
 #endif
     }
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
 }
 
 HWND thWindow::GetHandle(void) const

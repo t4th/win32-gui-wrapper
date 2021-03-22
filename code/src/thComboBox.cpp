@@ -50,24 +50,24 @@ thComboBox::thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
 thComboBox::~thComboBox()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thComboBox::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thComboBox::onErrorSpace(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -76,15 +76,15 @@ LRESULT thComboBox::onErrorSpace(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
 // a_lParam - high-order word is new height
 LRESULT thComboBox::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thComboBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
     if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
@@ -179,13 +179,13 @@ LRESULT thComboBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thComboBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = 0;
 
@@ -193,6 +193,6 @@ LRESULT thComboBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
 
     MSG_LOG(TEXT("Not supported %X"), pData->code);
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

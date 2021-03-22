@@ -63,22 +63,22 @@ thToolbar::thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
 thToolbar::~thToolbar()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thToolbar::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thToolbar::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if used by app
 
     thToolbarItem * pItem = this->Items.findItemById(LOWORD(a_wParam));
@@ -87,14 +87,14 @@ LRESULT thToolbar::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
         tResult = pItem->processCommandMessage(a_uMsg, a_wParam, a_lParam);
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 // http://msdn.microsoft.com/en-us/library/windows/desktop/bb760435%28v=vs.85%29.aspx
 LRESULT thToolbar::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if used by app
     NMHDR * pData = 0;
 
@@ -112,7 +112,7 @@ LRESULT thToolbar::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
         }
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -155,7 +155,7 @@ thToolbarItem::thToolbarItem(thToolbar & a_parent)
     m_changedata{},
     Text(*this)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     m_data.idCommand = (int)this->m_id;
     m_data.iBitmap = 0;
     m_data.fsState = TBSTATE_ENABLED;
@@ -167,19 +167,19 @@ thToolbarItem::thToolbarItem(thToolbar & a_parent)
     //SendMessage(this->hWinHandle, TB_SETBUTTONSIZE, 0, MAKELPARAM(12, 12));
     SendMessage(m_parent.m_hWinHandle, TB_SETBITMAPSIZE, 0, MAKELPARAM(0, 0));
     LRESULT result = SendMessage(m_parent.m_hWinHandle, TB_ADDBUTTONS, 1, (LPARAM)&(m_data));
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 thToolbarItem::~thToolbarItem() {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 // thToolbarItem dont have any children windows on it, so tResult must return 1 (nonzero).
 // if not, endless recursion loop will happen due to SendMessage in thWindow processCommandMessage.
 LRESULT thToolbarItem::processCommandMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 1; // should return 1 if used by app
 
     MSG_LOG(TEXT("Toolbar Item CLICKED, Id=%d"), this->m_id);
@@ -189,7 +189,7 @@ LRESULT thToolbarItem::processCommandMessage(UINT a_uMsg, WPARAM a_wParam, LPARA
         OnClick(this, { a_uMsg, a_wParam, a_lParam });
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -197,7 +197,7 @@ LRESULT thToolbarItem::processCommandMessage(UINT a_uMsg, WPARAM a_wParam, LPARA
 // if not, endless recursion loop will happen due to SendMessage in thWindow processNotifyMessage.
 LRESULT thToolbarItem::processNotifyMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 1;
     NMHDR * pData = 0;
 
@@ -205,7 +205,7 @@ LRESULT thToolbarItem::processNotifyMessage(UINT a_uMsg, WPARAM a_wParam, LPARAM
 
     //MSG_LOG(TEXT("%s - Not supported %X"), this->m_name.c_str(), pData->code);
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -235,7 +235,7 @@ thToolbarItemList::~thToolbarItemList() {
 }
 
 thToolbarItem * thToolbarItemList::findItemById(UINT_PTR a_searchedId) {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     std::vector<thToolbarItem*>::iterator i;
     thToolbarItem * pFoundItem = nullptr;
 
@@ -248,7 +248,7 @@ thToolbarItem * thToolbarItemList::findItemById(UINT_PTR a_searchedId) {
         }
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return pFoundItem;
 }
 
@@ -267,7 +267,7 @@ void thToolbarItemList::Add(thString a_text) {
 
 #if 0
 void thToolbarItemList::Remove(uint32_t a_u32ItemIndex) {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     if (a_u32ItemIndex < m_items.size()) {
         std::vector<thToolbarItem *>::iterator i;
 
@@ -280,7 +280,7 @@ void thToolbarItemList::Remove(uint32_t a_u32ItemIndex) {
         m_items.erase(i);
         LastIndex--;
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 #endif
 

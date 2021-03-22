@@ -44,23 +44,23 @@ thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
 thListBox::~thListBox()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thListBox::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 // all msgs: https://msdn.microsoft.com/en-us/library/windows/desktop/ff485968%28v=vs.85%29.aspx
 LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
     if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
@@ -113,13 +113,13 @@ LRESULT thListBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thListBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = 0;
 
@@ -129,6 +129,6 @@ LRESULT thListBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
         //MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

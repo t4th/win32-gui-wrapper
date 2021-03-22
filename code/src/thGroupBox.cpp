@@ -13,11 +13,6 @@ int thGroupBox::m_indexPool = 1;
 
 /* Prototypes */
 
-thGroupBox::thGroupBox() : thWindow(nullptr, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
 
 thGroupBox::thGroupBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
 {
@@ -47,22 +42,22 @@ thGroupBox::thGroupBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_p
 
 thGroupBox::~thGroupBox()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thGroupBox::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thGroupBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
 
@@ -143,13 +138,13 @@ LRESULT thGroupBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
     }
 #endif
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thGroupBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
@@ -176,6 +171,6 @@ LRESULT thGroupBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
     }
 #endif
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

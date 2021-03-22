@@ -42,22 +42,22 @@ thRadioButton::thRadioButton(thWindow * a_pParent, int a_posX , int a_posY)
 
 thRadioButton::~thRadioButton()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thRadioButton::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thRadioButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
     if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
@@ -133,13 +133,13 @@ LRESULT thRadioButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thRadioButton::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
@@ -164,6 +164,6 @@ LRESULT thRadioButton::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_w
     }
 #endif
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

@@ -32,4 +32,7 @@ public:
     static void     ErrorPrintf(const TCHAR *, ...);
     static void     WarningPrintf(const TCHAR *, ...);
     static void     SuccessPrintf(const TCHAR *, ...);
+
+    static void     PrintfObjectEnter(const TCHAR *, ...);
+    static void     PrintfObjectLeave(const TCHAR *, ...);
 };

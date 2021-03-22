@@ -20,10 +20,10 @@ protected:
 private:
     static int                      m_indexPool;
 
-                                    thListView();
     LRESULT                         processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                         processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
+                                    thListView() = delete;
                                     thListView(thWindow *, int, int);
                                     ~thListView();
 

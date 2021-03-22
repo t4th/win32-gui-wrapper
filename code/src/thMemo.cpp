@@ -13,16 +13,9 @@ int thMemo::m_indexPool = 1;
 
 /* Prototypes */
 
-thMemo::thMemo() : thWindow(NULL, CW_USEDEFAULT, CW_USEDEFAULT)
-{
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
-}
-
 thMemo::thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = FALSE;
 
     this->m_name = CLASS_NAME;
 
@@ -39,7 +32,7 @@ thMemo::thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW
 
     this->create();
 
-    fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
 
     if (FALSE == fResult) {
         MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
@@ -50,8 +43,8 @@ thMemo::thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW
 
 thMemo::~thMemo()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thMemo::ScrollDown()
@@ -61,27 +54,27 @@ void thMemo::ScrollDown()
 
 int thMemo::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 LRESULT thMemo::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
 
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thMemo::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = 0;
 
@@ -91,6 +84,6 @@ LRESULT thMemo::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, 
         MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

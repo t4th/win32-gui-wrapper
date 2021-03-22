@@ -45,7 +45,7 @@ void thForm::init()
 
 void thForm::registerClass()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     static bool once = true; // Register this class once in a lifetime of application. Lazy implementation.
 
@@ -75,7 +75,7 @@ void thForm::registerClass()
             MSG_WARNING( TEXT( "RegisterClassEx error: 0x%X"), GetLastError());
         }
     }
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 thForm::thForm(thWindow * a_pParent, int a_posX, int a_posY)
@@ -104,7 +104,7 @@ thForm::thForm(thWindow * a_pParent, int a_posX, int a_posY)
 
 thForm::~thForm()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     auto position = 0;
     for ( const auto i: g_forms)
@@ -117,40 +117,38 @@ thForm::~thForm()
         position++;
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 LRESULT thForm::onCreate()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 #if 0
 LRESULT thForm::onNCCreate()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 #endif
 
 LRESULT thForm::onClose()
 {
-//  TH_ENTER_FUNCTION;
-    MSG_LOG(TEXT("%s::onClose() - Enter"), this->m_name.c_str());
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
 
     if (OnClose) {
         tResult = OnClose(this, {});
     }
 
-    MSG_LOG(TEXT("%s::onClose() - Leave"), this->m_name.c_str());
-//  TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -158,7 +156,7 @@ LRESULT thForm::onClose()
 // Because of that it need specialized onGetMinMax
 LRESULT thForm::onGetMinMax(LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT      tResult = 1;
     MINMAXINFO * sInfo = 0;
 
@@ -188,7 +186,7 @@ LRESULT thForm::onGetMinMax(LPARAM a_lParam)
         }
     }
 #endif 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
@@ -232,7 +230,7 @@ BOOL CALLBACK EnumChildProc(HWND a_hWnd, LPARAM a_lParam)
 // a_lParam - low-order word is new width, high-order word is new height
 LRESULT thForm::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
 
     // new width and height
@@ -269,14 +267,14 @@ LRESULT thForm::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 
     EnumChildWindows(this->m_hWinHandle, EnumChildProc, (LPARAM)&sDifference);
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 #endif
 
 LRESULT thForm::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT     tResult = 0;
 
     if (m_menu) {
@@ -289,22 +287,22 @@ LRESULT thForm::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
         }
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 int thForm::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
 void thForm::SetMenu(thMenu * const a_pMenu)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
 
     if (NULL != a_pMenu) {
         if (a_pMenu != m_menu) {
@@ -334,12 +332,12 @@ void thForm::SetMenu(thMenu * const a_pMenu)
         MSG_ERROR(TEXT("Empty input pointer!"));
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thForm::ClearMenu(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     BOOL fResult = false;
 
     fResult = ::SetMenu(this->m_hWinHandle, NULL);
@@ -352,12 +350,12 @@ void thForm::ClearMenu(void)
         m_menu = NULL;
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 BOOL thForm::IsMenuEnabled(void)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     BOOL    fResult = false;
     HMENU   hMenu = 0;
 
@@ -367,6 +365,6 @@ BOOL thForm::IsMenuEnabled(void)
         fResult = true;
     }
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return fResult;
 }

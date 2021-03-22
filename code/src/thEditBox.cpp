@@ -41,8 +41,8 @@ thEditBox::thEditBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_pos
 
 thEditBox::~thEditBox()
 {
-    TH_ENTER_FUNCTION;
-    TH_LEAVE_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thEditBox::SetCaretPosition(uint32_t a_u32Position) {
@@ -51,10 +51,10 @@ void thEditBox::SetCaretPosition(uint32_t a_u32Position) {
 
 int thEditBox::getDebugIndex()
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
@@ -78,16 +78,16 @@ LRESULT thEditBox::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
 
 LRESULT thEditBox::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    TH_ENTER_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0; // should return 1 if not used (no CB registered)
 
-    TH_LEAVE_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }
 
 LRESULT thEditBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_FUNCTION;
+    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = reinterpret_cast<NMHDR*>(a_lParam);
 
@@ -95,6 +95,6 @@ LRESULT thEditBox::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPara
         MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
     }
 
-    //TH_LEAVE_FUNCTION;
+    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

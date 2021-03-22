@@ -8,10 +8,11 @@ protected:
 private:
     static int              m_indexPool;
 
-                            thMemo();
     LRESULT                 processCommandMessage(HWND, UINT, WPARAM, LPARAM);
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
+
 public:
+                            thMemo() = delete;
                             thMemo(thWindow *, int, int);
                             ~thMemo();
 

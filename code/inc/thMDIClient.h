@@ -12,8 +12,8 @@ protected:
 private:
     static int          m_indexPool;
 
-                        thMDIClient();
 public:
+                        thMDIClient() = delete;
                         thMDIClient(thForm *, int, int);
                         ~thMDIClient();
 
