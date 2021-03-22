@@ -14,6 +14,7 @@ thWin32Logger   g_logger;
 
 // Simple example calculator implementation.
 // Operates on 32 ints. No under/overflow checks.
+// todo: maybe add +/- sign button.
 class CalculatorLogic
 {
     private:
@@ -78,6 +79,7 @@ class CalculatorLogic
                     if ( 0 == a_current_value)
                     {
                         m_dividedByZero = true;
+                        m_operation = Operation::None;
                         return false;
                     }
 
@@ -87,8 +89,6 @@ class CalculatorLogic
                 default:
                     a_result = 0;
             }
-
-            m_operation = Operation::None;
 
             return true;
         }
