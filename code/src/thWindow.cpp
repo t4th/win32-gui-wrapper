@@ -620,16 +620,16 @@ void thWindow::SetFocus(void)
 // Store current position in m_rcOldPosition. m_rcOldPosition is used when resizing
 void thWindow::StoreCurrentRect(void)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     this->GetRect(this->m_rcOldPosition);
-    //TH_LEAVE_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 // store current window position in argument
 // @param [out] a_rcOutput
 void thWindow::GetRect(RECT & a_rcOutput)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
+    TH_ENTER_OBJECT_FUNCTION;
     if (m_pParent) {
         a_rcOutput.left = this->X;
         a_rcOutput.top = this->Y;
@@ -640,7 +640,7 @@ void thWindow::GetRect(RECT & a_rcOutput)
             a_rcOutput.left, a_rcOutput.top, a_rcOutput.bottom, a_rcOutput.right);
 #endif
     }
-    //TH_LEAVE_OBJECT_FUNCTION;
+    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 HWND thWindow::GetHandle(void) const

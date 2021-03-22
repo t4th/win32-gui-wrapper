@@ -64,6 +64,7 @@ Since this is Windows only, use free Visual Studio 2019 to open solution file Wi
 - select solution platform
 - build (ctrl+shift+b) all and Run (F5)
 - You must select example project as startup project for Run (F5) to work
+- amount of logs is configured with TH_DEBUG_LEVEL in thConfig.h. Set it to 1 for optimal logs and 2 for ALL logs.
 
 Usage examples can be selected in solution explorer from within VS.
 
