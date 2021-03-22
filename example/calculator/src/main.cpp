@@ -87,7 +87,7 @@ class CalculatorLogic
                     break;
                 }
                 default:
-                    a_result = 0;
+                    break;
             }
 
             return true;
@@ -793,9 +793,19 @@ thResult_t CalculatorGui::Button_onClick( thObject * sender, thEventParams_t)
     {
         std::wstring current_text = m_InputEditBox->Text;
 
+        // If there is one digit left.
         if ( 1 == current_text.size())
         {
             m_InputEditBox->Text = L"0";
+        }
+        // If there are 2 digit left, check if
+        // '-' sign is not first.
+        if ( 2 == current_text.size())
+        {
+            if ( L'-' == current_text.at(0))
+            {
+                m_InputEditBox->Text = L"0";
+            }
         }
         else if ( current_text.size() > 1)
         {
