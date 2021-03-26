@@ -28,10 +28,6 @@ public:
                 thWin32App() = default;
                 ~thWin32App() = default;
 
-    // TODO: rework OnCreate and OnDestroy Callbacks.
-    void        OnCreate();
-    void        OnDestroy();
-
     void        Terminate(int);
     int         Run();
 

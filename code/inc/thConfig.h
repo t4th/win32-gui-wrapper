@@ -25,8 +25,8 @@
 #endif
 
 #if TH_DEBUG_LEVEL > 1
-#define TH_ENTER_OBJECT_FUNCTION thWin32Logger::PrintfObjectEnter(L"%s::%s - ", this->m_name.c_str(), _T(__FUNCTION__))
-#define TH_LEAVE_OBJECT_FUNCTION thWin32Logger::PrintfObjectLeave(L"%s::%s - ", this->m_name.c_str(), _T(__FUNCTION__))
+#define TH_ENTER_OBJECT_FUNCTION thWin32Logger::PrintfObjectEnter(L"%s::%s - ", this->m_name.c_str(), _T(__FUNCTION__)); thString __name__ = this->m_name;
+#define TH_LEAVE_OBJECT_FUNCTION thWin32Logger::PrintfObjectLeave(L"%s::%s - ", __name__.c_str(), _T(__FUNCTION__))
 
 #define TH_ENTER_FUNCTION thWin32Logger::PrintfObjectEnter(L"%s - ", _T(__FUNCTION__))
 #define TH_LEAVE_FUNCTION thWin32Logger::PrintfObjectLeave(L"%s - ", _T(__FUNCTION__))

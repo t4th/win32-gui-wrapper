@@ -153,8 +153,6 @@ LRESULT thWindow::onClose()
 LRESULT thWindow::onDestroy()
 {
     TH_ENTER_OBJECT_FUNCTION;
-    thString name = this->m_name;
-    MSG_LOG(TEXT("%s::onDestroy() - Enter"), name.c_str());
     LRESULT tResult = 0;
 
     if (OnDestroy) {
@@ -166,7 +164,6 @@ LRESULT thWindow::onDestroy()
         }
     }
 
-    MSG_LOG(TEXT("%s::onDestroy() - Leave"), name.c_str());
     TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

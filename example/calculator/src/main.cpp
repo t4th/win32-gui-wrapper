@@ -174,22 +174,6 @@ class CalculatorGui : public thWin32App
         }
 };
 
-// These definitions must be provided upfront or linker will throw errors.
-// It is stupid solution honestly.
-void thWin32App::OnCreate()
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
-void thWin32App::OnDestroy()
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
 // Windows application entry point.
 int main()
 {
@@ -204,7 +188,7 @@ CalculatorGui::CalculatorGui()
     // Create Main Window.
     {
         m_MainWindow = std::unique_ptr< thForm>(
-            new thForm( nullptr)
+            new thForm()
             );
 
         m_MainWindow->Text = L"Calculator example";
@@ -805,6 +789,12 @@ thResult_t CalculatorGui::Button_onClick( thObject * sender, thEventParams_t)
             if ( L'-' == current_text.at(0))
             {
                 m_InputEditBox->Text = L"0";
+            }
+            else
+            {
+                current_text.erase( current_text.size() - 1);
+
+                m_InputEditBox->Text = current_text;
             }
         }
         else if ( current_text.size() > 1)
