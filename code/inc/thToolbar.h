@@ -90,7 +90,7 @@ private:
     LRESULT             processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                         thToolbar() = delete;
-                        thToolbar(thWindow *, int, int);
+                        thToolbar(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
     virtual             ~thToolbar(void);
 
     thToolbarItemList   Items;
