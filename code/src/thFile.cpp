@@ -35,7 +35,7 @@ thFile::~thFile()
 }
 
 // return 0 if no error
-uint32_t thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, thFile::CreationDisposition a_CreationDisposition)
+bool thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, thFile::CreationDisposition a_CreationDisposition)
 {
     constexpr DWORD DesiredAccess[] = {GENERIC_READ, GENERIC_WRITE, GENERIC_EXECUTE, GENERIC_ALL};
     constexpr DWORD CreationDisposition[] = {CREATE_ALWAYS, CREATE_NEW, OPEN_ALWAYS, OPEN_EXISTING, TRUNCATE_EXISTING};
@@ -102,46 +102,61 @@ uint32_t thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAcces
         this->Close();
         u32Result = this->Open( a_filePath, a_DesiredAccess, a_CreationDisposition);
     }
-
+    
     TH_LEAVE_FUNCTION;
-    return u32Result;
+
+    constexpr uint32_t no_error_occurred = 0U;
+
+    if ( no_error_occurred ==  u32Result)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-uint32_t thFile::Write( uint8_t * const a_inputBuffer, size_t a_BytesToWrite)
+bool thFile::Write( uint8_t * const a_inputBuffer, size_t a_BytesToWrite)
 {
     TH_ENTER_FUNCTION;
-    uint32_t u32Result = 0;
-    BOOL     fResult = FALSE;
-
     DWORD dwBytesWritten = 0;
-    fResult = WriteFile( m_hHandle, a_inputBuffer, a_BytesToWrite, &dwBytesWritten, NULL);
+    BOOL fResult = WriteFile( m_hHandle, a_inputBuffer, a_BytesToWrite, &dwBytesWritten, NULL);
 
     if ( FALSE == fResult)
     {
-        u32Result = GetLastError();
+        uint32_t u32Result = GetLastError();
         MSG_ERROR( TEXT( "WriteFile failed with error = 0x%X"), u32Result);
-    }
 
-    TH_LEAVE_FUNCTION;
-    return u32Result;
+        TH_LEAVE_FUNCTION;
+        return false;
+    }
+    else
+    {
+        TH_LEAVE_FUNCTION;
+        return true;
+    }
 }
 
-uint32_t thFile::Read( uint8_t * const a_ouputBuffer, size_t a_bytesToRead, size_t & a_dwBytesRead)
+bool thFile::Read( uint8_t * const a_ouputBuffer, size_t a_bytesToRead, size_t & a_dwBytesRead)
 {
     TH_ENTER_FUNCTION;
-    uint32_t u32Result = 0;
-    BOOL     fResult = FALSE;
 
-    fResult = ReadFile( m_hHandle, a_ouputBuffer, a_bytesToRead, (LPDWORD)&a_dwBytesRead, NULL);
+    BOOL fResult = ReadFile( m_hHandle, a_ouputBuffer, a_bytesToRead, (LPDWORD)&a_dwBytesRead, NULL);
 
     if ( FALSE == fResult)
     {
-        u32Result = GetLastError();
+        uint32_t u32Result = GetLastError();
         MSG_ERROR( TEXT( "ReadFile failed with error = 0x%X"), u32Result);
-    }
 
-    TH_LEAVE_FUNCTION;
-    return u32Result;
+        TH_LEAVE_FUNCTION;
+        return false;
+    }
+    else
+    {
+        TH_LEAVE_FUNCTION;
+        return true;
+    }
 }
 
 bool_t thFile::IsOpen()

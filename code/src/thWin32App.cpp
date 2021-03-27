@@ -61,8 +61,6 @@ int thWin32App::Run()
     bool        exit_application = false;
     MSG         message = { 0 };
 
-    this->OnCreate();
-
     while ( false == exit_application)
     {
         BOOL is_message_received = GetMessage( &message, NULL, 0, 0);

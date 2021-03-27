@@ -33,7 +33,6 @@ private:
     int                     m_dOldHeight;
 #endif
 public:
-                            thForm() = delete;
                             thForm(thWindow * a_pParent = nullptr, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thForm();
 
