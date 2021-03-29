@@ -25,11 +25,11 @@
 class thWin32App : public thApplication
 {
 public:
-                thWin32App() = default;
-                ~thWin32App() = default;
+                 thWin32App() = default;
+    virtual      ~thWin32App() = default;
 
-    void        Terminate(int);
-    int         Run();
+    virtual void Terminate( int) final;
+    virtual int  Run() final;
 
 private:
 

@@ -7,17 +7,21 @@
 1 - only messages
 0 - no logs
 */
-#define TH_DEBUG_LEVEL 2
+#define TH_DEBUG_LEVEL 0
 
 /* Defines */
 
 /* Log and debug */
 #if TH_DEBUG_LEVEL > 0
+#pragma comment( linker, "/subsystem:console" )
+#define _CONSOLE
+
 #define MSG_SUCCESS    thWin32Logger::SuccessPrintf
 #define MSG_WARNING    thWin32Logger::WarningPrintf
 #define MSG_ERROR      thWin32Logger::ErrorPrintf
 #define MSG_LOG        thWin32Logger::Printf
 #else
+#pragma comment( linker, "/subsystem:windows" )
 #define MSG_SUCCESS
 #define MSG_WARNING
 #define MSG_ERROR

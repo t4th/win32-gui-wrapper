@@ -17,7 +17,7 @@ thMDIClient * g_pMDI_client = nullptr;
 
 // TODO: Creating protection for creating only 1 MDI client.
 
-thMDIClient::thMDIClient(thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+thMDIClient::thMDIClient( thForm * a_pParent, int a_posX, int a_posY)
     : thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;

@@ -6,8 +6,6 @@ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' \
 language='*'\"")
 
-thWin32Logger   g_logger;
-
 class MainWindow;
 class SecondWindow;
 class ThirdWindow;
@@ -118,10 +116,17 @@ MyApplication::MyApplication()
     m_mainWindow =      std::unique_ptr< MainWindow>(   new MainWindow{ *this});
     m_secondWindow =    std::unique_ptr< SecondWindow>( new SecondWindow{ *this});
     m_thirdWindow =     std::unique_ptr< ThirdWindow>(  new ThirdWindow{ *this});
+
+    // Show main window when all initialization is done.
+    m_mainWindow->m_mainForm->Show();
 }
 
 // Windows application entry point.
-int main()
+#if TH_DEBUG_LEVEL == 0
+int WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+#else
+ int main()
+#endif
 {
     MyApplication app;
 
@@ -193,14 +198,11 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_openButton->OnClick = std::bind( &MainWindow::FileOpen_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
     // Create Mdi client.
-    m_mdiClient = std::unique_ptr< thMDIClient>( new thMDIClient( m_mainForm.get(), 0, 0));
+    m_mdiClient = std::unique_ptr< thMDIClient>( new thMDIClient( m_mainForm.get()));
     m_mdiClient->Width = m_mainForm->Width;
     m_mdiClient->Height = m_mainForm->Height - 30;
     m_mdiClient->Anchors.Right = true;
     m_mdiClient->Anchors.Bottom = true;
-
-    // Show main window when all initialization is done.
-    m_mainForm->Show();
 }
 
 thResult_t MainWindow::CreateMdiChild_onClick( thObject * const sender, thEventParams_t info)
@@ -365,7 +367,7 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
 
 SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 {
-    thForm & parentWindow = *m_myApp.m_mainWindow.get()->m_mainForm;
+    thForm & parentWindow = *m_myApp.m_mainWindow->m_mainForm;
 
     m_mainForm = std::unique_ptr< thForm>( new thForm( &parentWindow));
     m_mainForm->Width = 300;
@@ -441,8 +443,10 @@ thResult_t SecondWindow::ToolbarButton_onClick( thObject * sender, thEventParams
 
 ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 {
+    thForm & parentWindow = *m_myApp.m_mainWindow->m_mainForm;
+
     // Create main window.
-    m_mainForm = std::unique_ptr< thForm>( new thForm);
+    m_mainForm = std::unique_ptr< thForm>( new thForm( &parentWindow));
     m_mainForm->Width = 500;
     m_mainForm->Height = 350;
     m_mainForm->X = 500;

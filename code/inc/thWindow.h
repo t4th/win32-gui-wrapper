@@ -84,10 +84,10 @@ public:
     thFont                  Font;
 
     struct {
-        bool_t Left;      // true by default
-        bool_t Right;     // false by default
-        bool_t Bottom;    // false by default
-        bool_t Top;       // true by default
+        bool_t Left{true};       // true by default
+        bool_t Right{false};     // false by default
+        bool_t Bottom{false};    // false by default
+        bool_t Top{true};        // true by default
     } Anchors;
 
     struct {

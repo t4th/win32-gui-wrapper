@@ -14,7 +14,7 @@ private:
 
 public:
                         thMDIClient() = delete;
-                        thMDIClient(thForm *, int, int);
+                        thMDIClient( thForm * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                         ~thMDIClient();
 
     void                Cascade(void);          // arrange childen in cascade format

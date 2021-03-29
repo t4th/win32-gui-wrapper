@@ -44,7 +44,6 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY)
     }
 
     this->Constraints = { 0 };
-    this->Anchors = { true, false, false, true };
     this->m_rcOldPosition = { 0 };
     TH_LEAVE_FUNCTION;
 }
@@ -199,7 +198,8 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
     // loop through this window children
     for ( const auto & i: m_children) {
         if ( ( nullptr == dynamic_cast< thForm*>(i) &&
-             ( nullptr == dynamic_cast< thMDIChild*>(i)))) {
+             ( nullptr == dynamic_cast< thMDIChild*>(i))))
+        {
             RECT rcCurPos = { 0 };
 
             i->GetRect(rcCurPos);
@@ -267,6 +267,12 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
             }
 
             tResult = 1; // this will resize all children manually, so dont send WM_SIZE to children
+            
+            thMDIClient * mdi = dynamic_cast< thMDIClient*>(i);
+            if ( nullptr != mdi)
+            { 
+                return 1;
+            }
         }
         else
         {
@@ -673,7 +679,7 @@ LRESULT CALLBACK WinProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lPa
 
             pForm = dynamic_cast<thForm*>(pWindow);
 
-            if (pForm) {
+            if (pForm &&  pForm->m_hMDIClient) {
                 tResult = DefFrameProc(a_hwnd, pForm->m_hMDIClient, a_uMsg, a_wParam, a_lParam);
             }
             else {

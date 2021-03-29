@@ -10,7 +10,7 @@ public:
     thApplication();
     virtual ~thApplication();
 
-    //virtual void Terminate(int) = 0;
+    virtual void Terminate(int) = 0;
     virtual int Run() = 0;
 };
 

@@ -10,8 +10,6 @@ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' \
 language='*'\"")
 
-thWin32Logger   g_logger;
-
 // Simple example calculator implementation.
 // Operates on 32 ints. No under/overflow checks.
 // todo: maybe add +/- sign button.
@@ -175,7 +173,11 @@ class CalculatorGui : public thWin32App
 };
 
 // Windows application entry point.
-int main()
+#if TH_DEBUG_LEVEL == 0
+int WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
+#else
+ int main()
+#endif
 {
     CalculatorGui calculator;
 
