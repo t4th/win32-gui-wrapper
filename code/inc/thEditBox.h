@@ -13,7 +13,7 @@ private:
     virtual LRESULT         onKeyDown(WPARAM, LPARAM); //WM_KEYDOWN
 public:
                             thEditBox() = delete;
-                            thEditBox(thWindow *, int, int);
+                            thEditBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thEditBox();
 
     void                    SetCaretPosition(uint32_t);

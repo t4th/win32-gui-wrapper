@@ -12,7 +12,7 @@
 int thListBox::m_indexPool = 1;
 
 /* Definitions */
-thListBox::thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+thListBox::thListBox(thWindow * a_pParent, int a_posX, int a_posY)
     :
     thWindow(a_pParent, a_posX, a_posY)
 {

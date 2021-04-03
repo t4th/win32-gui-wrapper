@@ -15,7 +15,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thComboBox() = delete;
-                            thComboBox(thWindow *, int, int);
+                            thComboBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thComboBox();
 
     thComboBoxItems         Items;

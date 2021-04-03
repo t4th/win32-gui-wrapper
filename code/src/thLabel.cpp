@@ -14,7 +14,7 @@ int thLabel::m_indexPool = 1;
 /* Prototypes */
 
 
-thLabel::thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
+thLabel::thLabel(thWindow * a_pParent, int a_posX, int a_posY)
     :
     thWindow(a_pParent, a_posX, a_posY)
 {

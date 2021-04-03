@@ -33,6 +33,7 @@ class MainWindow
         {
             std::unique_ptr< thMDIChild> m_MdiChild{};
             std::unique_ptr< thRichEdit> m_RichEdit{};
+            std::unique_ptr< thLabel>    m_Label{};
         };
 
         // Store reference to MyApplication so callbacks can access other windows objects.
@@ -315,6 +316,14 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
 
             // Set caption of MdiChild form.
             textMdiData.m_MdiChild->Text = file.GetFileName();
+
+            // Create label with file path
+            textMdiData.m_Label = std::unique_ptr< thLabel>( new thLabel( textMdiData.m_MdiChild.get()));
+            textMdiData.m_Label->X = 10;
+            textMdiData.m_Label->Y = newRichEdit.Height + 10;
+            textMdiData.m_Label->Width = newRichEdit.Width;
+            textMdiData.m_Label->Text = file.GetFilePath();
+            textMdiData.m_Label->Anchors.Top = false;
 
             // Open file content.
             const size_t buffer_size_in_bytes = static_cast< size_t>( file.GetFileSize());

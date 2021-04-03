@@ -44,7 +44,7 @@ bool thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, t
     auto desired_disposition_index = static_cast< uint8_t>( a_CreationDisposition);
 
     TH_ENTER_FUNCTION;
-    uint32_t u32Result = 0;
+    bool fileOpened = false;
 
     if ( NULL == m_hHandle)
     {
@@ -60,11 +60,12 @@ bool thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, t
 
         if ( INVALID_HANDLE_VALUE == m_hHandle)
         {
-            u32Result = GetLastError();
-            MSG_ERROR( TEXT( "CloseHandle failed with error = 0x%X"), u32Result);
+            uint32_t u32Result = GetLastError();
+            MSG_ERROR( TEXT( "CreateFile failed with error = 0x%X"), u32Result);
         }
         else
         {
+            fileOpened = true;
             m_filePath = a_filePath;
 
             wchar_t drive[ _MAX_DRIVE]{};
@@ -100,21 +101,12 @@ bool thFile::Open( thString a_filePath, thFile::DesiredAccess a_DesiredAccess, t
     else
     {
         this->Close();
-        u32Result = this->Open( a_filePath, a_DesiredAccess, a_CreationDisposition);
+        fileOpened = this->Open( a_filePath, a_DesiredAccess, a_CreationDisposition);
     }
     
     TH_LEAVE_FUNCTION;
 
-    constexpr uint32_t no_error_occurred = 0U;
-
-    if ( no_error_occurred ==  u32Result)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return fileOpened;
 }
 
 bool thFile::Write( uint8_t * const a_inputBuffer, size_t a_BytesToWrite)
@@ -174,13 +166,12 @@ bool_t thFile::IsOpen()
 void thFile::Close()
 {
     TH_ENTER_FUNCTION;
-    BOOL fResult = 0;
-
-    fResult = CloseHandle( m_hHandle);
+    BOOL fResult = CloseHandle( m_hHandle);
 
     if ( 0 == fResult)
     {
-        MSG_ERROR( TEXT( "CloseHandle failed with error = 0x%X"), GetLastError());
+        uint32_t u32Result = GetLastError();
+        MSG_ERROR( TEXT( "CloseHandle failed with error = 0x%X"), u32Result);
     }
     else
     {
@@ -202,12 +193,12 @@ thString thFile::GetFilePath() const
 {
     TH_ENTER_FUNCTION;
     thString    oFilePath;
-    DWORD       dwResult = 0;
-    TCHAR       sBuffer[ MAX_PATH];
     
     if ( INVALID_HANDLE_VALUE != m_hHandle)
     {
-        dwResult = GetFinalPathNameByHandle(
+        TCHAR sBuffer[ MAX_PATH];
+
+        DWORD dwResult = GetFinalPathNameByHandle(
             m_hHandle,
             sBuffer,
             MAX_PATH,

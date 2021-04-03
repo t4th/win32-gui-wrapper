@@ -13,7 +13,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thButton() = delete;
-                            thButton(thWindow *, int, int);
+                            thButton(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thButton();
 
     thBS_DefaultPush        DefaultPushStyle; // Change Button look

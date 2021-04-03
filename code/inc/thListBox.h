@@ -13,7 +13,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thListBox() = delete;
-                            thListBox(thWindow *, int, int);
+                            thListBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thListBox();
 
     thListBoxItems          Items;

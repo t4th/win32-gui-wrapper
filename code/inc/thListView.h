@@ -24,7 +24,7 @@ private:
     LRESULT                         processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                                     thListView() = delete;
-                                    thListView(thWindow *, int, int);
+                                    thListView(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                                     ~thListView();
 
     thItemList<thListViewColumn, thListView>    Columns;

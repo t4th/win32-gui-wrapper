@@ -12,7 +12,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thCheckBox() = delete;
-                            thCheckBox(thWindow *, int, int);
+                            thCheckBox(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thCheckBox();
 
     thEventCallbackFunc_t   OnClick{nullptr};

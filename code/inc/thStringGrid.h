@@ -19,7 +19,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thStringGrid() = delete;
-                            thStringGrid(thWindow *, int, int);
+                            thStringGrid(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thStringGrid();
 
     //thBS_DefaultPush        DefaultPushStyle; // Change Button look

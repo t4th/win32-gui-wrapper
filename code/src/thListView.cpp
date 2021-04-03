@@ -14,7 +14,9 @@ int thListView::m_indexPool = 1;
 /* Prototypes */
 
 
-thListView::thListView(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT) : thWindow(a_pParent, a_posX, a_posY)
+thListView::thListView(thWindow * a_pParent, int a_posX, int a_posY)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;

@@ -76,8 +76,9 @@ BOOL Main_OnCreate(HWND hGrid, LPCREATESTRUCT lpCreateStruct, DWORD id)
     return TRUE;
 }
 
-thStringGrid::thStringGrid(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT)
-    : thWindow(a_pParent, a_posX, a_posY)
+thStringGrid::thStringGrid(thWindow * a_pParent, int a_posX, int a_posY)
+    :
+    thWindow(a_pParent, a_posX, a_posY)
 {
     TH_ENTER_FUNCTION;
     BOOL fResult = FALSE;

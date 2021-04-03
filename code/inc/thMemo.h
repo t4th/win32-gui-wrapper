@@ -13,7 +13,7 @@ private:
 
 public:
                             thMemo() = delete;
-                            thMemo(thWindow *, int, int);
+                            thMemo(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thMemo();
 
     void                    ScrollDown();

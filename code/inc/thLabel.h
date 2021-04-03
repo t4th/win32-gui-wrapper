@@ -12,7 +12,7 @@ private:
     LRESULT                 processNotifyMessage(HWND, UINT, WPARAM, LPARAM);
 public:
                             thLabel() = delete;
-                            thLabel(thWindow *, int, int);
+                            thLabel(thWindow * a_pParent, int a_posX = CW_USEDEFAULT, int a_posY = CW_USEDEFAULT);
                             ~thLabel();
 
     thEventCallbackFunc_t   OnClick{nullptr};
