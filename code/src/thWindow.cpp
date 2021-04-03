@@ -197,7 +197,8 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 
     // loop through this window children
     for ( const auto & i: m_children) {
-        if ( nullptr == dynamic_cast< thForm*>(i))
+        if ( nullptr == dynamic_cast< thForm*>(i) &&
+             nullptr == dynamic_cast< thMDIChild*>(i))
         {
             RECT rcCurPos = { 0 };
 
