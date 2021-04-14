@@ -189,7 +189,7 @@ CalculatorGui::CalculatorGui()
 {
     // Create Main Window.
     {
-        m_MainWindow = std::unique_ptr< thForm>( new thForm());
+        m_MainWindow = std::make_unique< thForm>();
 
         m_MainWindow->Text = L"Calculator example";
         m_MainWindow->Width = 395;
@@ -207,7 +207,7 @@ CalculatorGui::CalculatorGui()
         constexpr int x_position = 5;
         constexpr int y_position = 5;
 
-        m_InputEditBox = std::unique_ptr< thEditBox>( new thEditBox( m_MainWindow.get(), x_position, y_position));
+        m_InputEditBox = std::make_unique< thEditBox>( m_MainWindow.get(), x_position, y_position);
 
         m_InputEditBox->Width = m_MainWindow->Width - 2 * x_position;
         m_InputEditBox->Height = 50;
@@ -221,7 +221,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5;
         const int y_position = 60;
 
-        m_Number7Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number7Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
 
         m_Number7Button->Width = 75;
         m_Number7Button->Height = 50;
@@ -235,7 +235,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number7Button->Width;
         const int y_position = 60;
 
-        m_Number8Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number8Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
 
         m_Number8Button->Width = 75;
         m_Number8Button->Height = 50;
@@ -249,7 +249,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number8Button->Width + m_Number7Button->Width;
         const int y_position = 60;
 
-        m_Number9Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number9Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number9Button->Width = 75;
         m_Number9Button->Height = 50;
@@ -263,7 +263,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5;
         const int y_position = 60 + 50;
 
-        m_Number4Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number4Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number4Button->Width = 75;
         m_Number4Button->Height = 50;
@@ -277,7 +277,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number4Button->Width;
         const int y_position = 60 + 50;
 
-        m_Number5Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number5Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number5Button->Width = 75;
         m_Number5Button->Height = 50;
@@ -292,7 +292,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
         const int y_position = 60 + 50;
 
-        m_Number6Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number6Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number6Button->Width = 75;
         m_Number6Button->Height = 50;
@@ -307,7 +307,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5;
         const int y_position = 60 + 50 + 50;
 
-        m_Number1Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number1Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number1Button->Width = 75;
         m_Number1Button->Height = 50;
@@ -322,7 +322,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number4Button->Width;
         const int y_position = 60 + 50 + 50;
 
-        m_Number2Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number2Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number2Button->Width = 75;
         m_Number2Button->Height = 50;
@@ -337,7 +337,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
         const int y_position = 60 + 50 + 50;
 
-        m_Number3Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number3Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number3Button->Width = 75;
         m_Number3Button->Height = 50;
@@ -352,7 +352,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 5 + m_Number4Button->Width;
         const int y_position = 60 + 50 + 50 + 50;
 
-        m_Number0Button = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_Number0Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_Number0Button->Width = 75;
         m_Number0Button->Height = 50;
@@ -367,7 +367,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 3* m_Number4Button->Width;
         const int y_position = 60;
 
-        m_PlusButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_PlusButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_PlusButton->Width = 75;
         m_PlusButton->Height = 50;
@@ -382,7 +382,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 3* m_Number4Button->Width;
         const int y_position = 60 + 50;
 
-        m_MinusButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_MinusButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_MinusButton->Width = 75;
         m_MinusButton->Height = 50;
@@ -397,7 +397,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 3* m_Number4Button->Width;
         const int y_position = 60 + 50 + 50;
 
-        m_MultiplyButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_MultiplyButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_MultiplyButton->Width = 75;
         m_MultiplyButton->Height = 50;
@@ -412,7 +412,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 3* m_Number4Button->Width;
         const int y_position = 60 + 50 + 50 + 50;
 
-        m_DivisionButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_DivisionButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_DivisionButton->Width = 75;
         m_DivisionButton->Height = 50;
@@ -427,7 +427,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 4* m_Number4Button->Width;
         const int y_position = 60;
 
-        m_ClearButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_ClearButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_ClearButton->Width = 75;
         m_ClearButton->Height = 50;
@@ -442,7 +442,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 4* m_Number4Button->Width;
         const int y_position = 60 + 50;
 
-        m_DeleteButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_DeleteButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_DeleteButton->Width = 75;
         m_DeleteButton->Height = 50;
@@ -457,7 +457,7 @@ CalculatorGui::CalculatorGui()
         const int x_position = 15 + 4* m_Number4Button->Width;
         const int y_position = 60 + 50 + 50 + 50;
 
-        m_ResultButton = std::unique_ptr< thButton>( new thButton( m_MainWindow.get(), x_position, y_position));
+        m_ResultButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
     
         m_ResultButton->Width = 75;
         m_ResultButton->Height = 50;

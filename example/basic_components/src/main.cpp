@@ -114,9 +114,9 @@ class ThirdWindow
 
 MyApplication::MyApplication()
 {
-    m_mainWindow =      std::unique_ptr< MainWindow>(   new MainWindow{ *this});
-    m_secondWindow =    std::unique_ptr< SecondWindow>( new SecondWindow{ *this});
-    m_thirdWindow =     std::unique_ptr< ThirdWindow>(  new ThirdWindow{ *this});
+    m_mainWindow =      std::make_unique< MainWindow>( *this);
+    m_secondWindow =    std::make_unique< SecondWindow>( *this);
+    m_thirdWindow =     std::make_unique< ThirdWindow>( *this);
 
     // Show main window when all initialization is done.
     m_mainWindow->m_mainForm->Show();
@@ -137,7 +137,7 @@ int WinMain( _In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LP
 MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 {
     // Create window submenu.
-    m_windowsSubMenu = std::unique_ptr< thMenu>( new thMenu);
+    m_windowsSubMenu = std::make_unique< thMenu>();
 
     m_windowsSubMenu->Items.Add( TEXT( "&Cascade"));
     m_windowsSubMenu->Items[ 0]->OnClick = std::bind( &MainWindow::MenuCascade_onClick, this, std::placeholders::_1, std::placeholders::_2);
@@ -154,7 +154,7 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_windowsSubMenu->Items[ 4]->OnClick = std::bind( &MainWindow::MenuArrange_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
     // Create main menu.
-    m_mainMenu = std::unique_ptr< thMenu>( new thMenu);
+    m_mainMenu = std::make_unique< thMenu>();
             
     m_mainMenu->Items.Add( TEXT( "&Open file"));
     m_mainMenu->Items[ 0]->OnClick = std::bind( &MainWindow::FileOpen_onClick, this, std::placeholders::_1, std::placeholders::_2);
@@ -173,7 +173,7 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_mainMenu->Items[ 4]->OnClick = std::bind( &MainWindow::ShowThirdForm_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
     // Create main window object.
-    m_mainForm = std::unique_ptr< thForm>( new thForm());
+    m_mainForm = std::make_unique< thForm>();
             
     m_mainForm->Width = 800;
     m_mainForm->Height = 800;
@@ -189,7 +189,7 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     };
 
     // Main button
-    m_openButton = std::unique_ptr< thButton>( new thButton( m_mainForm.get(), 0, m_mainForm->Height - 30));
+    m_openButton = std::make_unique< thButton>( m_mainForm.get(), 0, m_mainForm->Height - 30);
     m_openButton->Text = TEXT( "Open file...");
     m_openButton->Width = m_mainForm->Width;
     m_openButton->Height = 30;
@@ -199,7 +199,7 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_openButton->OnClick = std::bind( &MainWindow::FileOpen_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
     // Create Mdi client.
-    m_mdiClient = std::unique_ptr< thMDIClient>( new thMDIClient( m_mainForm.get()));
+    m_mdiClient = std::make_unique< thMDIClient>( m_mainForm.get());
     m_mdiClient->Width = m_mainForm->Width;
     m_mdiClient->Height = m_mainForm->Height - 30;
     m_mdiClient->Anchors.Right = true;
@@ -209,7 +209,7 @@ MainWindow::MainWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 thResult_t MainWindow::CreateMdiChild_onClick( thObject * const sender, thEventParams_t info)
 {
     // Create new thMDIChild object. Assign mdiclient as parent.
-    m_emptyMdiChilds.push_back( std::unique_ptr< thMDIChild>( new thMDIChild( m_mdiClient.get())));
+    m_emptyMdiChilds.push_back( std::make_unique< thMDIChild>( m_mdiClient.get()));
 
     m_emptyMdiChilds.back()->OnDestroy = std::bind( &MainWindow::MdiChild_onDestroy, this, std::placeholders::_1, std::placeholders::_2);
     m_emptyMdiChilds.back()->Text =  TEXT( "Empty MDI");
@@ -297,14 +297,14 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
             TextMdiData & textMdiData = m_textMdiChilds.back();
 
             // Create MDI child Window
-            textMdiData.m_MdiChild = std::unique_ptr< thMDIChild>( new thMDIChild( m_mdiClient.get()));
+            textMdiData.m_MdiChild = std::make_unique< thMDIChild>( m_mdiClient.get());
 
             textMdiData.m_MdiChild->Width = ( int)( ( double) m_mdiClient->Width * 0.8f);
             textMdiData.m_MdiChild->Height = ( int)( ( double) m_mdiClient->Height * 0.8f);
             textMdiData.m_MdiChild->OnDestroy = std::bind( &MainWindow::MdiChild_onDestroy, this, std::placeholders::_1, std::placeholders::_2);
 
             // Create RichEdit component in new MDI child Window.
-            textMdiData.m_RichEdit = std::unique_ptr< thRichEdit>( new thRichEdit( textMdiData.m_MdiChild.get()));
+            textMdiData.m_RichEdit = std::make_unique< thRichEdit>( textMdiData.m_MdiChild.get());
 
             // Create reference for ease-of-use
             thRichEdit & newRichEdit= *textMdiData.m_RichEdit.get();
@@ -318,7 +318,7 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
             textMdiData.m_MdiChild->Text = file.GetFileName();
 
             // Create label with file path
-            textMdiData.m_Label = std::unique_ptr< thLabel>( new thLabel( textMdiData.m_MdiChild.get()));
+            textMdiData.m_Label = std::make_unique< thLabel>( textMdiData.m_MdiChild.get());
             textMdiData.m_Label->X = 10;
             textMdiData.m_Label->Y = newRichEdit.Height + 10;
             textMdiData.m_Label->Width = newRichEdit.Width;
@@ -378,7 +378,7 @@ SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 {
     thForm & parentWindow = *m_myApp.m_mainWindow->m_mainForm;
 
-    m_mainForm = std::unique_ptr< thForm>( new thForm( &parentWindow));
+    m_mainForm = std::make_unique< thForm>( &parentWindow);
     m_mainForm->Width = 300;
     m_mainForm->Height = 300;
     m_mainForm->X = parentWindow.X + 200L;
@@ -387,7 +387,7 @@ SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_mainForm->Resizable = false;
     m_mainForm->OnClose = std::bind( &SecondWindow::Form_onClose, this, std::placeholders::_1, std::placeholders::_2);
 
-    m_toolbar = std::unique_ptr< thToolbar>( new thToolbar( m_mainForm.get()));
+    m_toolbar = std::make_unique< thToolbar>( m_mainForm.get());
     m_toolbar->Items.Add( TEXT( "Button 0"));
     m_toolbar->Items[ 0]->OnClick = std::bind( &SecondWindow::ToolbarButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
@@ -398,25 +398,25 @@ SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_toolbar->Items.Add( TEXT( "Button 2"));
     m_toolbar->Items[ 2]->OnClick = std::bind( &SecondWindow::ToolbarButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
             
-    m_radioButton0 = std::unique_ptr< thRadioButton>( new thRadioButton( m_mainForm.get(), 5, 35));
+    m_radioButton0 = std::make_unique< thRadioButton>( m_mainForm.get(), 5, 35);
     m_radioButton0->Text = TEXT( "French Script MT");
     m_radioButton0->Width = 200;
     m_radioButton0->Font.SetName( TEXT( "French Script MT"));
     m_radioButton0->Font.SetSize( 20);
             
-    m_radioButton1 = std::unique_ptr< thRadioButton>( new thRadioButton( m_mainForm.get(), 5, m_radioButton0->Y * 2));
+    m_radioButton1 = std::make_unique< thRadioButton>( m_mainForm.get(), 5, m_radioButton0->Y * 2);
     m_radioButton1->Text = TEXT( "Gill Sans Ultra Bold Condensed");
     m_radioButton1->Width = 200;
     m_radioButton1->Font.SetName( TEXT( "Gill Sans Ultra Bold Condensed"));
     m_radioButton1->Font.SetSize( 10);
 
-    m_checkBox0 = std::unique_ptr< thCheckBox>( new thCheckBox( m_mainForm.get(), 5, m_radioButton0->Y * 3));
+    m_checkBox0 = std::make_unique< thCheckBox>( m_mainForm.get(), 5, m_radioButton0->Y * 3);
     m_checkBox0->Text = TEXT( "Wide Latin");
     m_checkBox0->Font.SetName( TEXT( "Wide Latin"));
     m_checkBox0->Font.SetSize( 13);
     m_checkBox0->Width = 200;
 
-    m_label = std::unique_ptr< thLabel>( new thLabel( m_mainForm.get(), 5, m_radioButton0->Y * 4));
+    m_label = std::make_unique< thLabel>( m_mainForm.get(), 5, m_radioButton0->Y * 4);
     m_label->Text = TEXT( "Some random text");
     m_label->Width = 200;
 }
@@ -455,7 +455,7 @@ ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     thForm & parentWindow = *m_myApp.m_mainWindow->m_mainForm;
 
     // Create main window.
-    m_mainForm = std::unique_ptr< thForm>( new thForm( &parentWindow));
+    m_mainForm = std::make_unique< thForm>( &parentWindow);
     m_mainForm->Width = 500;
     m_mainForm->Height = 350;
     m_mainForm->X = 500;
@@ -464,7 +464,7 @@ ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_mainForm->OnClose = std::bind( &ThirdWindow::Form_onClose, this, std::placeholders::_1, std::placeholders::_2);
     
     // Create combo box.
-    m_comboBox = std::unique_ptr< thComboBox>( new thComboBox( m_mainForm.get(), 2, 2));
+    m_comboBox = std::make_unique< thComboBox>( m_mainForm.get(), 2, 2);
     m_comboBox->Width = m_mainForm->Width - 4;
     m_comboBox->Height = 200;
     m_comboBox->Items.Add( TEXT( "Details"));
@@ -477,38 +477,38 @@ ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_comboBox->OnSelectChange = std::bind( &ThirdWindow::ComboBox1_onSelChange, this, std::placeholders::_1, std::placeholders::_2);
     
     // Create edit box.
-    m_editBox = std::unique_ptr< thEditBox>( new thEditBox( m_mainForm.get(), 2, 4 + m_comboBox->Height));
+    m_editBox = std::make_unique< thEditBox>( m_mainForm.get(), 2, 4 + m_comboBox->Height);
     m_editBox->Text = TEXT( "name1");
     
     // Create button.
-    m_addItemButton = std::unique_ptr< thButton>( new thButton( m_mainForm.get(), 2, 4 + m_editBox->Y + m_editBox->Height));
+    m_addItemButton = std::make_unique< thButton>( m_mainForm.get(), 2, 4 + m_editBox->Y + m_editBox->Height);
     m_addItemButton->Text = TEXT( "Item");
     m_addItemButton->OnClick = std::bind( &ThirdWindow::AddItemButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
     
     // Create button.
-    m_addSubtemButton = std::unique_ptr< thButton>( new thButton( m_mainForm.get(), 2, 4 + m_addItemButton->Y + m_addItemButton->Height));
+    m_addSubtemButton = std::make_unique< thButton>( m_mainForm.get(), 2, 4 + m_addItemButton->Y + m_addItemButton->Height);
     m_addSubtemButton->OnClick = std::bind( &ThirdWindow::AddSubtemButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
     m_addSubtemButton->Text = TEXT( "Subitem");
     
     // Create list box.
-    m_listBox = std::unique_ptr< thListBox>( new thListBox( m_mainForm.get(), 2, 4 + m_addSubtemButton->Y + m_addSubtemButton->Height));
+    m_listBox = std::make_unique< thListBox>( m_mainForm.get(), 2, 4 + m_addSubtemButton->Y + m_addSubtemButton->Height);
     m_listBox->Width = m_addSubtemButton->Width;
     m_listBox->Height = 200;
 
     // Create popup submenu
-    m_popupSubMenu = std::unique_ptr< thPopupMenu>( new thPopupMenu());
+    m_popupSubMenu = std::make_unique< thPopupMenu>();
     m_popupSubMenu->Items.Add( TEXT( "Sub option 0"));
     m_popupSubMenu->Items.Add( TEXT( "Sub option 1"));
 
     // Create popup menu
-    m_popupMenu = std::unique_ptr< thPopupMenu>( new thPopupMenu());
+    m_popupMenu = std::make_unique< thPopupMenu>();
     m_popupMenu->Items.Add( TEXT( "Sub menu"));
     m_popupMenu->Items[ 0]->SubMenu = m_popupSubMenu.get();
     m_popupMenu->Items.Add( TEXT( "Add item"));
     m_popupMenu->Items[ 1]->OnClick = std::bind( &ThirdWindow::AddItemButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
     // Create list view
-    m_listView = std::unique_ptr< thListView>( new thListView( m_mainForm.get(), 2 + m_addItemButton->X + 1 + m_addItemButton->Width, 30));
+    m_listView = std::make_unique< thListView>( m_mainForm.get(), 2 + m_addItemButton->X + 1 + m_addItemButton->Width, 30);
     m_listView->Width = 400;
     m_listView->Height = 300;
     m_listView->Anchors.Right = true;
