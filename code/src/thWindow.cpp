@@ -9,7 +9,7 @@
 /* Prototypes */
 LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
-thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY)
+thWindow::thWindow( thWindow * a_pParent, int a_posX, int a_posY)
     :
     m_pParent(nullptr),
     m_hWinHandle(NULL),
@@ -22,29 +22,29 @@ thWindow::thWindow(thWindow * a_pParent, int a_posX, int a_posY)
 {
     TH_ENTER_FUNCTION;
 
-    this->Font.SetParent(this);
+    this->Font.SetParent( this);
 
     m_sWindowArgs = { 0 };
-    m_sWindowArgs.hMenu = reinterpret_cast<HMENU>(this->m_id);;
+    m_sWindowArgs.hMenu = reinterpret_cast< HMENU>( this->m_id);;
     m_sWindowArgs.nX = a_posX;
     m_sWindowArgs.nY = a_posY;
     m_sWindowArgs.nWidth = CW_USEDEFAULT;
     m_sWindowArgs.nHeight = CW_USEDEFAULT;
 
-    if (a_pParent) {
+    if ( a_pParent)
+    {
         m_pParent = a_pParent;
         m_sWindowArgs.hWndParent = m_pParent->m_hWinHandle;
         m_sWindowArgs.hInstance = m_pParent->m_sWindowArgs.hInstance;
         
-        a_pParent->addChildrenWindow(this);
+        a_pParent->addChildrenWindow( this);
     }
-    else {
-        m_sWindowArgs.hInstance = GetModuleHandle(NULL);
-        MSG_WARNING(TEXT("Empty input pointer! Using module handle as parent instance"));
+    else
+    {
+        m_sWindowArgs.hInstance = GetModuleHandle( NULL);
+        MSG_WARNING( TEXT( "Empty input pointer! Using module handle as parent instance"));
     }
 
-    this->Constraints = { 0 };
-    this->m_rcOldPosition = { 0 };
     TH_LEAVE_FUNCTION;
 }
 
@@ -58,29 +58,30 @@ thWindow::~thWindow()
 void thWindow::create()
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     createDebugName();
 
-    if (NULL == m_hWinHandle) {
-        // calculate window client area (no borders)
-        RECT rcAdjWidth = { 0 };
-        BOOL fResult = FALSE;
-        
-        rcAdjWidth = {
+    if ( NULL == m_hWinHandle)
+    {
+        // Set the size, but not the position.
+        RECT rcAdjWidth = {
                 0,
                 0,
                 m_sWindowArgs.nWidth,
                 m_sWindowArgs.nHeight
-        }; // set the size, but not the position
-
-        fResult = AdjustWindowRectEx(
+        };
+        
+        // Calculate window client area (no borders) and adjust the size.
+        BOOL result = AdjustWindowRectEx(
             &rcAdjWidth,
             m_sWindowArgs.dwStyle,
             FALSE,
             m_sWindowArgs.dwExStyle
-            ); // adjust the size
+            );
 
-        if (FALSE == fResult) {
-            MSG_ERROR(TEXT("AdjustWindowRectEx failed with error = 0x%X"), GetLastError());
+        if ( FALSE == result)
+        {
+            MSG_ERROR( TEXT( "AdjustWindowRectEx failed with error = 0x%X"), GetLastError());
         }
 
         m_hWinHandle = CreateWindowEx(
@@ -98,25 +99,27 @@ void thWindow::create()
             m_sWindowArgs.lpParam
             );
 
-        if (m_hWinHandle) {
-            LONG_PTR pUserData = NULL;
-
-            MSG_SUCCESS(TEXT("Created new window: %s with ID=%d"), this->m_name.c_str(), this->m_id);
+        if ( m_hWinHandle)
+        {
+            MSG_SUCCESS( TEXT( "Created new window: %s with ID=%d"), this->m_name.c_str(), this->m_id);
 
             // set defualt fond name and size. It must be done after successfull window creation
-            this->Font.SetName(TH_DEF_APP_FONT_NAME);
-            this->Font.SetSize(TH_DEF_APP_FONT_SIZE);
+            this->Font.SetName( TH_DEF_APP_FONT_NAME);
+            this->Font.SetSize( TH_DEF_APP_FONT_SIZE);
 
-            pUserData = GetWindowLongPtr(m_hWinHandle, GWLP_USERDATA);
+            const LONG_PTR const pUserData = GetWindowLongPtr( m_hWinHandle, GWLP_USERDATA);
 
-            if (0 == pUserData) {
-                SetWindowLongPtr(m_hWinHandle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
+            if ( NULL == pUserData)
+            {
+                // Set 'this' pointer to user data in Window system object so it can be accessed by WinProc.
+                SetWindowLongPtr( m_hWinHandle, GWLP_USERDATA, reinterpret_cast< LONG_PTR>( this));
             }
 
             this->StoreCurrentRect();
         }
-        else {
-            MSG_ERROR(TEXT("Failed to create window: %s, CreateWindowEx returned error: 0x%X"), this->m_name.c_str(), GetLastError());
+        else
+        {
+            MSG_ERROR( TEXT( "Failed to create window: %s, CreateWindowEx returned error: 0x%X"), this->m_name.c_str(), GetLastError());
         }
     }
 
@@ -313,86 +316,103 @@ LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
 // thForm need specialised version
 LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
-    LRESULT      tResult = 1;
+    constexpr LRESULT message_not_proccessed{ 0U};
+    constexpr LRESULT message_proccessed{ 1U};
+
+    LRESULT      result = message_proccessed;
     MINMAXINFO * sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
 
     if (sInfo) {
-        if (this->Constraints.MaxWidth) {
+        if (this->Constraints.MaxWidth)
+        {
             sInfo->ptMaxTrackSize.x = this->Constraints.MaxWidth;
-            tResult = 0;
+            result = message_not_proccessed;
         }
 
-        if (this->Constraints.MaxHeight) {
+        if (this->Constraints.MaxHeight)
+        {
             sInfo->ptMaxTrackSize.y = this->Constraints.MaxHeight;
-            tResult = 0;
+            result = message_not_proccessed;
         }
 
-        if (this->Constraints.MinWidth) {
+        if (this->Constraints.MinWidth)
+        {
             sInfo->ptMinTrackSize.x = this->Constraints.MinWidth;
-            tResult = 0;
+            result = message_not_proccessed;
         }
 
-        if (this->Constraints.MinHeight) {
+        if (this->Constraints.MinHeight)
+        {
             sInfo->ptMinTrackSize.y = this->Constraints.MinHeight;
-            tResult = 0;
+            result = message_not_proccessed;
         }
     }
 
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
 // WPARAM is key code: https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731%28v=vs.85%29.aspx
 // LPARAM is https://msdn.microsoft.com/en-us/library/windows/desktop/ms646280%28v=vs.85%29.aspx
 // note: An application should return zero if it processes this message.
-LRESULT thWindow::onKeyDown(WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thWindow::onKeyDown( WPARAM a_wParam, LPARAM a_lParam)
 {
-    LRESULT tResult = 0;
+    constexpr LRESULT message_not_proccessed{ 0U};
+
+    LRESULT tResult = message_not_proccessed;
 
     return tResult;
 }
 
-LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thWindow::processMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    LRESULT tResult = 0;
-    //TH_ENTER_OBJECT_FUNCTION;
+    constexpr LRESULT message_not_proccessed{ 0U};
 
-    switch (a_uMsg) {
+    LRESULT result = message_not_proccessed;
+
+    switch ( a_uMsg)
+    {
     case WM_NOTIFY:
-        tResult = this->processNotifyMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+        result = this->processNotifyMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
         break;
     case WM_COMMAND:
-        tResult = this->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
-        if (0 == tResult) {
-            tResult = this->processMenuCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+        {
+            result = this->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
+
+            if ( message_not_proccessed == result) {
+                result = this->processMenuCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
+            }
+            break;
         }
-        break;
 #if 0
     case WM_MENUCOMMAND:
         tResult = this->processMenuCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
         break;
 #endif
     case WM_CONTEXTMENU:
-        tResult = this->onContextMenu(a_wParam, a_lParam);
+        result = this->onContextMenu( a_wParam, a_lParam);
         break;
     case WM_GETMINMAXINFO:
-        tResult = onGetMinMax(a_lParam);
+        result = onGetMinMax( a_lParam);
         break;
     case WM_NCCREATE:
-        tResult = this->onNCCreate();
+        result = this->onNCCreate();
         break;
     case WM_NCDESTROY:
-        if (m_pParent) {
-            m_pParent->removeChildrenWindow(this);
+        {
+            if ( m_pParent)
+            {
+                m_pParent->removeChildrenWindow( this);
+            }
+
+            result = this->onDestroy();
+
+            break;
         }
-        tResult = this->onDestroy();
-        break;
     case WM_CREATE:
-        tResult = this->onCreate();
+        result = this->onCreate();
         break;
     case WM_CLOSE:
-        tResult = this->onClose();
+        result = this->onClose();
         break;
 #if 0
     // not needed
@@ -401,71 +421,72 @@ LRESULT thWindow::processMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPAR
         break;
 #endif
     case WM_SIZE:
-        tResult = this->onResize(a_hwnd, a_wParam, a_lParam);
+        result = this->onResize( a_hwnd, a_wParam, a_lParam);
         break;
     case WM_CTLCOLORSTATIC:
         //MSG_ERROR(TEXT("WM_CTLCOLORSTATIC - not supported atm"));
         break;
     case WM_SETTEXT:
-        tResult = this->onSetText(a_lParam);
+        result = this->onSetText( a_lParam);
         break;
     // http://msdn.microsoft.com/en-us/library/windows/desktop/ff468861%28v=vs.85%29.aspx
 #if 0
     case WM_KEYUP:
         break;
     case WM_KEYDOWN:
-        tResult = this->onKeyDown(a_wParam, a_lParam);
+        tResult = this->onKeyDown( a_wParam, a_lParam);
         break;
 #endif
     }
 
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
-LRESULT thWindow::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+// Pass command message to children.
+LRESULT thWindow::processCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    LRESULT     tResult = 0;
-//  thWindow *  pFoundChildren = NULL;
 
-    tResult = SendMessage((HWND)a_lParam, WM_COMMAND, a_wParam, a_lParam);
+    LRESULT result = SendMessage( reinterpret_cast< HWND>( a_lParam), WM_COMMAND, a_wParam, a_lParam);
 
     TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
-LRESULT thWindow::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+// Pass command message to menu.
+LRESULT thWindow::processMenuCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    LRESULT     tResult = 0;
+    constexpr LRESULT message_not_proccessed{ 0U};
 
-    if (PopupMenu) {
-        tResult = PopupMenu->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+    LRESULT result = message_not_proccessed;
+
+    if ( PopupMenu) {
+        result = PopupMenu->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
 LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
-    LRESULT     tResult = 0;
-    NMHDR *     pData = NULL;
+    constexpr LRESULT message_not_proccessed{ 0U};
 
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
-    if (pData) {
-        tResult = SendMessage(pData->hwndFrom, WM_NOTIFY, a_wParam, a_lParam);
+    LRESULT result = message_not_proccessed;
+
+    const NMHDR * const pData = reinterpret_cast< NMHDR*>( a_lParam);
+
+    if ( pData)
+    {
+        result = SendMessage( pData->hwndFrom, WM_NOTIFY, a_wParam, a_lParam);
     }
 
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
 /*
-    pre-condition:
-        m_name should be already set by class deriving from thWindow
+    pre-condition: m_name should be already set by class deriving from thWindow
 */
 void thWindow::createDebugName()
 {
@@ -506,7 +527,6 @@ void thWindow::addChildrenWindow(thWindow * a_pChildren)
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
-
 
 void thWindow::removeChildrenWindow(thWindow * a_pChildren)
 {
@@ -646,82 +666,83 @@ void thWindow::GetRect(RECT & a_rcOutput)
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-HWND thWindow::GetHandle(void) const
- {
+const HWND thWindow::GetHandle(void) const
+{
      return this->m_hWinHandle; 
 }
 
 // Parent Window Procedure
-LRESULT CALLBACK WinProc(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT CALLBACK WinProc( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    LONG_PTR    pUserData = NULL;
-    LRESULT     tResult = 0;
-    thWindow *  pWindow = NULL;
+    constexpr LRESULT message_not_proccessed{ 0U};
 
-    pUserData = GetWindowLongPtr(a_hwnd, GWLP_USERDATA);
-    pWindow = reinterpret_cast<thWindow *>(pUserData);
+    LRESULT result = message_not_proccessed;
 
-    if (WM_NCCREATE == a_uMsg) {
-        LPCREATESTRUCT cs = (LPCREATESTRUCT)a_lParam;
-        if (cs->lpCreateParams) {
-            SetWindowLongPtr(a_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(cs->lpCreateParams));
-            pWindow = reinterpret_cast<thWindow*>(cs->lpCreateParams);
-        }
-        else {
-            MSG_ERROR(TEXT("CRITICAL ERROR - no 'this' pointer in CreateWindowEx Param!"));
-        }
-    }
+    // Retrieve 'this' pointer from passed by CreateWindowEx.
+    const LONG_PTR      pUserData = GetWindowLongPtr( a_hwnd, GWLP_USERDATA);
+    thWindow * const    pWindow = reinterpret_cast< thWindow *>( pUserData);
 
-    if (pWindow) {
-        tResult = pWindow->processMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
-        if (0 == tResult) {
-            thForm * pForm = NULL;
+    if ( pWindow)
+    {
+        result = pWindow->processMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
 
-            pForm = dynamic_cast<thForm*>(pWindow);
+        if ( message_not_proccessed == result)
+        {
+            // Messages passed to MDIClient must be passed to DefFrameProc.
+            const thForm * const pForm = dynamic_cast< thForm*>( pWindow);
 
-            if (pForm &&  pForm->m_hMDIClient) {
-                tResult = DefFrameProc(a_hwnd, pForm->m_hMDIClient, a_uMsg, a_wParam, a_lParam);
+            if ( pForm && pForm->m_hMDIClient)
+            {
+                result = DefFrameProc( a_hwnd, pForm->m_hMDIClient, a_uMsg, a_wParam, a_lParam);
             }
-            else {
-                tResult = DefWindowProc(a_hwnd, a_uMsg, a_wParam, a_lParam);
+            else
+            {
+                result = DefWindowProc( a_hwnd, a_uMsg, a_wParam, a_lParam);
             }
         }
     }
-    else {
-        tResult = DefWindowProc(a_hwnd, a_uMsg, a_wParam, a_lParam);
+    else
+    {
+        result = DefWindowProc( a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 
-    return tResult;
+    return result;
 }
 
 // Children Window Procedure
-LRESULT CALLBACK ChildWindProc(HWND a_hWnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam,
-    UINT_PTR a_uIdSubclass, DWORD_PTR a_dwRefData)
+LRESULT CALLBACK ChildWindProc(
+    HWND a_hWnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam, UINT_PTR a_uIdSubclass, DWORD_PTR a_dwRefData
+)
 {
-    LRESULT     tResult = 0;
-    thWindow *  pWindow = NULL;
+    constexpr LRESULT message_not_proccessed{ 0U};
 
-    if (WM_NCDESTROY == a_uMsg) {
-        BOOL fResult = FALSE;
+    LRESULT result = message_not_proccessed;
 
-        fResult = RemoveWindowSubclass(a_hWnd, ChildWindProc, a_uIdSubclass);
+    if ( WM_NCDESTROY == a_uMsg)
+    {
+        BOOL fResult = RemoveWindowSubclass( a_hWnd, ChildWindProc, a_uIdSubclass);
 
-        if (FALSE == fResult) {
-            MSG_ERROR(TEXT("RemoveWindowSubclass failed"));
+        if ( FALSE == fResult)
+        {
+            MSG_ERROR( TEXT( "RemoveWindowSubclass failed"));
         }
     }
 
-    pWindow = reinterpret_cast<thWindow*>(a_dwRefData);
+    thWindow * const pWindow = reinterpret_cast<thWindow*>(a_dwRefData);
 
-    if (pWindow) {
-        tResult = pWindow->processMessage(a_hWnd, a_uMsg, a_wParam, a_lParam);
-        if (0 == tResult) {
-            tResult = DefSubclassProc(a_hWnd, a_uMsg, a_wParam, a_lParam);
+    if ( pWindow)
+    {
+        result = pWindow->processMessage( a_hWnd, a_uMsg, a_wParam, a_lParam);
+
+        if ( message_not_proccessed == result)
+        {
+            result = DefSubclassProc( a_hWnd, a_uMsg, a_wParam, a_lParam);
         }
     }
-    else {
-        tResult = DefSubclassProc(a_hWnd, a_uMsg, a_wParam, a_lParam);
+    else
+    {
+        result = DefSubclassProc( a_hWnd, a_uMsg, a_wParam, a_lParam);
     }
 
-    return tResult;
+    return result;
 }

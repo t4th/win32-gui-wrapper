@@ -4,17 +4,6 @@
 
 thPosX::thPosX(thWindow & a_pParent) : thParam(a_pParent)
 {
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
-}
-
-
-thPosX::~thPosX()
-{
-    TH_ENTER_FUNCTION;
-
-    TH_LEAVE_FUNCTION;
 }
 
 const LONG thPosX::getValue(void) const

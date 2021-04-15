@@ -29,7 +29,7 @@ public:
     {
     }
 
-    ~thParam() {}
+    virtual ~thParam() = default;
 
     inline thParam & operator=(const T & a_arg)
     {
@@ -146,16 +146,9 @@ public:
 
     thSetGetStyle(thWindow & a_pParent) : thParam(a_pParent)
     {
-        TH_ENTER_FUNCTION;
-
-        TH_LEAVE_FUNCTION;
     }
-    ~thSetGetStyle()
-    {
-        TH_ENTER_FUNCTION;
 
-        TH_LEAVE_FUNCTION;
-    }
+    ~thSetGetStyle() = default;
 
     thSetGetStyle & operator =(const bool_t & a_arg)
     {

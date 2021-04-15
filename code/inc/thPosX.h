@@ -10,7 +10,7 @@ private:
 public:
                 thPosX() = delete;
                 thPosX(thWindow & a_pParent);
-                ~thPosX();
+                ~thPosX() = default;
 
     thPosX &     operator =(const LONG &);
     thPosX &     operator =(const thPosX &);

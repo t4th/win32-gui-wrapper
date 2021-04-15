@@ -12,7 +12,7 @@ private:
 public:
                 thPosY() = delete;
                 thPosY(thWindow & a_pParent);
-                ~thPosY();
+                ~thPosY() = default;
 
     thPosY &     operator =(const LONG &);
     thPosY &     operator =(const thPosY &);

@@ -67,7 +67,7 @@ private:
     std::vector<thWindow*>  m_children;
 
     // old child window position. Used by Anchors.
-    RECT                    m_rcOldPosition;
+    RECT                    m_rcOldPosition{};
 
     void                    GetRect(RECT &);
 public:
@@ -91,10 +91,10 @@ public:
     } Anchors;
 
     struct {
-        int MinHeight;
-        int MinWidth;
-        int MaxHeight;
-        int MaxWidth;
+        int MinHeight{ 0};
+        int MinWidth{ 0};
+        int MaxHeight{ 0};
+        int MaxWidth{ 0};
     } Constraints;
 
     void                    Show(void);
@@ -116,8 +116,8 @@ public:
 #if 1
     // win32 specific
     // this should be hidden behind public interface
-    void                    StoreCurrentRect(void);
-    HWND                    GetHandle(void) const;
+    void                    StoreCurrentRect();
+    const HWND              GetHandle() const;
 #endif
 };
 
