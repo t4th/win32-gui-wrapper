@@ -43,9 +43,9 @@ thListView::thListView( thWindow * a_pParent, int a_posX, int a_posY)
 
     this->create();
 
-    ListView_SetExtendedListViewStyle(this->m_hWinHandle, LVS_EX_FULLROWSELECT);
+    ListView_SetExtendedListViewStyle( this->m_hWinHandle, LVS_EX_FULLROWSELECT);
 
-    BOOL fResult = SetWindowSubclass( this->m_hWinHandle, ChildWindProc, 0, ( DWORD_PTR)this);
+    BOOL fResult = SetWindowSubclass( this->m_hWinHandle, ChildWindProc, 0, reinterpret_cast< DWORD_PTR>( this));
 
     if ( FALSE == fResult)
     {

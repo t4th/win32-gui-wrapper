@@ -18,11 +18,10 @@ thWindow::thWindow( thWindow * a_pParent, int a_posX, int a_posY)
     Width(*this),
     Height(*this),
     X(*this),
-    Y(*this)
+    Y(*this),
+    Font(*this)
 {
     TH_ENTER_FUNCTION;
-
-    this->Font.SetParent( this);
 
     m_sWindowArgs = { 0 };
     m_sWindowArgs.hMenu = reinterpret_cast< HMENU>( this->m_id);;

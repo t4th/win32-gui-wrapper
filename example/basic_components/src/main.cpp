@@ -330,7 +330,7 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
 
             if ( buffer_size_in_bytes)
             {
-                std::unique_ptr< uint8_t[]> read_buffer( new uint8_t[ buffer_size_in_bytes]);
+                std::unique_ptr< uint8_t[]> read_buffer( std::make_unique< uint8_t[]>( buffer_size_in_bytes));
 
                 size_t number_of_bytes_read = 0;
 
