@@ -9,15 +9,15 @@ class thListViewColumn
 {
 protected:
 private:
-    const thListView *  m_pParent{nullptr}; // set in c-tor
+    thListView &        m_Parent;
     thString            m_text;
     int                 m_index;
 
 public:
                         thListViewColumn() = delete;
-                        thListViewColumn(const thListView *, const thString &);
-                        ~thListViewColumn();
+                        thListViewColumn( thListView &, const thString &);
+                        ~thListViewColumn() = default;
 
-    int                 GetIndex(void) const;
+    int                 GetIndex() const;
     //void                Text() {}
 };

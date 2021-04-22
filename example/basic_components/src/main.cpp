@@ -563,7 +563,7 @@ thResult_t ThirdWindow::AddSubtemButton_onClick(thObject * const sender, thEvent
     {
         for ( int col = 1; col < m_listView->Columns.GetCount(); ++col)
         {
-            m_listView->Items[ row]->SubItems[ col].SetText( NumToString( col));
+            m_listView->Items[ row].SubItems[ col].SetText( NumToString( col));
         }
     }
 

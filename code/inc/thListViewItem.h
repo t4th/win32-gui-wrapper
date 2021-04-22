@@ -13,14 +13,13 @@ class thListViewSubItemList
 {
 protected:
 private:
-    const thListViewItem *  m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
+    thListViewItem &        m_Parent;
     thString                m_text;
 
 public:
-                            thListViewSubItemList();
-                            ~thListViewSubItemList();
+                            thListViewSubItemList( thListViewItem & a_Parent);
+                            ~thListViewSubItemList() = default;
 
-    void                    SetParent(thListViewItem *);
     thListViewSubItem       operator[] (int);
 };
 
@@ -29,24 +28,23 @@ class thListViewItem
 {
 protected:
 private:
-    const thListView *      m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
+    thListView &            m_Parent;
     thString                m_text;
     int                     m_index;
 public:
 
                             thListViewItem() = delete;
-                            thListViewItem(const thListView *, const thString &);
-                            ~thListViewItem();
+                            thListViewItem( thListView & a_Parent, const thString & a_itemText);
 
-    const thListView *      GetParent(void) const;
-    int                     GetIndex(void) const;
+    thListView &            GetParent() const;
+    int                     GetIndex() const;
 
     thListViewSubItemList   SubItems;
 
-    void                    SetText(thString);
+    void                    SetText( const thString & a_itemText);
 
 #if 0
-    thString                GetText(void);
+    thString                GetText();
 #endif
 };
 
@@ -56,17 +54,16 @@ class thListViewSubItem
 {
 protected:
 private:
-    const thListViewItem *  m_pParent{nullptr}; // dont set it explicitly. Use SetParent instead.
+    thListViewItem &        m_Parent;
     thString                m_text;
     int                     m_nParentColumn;
 public:
-                            thListViewSubItem(void) = delete;
-                            thListViewSubItem(const thListViewItem *, int);
-                            ~thListViewSubItem(void);
+                            thListViewSubItem() = delete;
+                            thListViewSubItem( thListViewItem & a_Parent, int a_nColumn);
 
-    void                    SetText(thString);
+    void                    SetText( const thString & a_itemText);
 
 #if 0
-    thString                GetText(void);
+    thString                GetText();
 #endif
 };

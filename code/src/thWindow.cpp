@@ -358,9 +358,7 @@ LRESULT thWindow::onKeyDown( WPARAM a_wParam, LPARAM a_lParam)
 {
     constexpr LRESULT message_not_proccessed{ 0U};
 
-    LRESULT tResult = message_not_proccessed;
-
-    return tResult;
+    return message_not_proccessed;
 }
 
 LRESULT thWindow::processMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
