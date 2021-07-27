@@ -11,7 +11,8 @@ Due to some new stars I added some architecture overview, smart pointers where a
 I have created this project when I was pretty much C++ beginner and Win32 was already called ancient. Still, I got some stars recently, which motivated me to check it again :). Since I am way more experienced than 10 years ago, I found quite the amount of bugs and bad practices, which hopefully I will fix in my spare time.
 
 ## Goal
-My original goal was to wrap native Windows C code with C++ classes like in Borland C++ Builder (now Embarcadero).
+Normally win32 applications are built around sequential message dispatcher.
+Inspired by Borland C++ Builder I decided to make C++ event driven wrapper.
 
 For example:
 
@@ -60,15 +61,60 @@ form->Show();
 
 ## How to use
 Project is using external components which are built into static libraries. Win32 Gui itself is also built into library.
+
 Since this is Windows only, use free Visual Studio Community to open solution file Win32_gui_wrapper.sln:
 - select solution platform (like x64)
 - You **MUST** select example project as startup project for Run (F5) to work (right mouse button on project name in solution explorer, andchoose "Set as startup project" in the menu)
 - build (ctrl+shift+b) all and Run (F5)
 - amount of logs is configured with TH_DEBUG_LEVEL in thConfig.h. Set it to 1 for optimal logs and 2 for ALL logs. It can slow application startup due to amount of logs.
 
-Usage examples can be selected in solution explorer from within VS.
+Note1: win32 code is using many different static libraries. You can check these in example project options under linker->input additional dependencies.
+Note2: the project is using some C++17 features
+
+### Use in your project
+Easiest way is to copy example project and modify.
+
+The other way is to just build Win32_gui project into static LIB and then adding it with other required dependencies into desired project.
+Simplest window:
+
+```c++
+#include "thWin32App.h" // master header of win32 gui wrapper
+
+ int main()
+{
+    thWin32App app; // application instance
+    thForm * p_mainWindow = new thForm();
+
+    p_mainWindow->Width = 300;
+    p_mainWindow->Height = 200;
+    p_mainWindow->Text = TEXT( "Application Example"); // window caption
+
+    // register callback needed to quit application when main window is destroyed
+    p_mainWindow->OnDestroy = []( thObject *, thEventParams_t)
+    {
+        constexpr const thResult_t quit_application = 1;
+        return quit_application;
+    };
+
+    p_mainWindow->Show();
+
+    app.Run(); // this function exits when main window is destroyed and return 1
+
+    delete p_mainWindow;
+
+    return 0;
+}
+```
 
 ## Example
+To try examples, in Solution Explorer select choosen one as Startup Project and press F5:
+![Alt arch](/doc/doc1.png?raw=true)
+
+### Basic components
+Example using different kind of windows objects, like: MDI, buttons, combobox, etc.
+![Alt arch](/doc/basic_example.png?raw=true)
+
+### Calculator
 Example int32 calculator.
 ![Alt arch](/doc/calc_example.png?raw=true)
 
