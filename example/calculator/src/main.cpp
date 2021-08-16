@@ -215,256 +215,178 @@ CalculatorGui::CalculatorGui()
         m_InputEditBox->Disable();
         m_InputEditBox->Text = L"0";
     }
+    
+
+    // Helper lambda to create button window objects.
+    auto createButton = [](
+        CalculatorGui &                 a_CalculatorGui,
+        std::unique_ptr< thButton> &    a_button,
+        thString                        a_button_name,
+        int                             a_x_button_position,
+        int                             a_y_button_position,
+        uint32_t                        a_button_font_size
+        )
+    {
+        a_button = std::make_unique< thButton>( a_CalculatorGui.m_MainWindow.get(), a_x_button_position, a_y_button_position);
+
+        a_button->Width = 75;
+        a_button->Height = 50;
+        a_button->Font.SetSize( a_button_font_size);
+        a_button->Text = a_button_name;
+        a_button->OnClick = std::bind( &CalculatorGui::Button_onClick, &a_CalculatorGui, std::placeholders::_1, std::placeholders::_2 );
+    };
 
     // Create Button 7.
     {
-        const int x_position = 5;
-        const int y_position = 60;
+        const auto x_position = 5;
+        const auto y_position = 60;
+        const auto font_size =  15;
 
-        m_Number7Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-
-        m_Number7Button->Width = 75;
-        m_Number7Button->Height = 50;
-        m_Number7Button->Font.SetSize(15);
-        m_Number7Button->Text = L"7";
-        m_Number7Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2 );
+        createButton( *this, m_Number7Button, L"7", x_position, y_position, font_size);
     }
 
     // Create Button 8.
     {
-        const int x_position = 5 + m_Number7Button->Width;
-        const int y_position = 60;
+        const auto x_position = 5 + m_Number7Button->Width;
+        const auto y_position = 60;
+        const auto font_size =  15;
 
-        m_Number8Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-
-        m_Number8Button->Width = 75;
-        m_Number8Button->Height = 50;
-        m_Number8Button->Font.SetSize(15);
-        m_Number8Button->Text = L"8";
-        m_Number8Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number8Button, L"8", x_position, y_position, font_size);
     }
     
     // Create Button 9.
     {
-        const int x_position = 5 + m_Number8Button->Width + m_Number7Button->Width;
-        const int y_position = 60;
+        const auto x_position = 5 + m_Number8Button->Width + m_Number7Button->Width;
+        const auto y_position = 60;
+        const auto font_size =  15;
 
-        m_Number9Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number9Button->Width = 75;
-        m_Number9Button->Height = 50;
-        m_Number9Button->Font.SetSize(15);
-        m_Number9Button->Text = L"9";
-        m_Number9Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number9Button, L"9", x_position, y_position, font_size);
     }
     
     // Create Button 4.
     {
-        const int x_position = 5;
-        const int y_position = 60 + 50;
+        const auto x_position = 5;
+        const auto y_position = 60 + 50;
+        const auto font_size =  15;
 
-        m_Number4Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number4Button->Width = 75;
-        m_Number4Button->Height = 50;
-        m_Number4Button->Font.SetSize(15);
-        m_Number4Button->Text = L"4";
-        m_Number4Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number4Button, L"4", x_position, y_position, font_size);
     }
     
     // Create Button 5.
     {
-        const int x_position = 5 + m_Number4Button->Width;
-        const int y_position = 60 + 50;
+        const auto x_position = 5 + m_Number4Button->Width;
+        const auto y_position = 60 + 50;
+        const auto font_size =  15;
 
-        m_Number5Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number5Button->Width = 75;
-        m_Number5Button->Height = 50;
-        m_Number5Button->Font.SetSize(15);
-        m_Number5Button->Text = L"5";
-
-        m_Number5Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number5Button, L"5", x_position, y_position, font_size);
     }
     
     // Create Button 6.
     {
-        const int x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
-        const int y_position = 60 + 50;
+        const auto x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
+        const auto y_position = 60 + 50;
+        const auto font_size =  15;
 
-        m_Number6Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number6Button->Width = 75;
-        m_Number6Button->Height = 50;
-        m_Number6Button->Font.SetSize(15);
-        m_Number6Button->Text = L"6";
-
-        m_Number6Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number6Button, L"6", x_position, y_position, font_size);
     }
 
     // Create Button 1.
     {
-        const int x_position = 5;
-        const int y_position = 60 + 50 + 50;
+        const auto x_position = 5;
+        const auto y_position = 60 + 50 + 50;
+        const auto font_size =  15;
 
-        m_Number1Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number1Button->Width = 75;
-        m_Number1Button->Height = 50;
-        m_Number1Button->Font.SetSize(15);
-        m_Number1Button->Text = L"1";
-
-        m_Number1Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number1Button, L"1", x_position, y_position, font_size);
     }
     
     // Create Button 2.
     {
-        const int x_position = 5 + m_Number4Button->Width;
-        const int y_position = 60 + 50 + 50;
+        const auto x_position = 5 + m_Number4Button->Width;
+        const auto y_position = 60 + 50 + 50;
+        const auto font_size =  15;
 
-        m_Number2Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number2Button->Width = 75;
-        m_Number2Button->Height = 50;
-        m_Number2Button->Font.SetSize(15);
-        m_Number2Button->Text = L"2";
-
-        m_Number2Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number2Button, L"2", x_position, y_position, font_size);
     }
     
     // Create Button 3.
     {
-        const int x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
-        const int y_position = 60 + 50 + 50;
+        const auto x_position = 5 + m_Number4Button->Width + m_Number5Button->Width;
+        const auto y_position = 60 + 50 + 50;
+        const auto font_size =  15;
 
-        m_Number3Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number3Button->Width = 75;
-        m_Number3Button->Height = 50;
-        m_Number3Button->Font.SetSize(15);
-        m_Number3Button->Text = L"3";
-
-        m_Number3Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number3Button, L"3", x_position, y_position, font_size);
     }
 
     // Create Button 0.
     {
-        const int x_position = 5 + m_Number4Button->Width;
-        const int y_position = 60 + 50 + 50 + 50;
+        const auto x_position = 5 + m_Number4Button->Width;
+        const auto y_position = 60 + 50 + 50 + 50;
+        const auto font_size =  15;
 
-        m_Number0Button = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_Number0Button->Width = 75;
-        m_Number0Button->Height = 50;
-        m_Number0Button->Font.SetSize(15);
-        m_Number0Button->Text = L"0";
-
-        m_Number0Button->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_Number0Button, L"0", x_position, y_position, font_size);
     }
     
     // Create plus Button.
     {
-        const int x_position = 15 + 3* m_Number4Button->Width;
-        const int y_position = 60;
+        const auto x_position = 15 + 3* m_Number4Button->Width;
+        const auto y_position = 60;
+        const auto font_size =  20;
 
-        m_PlusButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_PlusButton->Width = 75;
-        m_PlusButton->Height = 50;
-        m_PlusButton->Font.SetSize(20);
-        m_PlusButton->Text = L"+";
-
-        m_PlusButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_PlusButton, L"+", x_position, y_position, font_size);
     }
 
     // Create minus Button.
     {
-        const int x_position = 15 + 3* m_Number4Button->Width;
-        const int y_position = 60 + 50;
+        const auto x_position = 15 + 3* m_Number4Button->Width;
+        const auto y_position = 60 + 50;
+        const auto font_size =  20;
 
-        m_MinusButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_MinusButton->Width = 75;
-        m_MinusButton->Height = 50;
-        m_MinusButton->Font.SetSize(20);
-        m_MinusButton->Text = L"-";
-
-        m_MinusButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_MinusButton, L"-", x_position, y_position, font_size);
     }
 
     // Create multiply Button.
     {
-        const int x_position = 15 + 3* m_Number4Button->Width;
-        const int y_position = 60 + 50 + 50;
+        const auto x_position = 15 + 3* m_Number4Button->Width;
+        const auto y_position = 60 + 50 + 50;
+        const auto font_size =  20;
 
-        m_MultiplyButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_MultiplyButton->Width = 75;
-        m_MultiplyButton->Height = 50;
-        m_MultiplyButton->Font.SetSize(20);
-        m_MultiplyButton->Text = L"X";
-
-        m_MultiplyButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_MultiplyButton, L"x", x_position, y_position, font_size);
     }
 
     // Create division Button.
     {
-        const int x_position = 15 + 3* m_Number4Button->Width;
-        const int y_position = 60 + 50 + 50 + 50;
+        const auto x_position = 15 + 3* m_Number4Button->Width;
+        const auto y_position = 60 + 50 + 50 + 50;
+        const auto font_size =  20;
 
-        m_DivisionButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_DivisionButton->Width = 75;
-        m_DivisionButton->Height = 50;
-        m_DivisionButton->Font.SetSize(20);
-        m_DivisionButton->Text = L"÷";
-
-        m_DivisionButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_DivisionButton, L"÷", x_position, y_position, font_size);
     }
 
     // Create clear Button.
     {
-        const int x_position = 15 + 4* m_Number4Button->Width;
-        const int y_position = 60;
+        const auto x_position = 15 + 4* m_Number4Button->Width;
+        const auto y_position = 60;
+        const auto font_size =  20;
 
-        m_ClearButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_ClearButton->Width = 75;
-        m_ClearButton->Height = 50;
-        m_ClearButton->Font.SetSize(20);
-        m_ClearButton->Text = L"CLR";
-
-        m_ClearButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_ClearButton, L"CLR", x_position, y_position, font_size);
     }
 
     // Create minus Button.
     {
-        const int x_position = 15 + 4* m_Number4Button->Width;
-        const int y_position = 60 + 50;
+        const auto x_position = 15 + 4* m_Number4Button->Width;
+        const auto y_position = 60 + 50;
+        const auto font_size =  20;
 
-        m_DeleteButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_DeleteButton->Width = 75;
-        m_DeleteButton->Height = 50;
-        m_DeleteButton->Font.SetSize(20);
-        m_DeleteButton->Text = L"DEL";
-
-        m_DeleteButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_DeleteButton, L"DEL", x_position, y_position, font_size);
     }
 
     // Create result Button.
     {
-        const int x_position = 15 + 4* m_Number4Button->Width;
-        const int y_position = 60 + 50 + 50 + 50;
+        const auto x_position = 15 + 4* m_Number4Button->Width;
+        const auto y_position = 60 + 50 + 50 + 50;
+        const auto font_size =  20;
 
-        m_ResultButton = std::make_unique< thButton>( m_MainWindow.get(), x_position, y_position);
-    
-        m_ResultButton->Width = 75;
-        m_ResultButton->Height = 50;
-        m_ResultButton->Font.SetSize(20);
-        m_ResultButton->Text = L"=";
-
-        m_ResultButton->OnClick = std::bind( &CalculatorGui::Button_onClick, this, std::placeholders::_1, std::placeholders::_2);
+        createButton( *this, m_ResultButton, L"=", x_position, y_position, font_size);
     }
 
     m_MainWindow->Show(); // Show main window.
@@ -521,7 +443,7 @@ thResult_t CalculatorGui::Button_onClick( thObject * sender, thEventParams_t)
         }
     }
 
-    // Check functinal buttons.
+    // Check functional buttons.
 
     // Plus
     if ( m_PlusButton.get() == pressed_button)
