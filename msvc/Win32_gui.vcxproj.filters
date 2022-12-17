@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\code\src\thApplication.cpp">
-      <Filter>code\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\code\src\thButton.cpp">
       <Filter>code\src</Filter>
     </ClCompile>
@@ -234,9 +231,6 @@
       <Filter>code\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\code\inc\thWindowStyles.h">
-      <Filter>code\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\code\inc\thApplication.h">
       <Filter>code\inc</Filter>
     </ClInclude>
     <ClInclude Include="..\code\inc\thButton.h">

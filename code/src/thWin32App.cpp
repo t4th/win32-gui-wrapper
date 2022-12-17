@@ -11,37 +11,37 @@ namespace
 {
     void translateMessage( MSG & a_message)
     {
-            BOOL message_translated = FALSE;
+        BOOL message_translated = FALSE;
 
-            // Capture default shortcuts for MDI client (like ctrl + tab).
-            if ( g_pMDI_client)
-            {
-                HWND mdi_client_handle = g_pMDI_client->GetHandle();
+        // Capture default shortcuts for MDI client (like ctrl + tab).
+        if ( g_pMDI_client)
+        {
+            HWND mdi_client_handle = g_pMDI_client->GetHandle();
             
-                message_translated = TranslateMDISysAccel( mdi_client_handle, &a_message);
-            }
+            message_translated = TranslateMDISysAccel( mdi_client_handle, &a_message);
+        }
 
-            if ( FALSE == message_translated)
+        if ( FALSE == message_translated)
+        {
+            // Each thForm key press must be translated separately.
+            // Otherwise TAB key wont switch Focus, etc.
+            for ( const auto i: g_forms)
             {
-                // Each thForm key press must be translated separately.
-                // Otherwise TAB key wont switch Focus, etc.
-                for ( const auto i: g_forms)
-                {
-                    HWND form_handle = i->GetHandle();
-                    message_translated = IsDialogMessage( form_handle, &a_message);
+                HWND form_handle = i->GetHandle();
+                message_translated = IsDialogMessage( form_handle, &a_message);
 
-                    if ( FALSE != message_translated)
-                    {
-                        break;
-                    }
+                if ( FALSE != message_translated)
+                {
+                    break;
                 }
             }
+        }
 
-            if ( FALSE == message_translated)
-            {
-                TranslateMessage( &a_message);
-                DispatchMessage( &a_message);
-            }
+        if ( FALSE == message_translated)
+        {
+            TranslateMessage( &a_message);
+            DispatchMessage( &a_message);
+        }
     }
 }
 
@@ -74,6 +74,7 @@ int thWin32App::Run()
         case -1:
             // This is hilarious, but win32 BOOL can actually return -1,
             // which indicate that error occurred.
+            MSG_ERROR(TEXT("GetMessage failed with error = 0x%X"), GetLastError());
             break;
         default:
             // Normal message.

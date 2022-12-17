@@ -1,5 +1,4 @@
 #pragma once
-#include "thApplication.h"
 #include "thWin32Logger.h"
 #include "thWindow.h"
 #include "thForm.h"
@@ -22,7 +21,8 @@
 #include "thListView.h"
 #include "thListBox.h"
 
-class thWin32App : public thApplication
+// Class abstracting the application, which provide implementation of the main loop.
+class thWin32App
 {
 public:
                  thWin32App() = default;

@@ -52,7 +52,7 @@ class MainWindow
 
     private:
         thResult_t CreateMdiChild_onClick( thObject * sender, thEventParams_t info);
-        thResult_t MdiChild_onDestroy( thObject * pOwner, thEventParams_t info);
+        thResult_t MdiChild_onDestroy( thObject * sender, thEventParams_t info);
         thResult_t ShowSecondForm_onClick( thObject * sender, thEventParams_t info);
         thResult_t ShowThirdForm_onClick( thObject * sender, thEventParams_t info);
         thResult_t MenuCascade_onClick( thObject * sender, thEventParams_t info);

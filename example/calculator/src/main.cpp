@@ -233,7 +233,10 @@ CalculatorGui::CalculatorGui()
         a_button->Height = 50;
         a_button->Font.SetSize( a_button_font_size);
         a_button->Text = a_button_name;
+
+        // Register callback on single and double click, since double click can interrupt single one when fast clicking.
         a_button->OnClick = std::bind( &CalculatorGui::Button_onClick, &a_CalculatorGui, std::placeholders::_1, std::placeholders::_2 );
+        a_button->OnDoubleClicked = std::bind( &CalculatorGui::Button_onClick, &a_CalculatorGui, std::placeholders::_1, std::placeholders::_2 );
     };
 
     // Create Button 7.

@@ -1,9 +1,9 @@
 #include "thButton.h"
 
 /* Defines */
-#define CLASS_NAME TEXT("thButton")
-#define WIN32_CLASS_NAME TEXT("BUTTON")
-#define DEFAULT_TEXT TEXT("Caption")
+#define CLASS_NAME TEXT( "thButton")
+#define WIN32_CLASS_NAME TEXT( "BUTTON")
+#define DEFAULT_TEXT TEXT( "Caption")
 
 #define DEFAULT_WIDTH  75
 #define DEFAULT_HEIGHT 25
@@ -11,10 +11,10 @@
 /* Local Memory */
 int thButton::m_indexPool = 1;
 
-thButton::thButton(thWindow * a_pParent, int a_posX, int a_posY)
+thButton::thButton( thWindow * a_pParent, int a_posX, int a_posY)
     : 
-    thWindow(a_pParent, a_posX, a_posY),
-    DefaultPushStyle(*this)
+    thWindow( a_pParent, a_posX, a_posY),
+    DefaultPushStyle( *this)
 {
     TH_ENTER_FUNCTION;
 
@@ -26,15 +26,14 @@ thButton::thButton(thWindow * a_pParent, int a_posX, int a_posY)
     this->m_sWindowArgs.dwStyle =       WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON | BS_NOTIFY;
     this->m_sWindowArgs.nWidth =        DEFAULT_WIDTH;
     this->m_sWindowArgs.nHeight =       DEFAULT_HEIGHT;
-    this->m_sWindowArgs.hMenu =         reinterpret_cast<HMENU>(this->m_id);
+    this->m_sWindowArgs.hMenu =         reinterpret_cast< HMENU>( this->m_id);
     this->m_sWindowArgs.lpParam =       this;
 
     this->create();
 
-    BOOL fResult = SetWindowSubclass(this->m_hWinHandle, ChildWindProc, 0, (DWORD_PTR)this);
-
-    if (FALSE == fResult) {
-        MSG_ERROR(TEXT("SetWindowSubclass failed with error = 0x%X"), GetLastError());
+    if ( FALSE == SetWindowSubclass( this->m_hWinHandle, ChildWindProc, 0, reinterpret_cast< DWORD_PTR>( this)))
+    {
+        MSG_ERROR( TEXT( "SetWindowSubclass failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_FUNCTION;
@@ -42,134 +41,182 @@ thButton::thButton(thWindow * a_pParent, int a_posX, int a_posY)
 
 thButton::~thButton()
 {
-    TH_ENTER_OBJECT_FUNCTION;
-    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 int thButton::getDebugIndex()
 {
     TH_ENTER_OBJECT_FUNCTION;
-    int dReturn = this->m_indexPool;
+
+    int index = this->m_indexPool;
     this->m_indexPool++;
+
     TH_LEAVE_OBJECT_FUNCTION;
-    return dReturn;
+    return index;
 }
 
-LRESULT thButton::processCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thButton::processCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0; // should return 1 if not used (no CB registered)
+    constexpr auto callback_called = 1;
+    constexpr auto callback_not_found = 0;
 
-    if (LOWORD(a_wParam) == static_cast<WORD>(this->m_id)) {
-        switch (HIWORD(a_wParam)) {
+    LRESULT result = callback_not_found;
+
+    if ( LOWORD( a_wParam) == static_cast< WORD>( this->m_id))
+    {
+        switch ( HIWORD( a_wParam))
+        {
         case BN_CLICKED:
-            MSG_LOG(TEXT("BN_CLICKED"));
-            if (nullptr != OnClick) {
-                OnClick(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_CLICKED"));
+
+                if ( OnClick)
+                {
+                    OnClick( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_PAINT:
-            MSG_LOG(TEXT("BN_PAINT"));
-            if (nullptr != OnPaint) {
-                OnPaint(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_PAINT"));
+
+                if ( OnPaint)
+                {
+                    OnPaint( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_HILITE: //PUSHED
-            MSG_LOG(TEXT("PUSHED"));
-            if (nullptr != OnPushed) {
-                OnPushed(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "PUSHED"));
+
+                if ( OnPushed)
+                {
+                    OnPushed( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_UNHILITE: //UNPUSHED
-            MSG_LOG(TEXT("UNPUSHED"));
-            if (nullptr != OnUnpushed) {
-                OnUnpushed(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "UNPUSHED"));
+
+                if ( OnUnpushed)
+                {
+                    OnUnpushed( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_DISABLE:
-            MSG_LOG(TEXT("BN_DISABLE"));
-            if (nullptr != OnDisable) {
-                OnDisable(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_DISABLE"));
+
+                if ( OnDisable)
+                {
+                    OnDisable( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_DOUBLECLICKED:
-            MSG_LOG(TEXT("BN_DOUBLECLICKED"));
-            if (nullptr != OnDoubleClicked) {
-                OnDoubleClicked(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_DOUBLECLICKED"));
+
+                if ( OnDoubleClicked)
+                {
+                    OnDoubleClicked( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_SETFOCUS:
-            MSG_LOG(TEXT("BN_SETFOCUS"));
-            if (nullptr != OnSetFocus) {
-                OnSetFocus(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_SETFOCUS"));
+
+                if ( OnSetFocus)
+                {
+                    OnSetFocus( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         case BN_KILLFOCUS:
-            MSG_LOG(TEXT("BN_KILLFOCUS"));
-            if (nullptr != OnKillFocus) {
-                OnKillFocus(this, { a_uMsg, a_wParam, a_lParam });
+            {
+                MSG_LOG( TEXT( "BN_KILLFOCUS"));
+
+                if ( OnKillFocus)
+                {
+                    OnKillFocus( this, { a_uMsg, a_wParam, a_lParam });
+                }
+
+                result = callback_called;
             }
-            tResult = 1;
             break;
         default:
-            MSG_LOG(TEXT("Not supported %X"), a_uMsg);
+            {
+                MSG_LOG( TEXT( "Not supported %X"), a_uMsg);
+            }
             break;
         }
     }
 #if 0
-    else { //search through children
-        thButton *  pFoundChildren = nullptr;
+    else
+    {
+        //search through children
+        thButton * pFoundChildren = reinterpret_cast< thButton*>( findChildrenByID( LOWORD a_wParam)));
 
-        pFoundChildren = reinterpret_cast<thButton*>(findChildrenByID(LOWORD(a_wParam)));
-
-        if (pFoundChildren) {
-            tResult = pFoundChildren->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+        if ( pFoundChildren)
+        {
+            tResult = pFoundChildren->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
         }
     }
 #endif
 
     TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
-LRESULT thButton::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thButton::processNotifyMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
     LRESULT tResult = 0;
     NMHDR * pData = 0;
 
-    pData = reinterpret_cast<NMHDR*>(a_lParam);
+    pData = reinterpret_cast< NMHDR*>( a_lParam);
 
 
 #if 0
-    if (pData) {
-        switch (pData->code) {
+    if ( pData)
+    {
+        switch ( pData->code)
+        {
         case BCN_DROPDOWN:
-            MSG_LOG(TEXT("BCN_DROPDOWN - %s"), this->m_name.c_str());
+            MSG_LOG( TEXT( "BCN_DROPDOWN - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         case BCN_HOTITEMCHANGE: //mouse is enetring button window
-            MSG_LOG(TEXT("BCN_HOTITEMCHANGE - %s"), this->m_name.c_str());
+            MSG_LOG( TEXT( "BCN_HOTITEMCHANGE - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         case NM_CUSTOMDRAW:
-            MSG_LOG(TEXT("LNM_CUSTOMDRAW - %s"), this->m_name.c_str());
+            MSG_LOG( TEXT( "LNM_CUSTOMDRAW - %s"), this->m_name.c_str());
             tResult = 1;
             break;
         default:
-            MSG_ERROR(TEXT("WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
+            MSG_ERROR( TEXT( "WM_NOTIFY: hwndFrom=0x%X, idFrom=%d, code=0x%X"), pData->hwndFrom, pData->idFrom, pData->code);
             break;
         }
     }
 #endif
 
-    //TH_LEAVE_OBJECT_FUNCTION;
     return tResult;
 }

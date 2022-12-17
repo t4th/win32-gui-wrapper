@@ -1,9 +1,9 @@
 #include "thForm.h"
 
 /* Defines */
-#define CLASS_NAME TEXT("thForm")
+#define CLASS_NAME TEXT( "thForm")
 #define WIN32_CLASS_NAME CLASS_NAME
-#define DEFAULT_TEXT TEXT("Caption")
+#define DEFAULT_TEXT TEXT( "Caption")
 
 #define DEFAULT_WIDTH  200
 #define DEFAULT_HEIGHT 200
@@ -78,12 +78,12 @@ void thForm::registerClass()
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-thForm::thForm(thWindow * a_pParent, int a_posX, int a_posY)
+thForm::thForm( thWindow * a_pParent, int a_posX, int a_posY)
     :
-    thWindow(a_pParent, a_posX, a_posY),
-    m_menu(nullptr),
-    m_hMDIClient(nullptr),
-    Resizable(*this)
+    thWindow( a_pParent, a_posX, a_posY),
+    m_menu( nullptr),
+    m_hMDIClient( nullptr),
+    Resizable( *this)
 {
     TH_ENTER_FUNCTION;
     
@@ -94,11 +94,6 @@ thForm::thForm(thWindow * a_pParent, int a_posX, int a_posY)
 
     this->create();
 
-#if 0
-    m_dOldHeight = this->Height;
-    m_dOldWidth = this->Width;
-#endif
-
     TH_LEAVE_FUNCTION;
 }
 
@@ -107,13 +102,15 @@ thForm::~thForm()
     TH_ENTER_OBJECT_FUNCTION;
 
     auto position = 0;
+
     for ( const auto i: g_forms)
     {
-        if (i == this)
+        if ( i == this)
         {
-            g_forms.erase(g_forms.begin() + position);
+            g_forms.erase( g_forms.begin() + position);
             break;
         }
+
         position++;
     }
 
@@ -129,23 +126,15 @@ LRESULT thForm::onCreate()
     return tResult;
 }
 
-#if 0
-LRESULT thForm::onNCCreate()
-{
-    TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0;
-    TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
-}
-#endif
-
 LRESULT thForm::onClose()
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     LRESULT tResult = 0;
 
-    if (OnClose) {
-        tResult = OnClose(this, {});
+    if ( OnClose)
+    {
+        tResult = OnClose( this, {});
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
@@ -154,7 +143,7 @@ LRESULT thForm::onClose()
 
 // thForm use client size instead of window size
 // Because of that it need specialized onGetMinMax
-LRESULT thForm::onGetMinMax(LPARAM a_lParam)
+LRESULT thForm::onGetMinMax( LPARAM a_lParam)
 {
     //TH_ENTER_OBJECT_FUNCTION;
     LRESULT      tResult = 1;
@@ -162,25 +151,27 @@ LRESULT thForm::onGetMinMax(LPARAM a_lParam)
 
     //TODO: change this->Constraints variables to window sizes as user is expecting client sizes
 #if 0
-    sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
+    sInfo = reinterpret_cast <MINMAXINFO*>( a_lParam);
 
-    if (sInfo) {
-        if (this->Constraints.MaxWidth) {
+    if ( sInfo)
+    {
+        if ( this->Constraints.MaxWidth)
+        {
             sInfo->ptMaxTrackSize.x = this->Constraints.MaxWidth;
             tResult = 0;
         }
 
-        if (this->Constraints.MaxHeight) {
+        if ( this->Constraints.MaxHeight) {
             sInfo->ptMaxTrackSize.y = this->Constraints.MaxHeight;
             tResult = 0;
         }
 
-        if (this->Constraints.MinWidth) {
+        if ( this->Constraints.MinWidth) {
             sInfo->ptMinTrackSize.x = this->Constraints.MinWidth;
             tResult = 0;
         }
 
-        if (this->Constraints.MinHeight) {
+        if ( this->Constraints.MinHeight) {
             sInfo->ptMinTrackSize.y = this->Constraints.MinHeight;
             tResult = 0;
         }
@@ -190,100 +181,22 @@ LRESULT thForm::onGetMinMax(LPARAM a_lParam)
     return tResult;
 }
 
-#if 0
-// Children windows enumeration callback
-// to stop enumeration, it must return FALSE.
-// pointer typedef: WNDENUMPROC
-// a_lParam - low-order word is new width dx, high-order word is new height dy
-BOOL CALLBACK EnumChildProc(HWND a_hWnd, LPARAM a_lParam)
-{
-    BOOL        fResult = TRUE;// TRUE;
-    LONG_PTR    pUserData = NULL;
-    thWindow *  pWindow = NULL;
-
-    //MSG_LOG(TEXT("EnumChildProc %X"), a_hWnd);
-
-    pUserData = GetWindowLongPtr(a_hWnd, GWLP_USERDATA);
-    pWindow = reinterpret_cast<thWindow *>(pUserData);
-
-    if (pWindow && a_lParam) {
-        thDifference_t * pDifference = NULL;
-
-        pDifference = (thDifference_t*)a_lParam;
-
-        if (TRUE == pWindow->Anchors.Right) {
-            pWindow->Width += pDifference->Width;
-        }
-
-        if (TRUE == pWindow->Anchors.Bottom) {
-            pWindow->Height += pDifference->Height;
-        }
-
-        //MSG_SUCCESS(TEXT("w=%d, h=%d :: new w=%d, h=%d"), dWidth, dHeight, dNewWidth, dNewHeight);
-    }
-
-    return fResult;
-}
-
-// If an application processes this message, it should return zero.
-// a_wParam - The type of resizing requested
-// a_lParam - low-order word is new width, high-order word is new height
-LRESULT thForm::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
-{
-    //TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0;
-
-    // new width and height
-    int dNewWidth = 0;
-    int dNewHeight = 0;
-
-    dNewWidth = LOWORD(a_lParam);
-    dNewHeight = HIWORD(a_lParam);
-
-    // find difference
-    thDifference_t sDifference = { 0 };
-
-    if (dNewWidth > m_dOldWidth) { // increase
-        sDifference.Width = dNewWidth - m_dOldWidth;
-        this->m_dOldWidth += sDifference.Width;
-    }
-    else { // decrease
-        sDifference.Width = m_dOldWidth - dNewWidth;
-        this->m_dOldWidth -= sDifference.Width;
-        sDifference.Width = 0 - sDifference.Width;
-    }
-
-    if (dNewHeight > m_dOldHeight) { // increase
-        sDifference.Height = dNewHeight - m_dOldHeight;
-        this->m_dOldHeight += sDifference.Height;
-    }
-    else { // decrease
-        sDifference.Height = m_dOldHeight - dNewHeight;
-        this->m_dOldHeight -= sDifference.Height;
-        sDifference.Height = 0 - sDifference.Height;
-    }
-
-    //MSG_SUCCESS(TEXT("w=%d, h=%d"), sDifference.Width, sDifference.Height);
-
-    EnumChildWindows(this->m_hWinHandle, EnumChildProc, (LPARAM)&sDifference);
-
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
-}
-#endif
-
-LRESULT thForm::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thForm::processMenuCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     LRESULT     tResult = 0;
 
-    if (m_menu) {
-        tResult = m_menu->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+    if ( m_menu)
+    {
+        tResult = m_menu->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 
-    if (FALSE == tResult) {
-        if (PopupMenu) {
-            tResult = PopupMenu->processCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
+    if ( FALSE == tResult)
+    {
+        if (PopupMenu)
+        {
+            tResult = PopupMenu->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
         }
     }
 
@@ -294,58 +207,59 @@ LRESULT thForm::processMenuCommandMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wPa
 int thForm::getDebugIndex()
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     int dReturn = this->m_indexPool;
     this->m_indexPool++;
+
     TH_LEAVE_OBJECT_FUNCTION;
     return dReturn;
 }
 
-void thForm::SetMenu(thMenu * const a_pMenu)
+void thForm::SetMenu( thMenu * const a_pMenu)
 {
     TH_ENTER_OBJECT_FUNCTION;
 
-    if (NULL != a_pMenu) {
-        if (a_pMenu != m_menu) {
-            if (NULL != a_pMenu->m_hMenuHandle) {
-                BOOL fResult = false;
+    if ( NULL == a_pMenu)
+    {
+        MSG_ERROR( TEXT( "Empty input pointer!"));
+        return;
+    }
 
-                m_menu = a_pMenu;
-                fResult = ::SetMenu(this->m_hWinHandle, a_pMenu->m_hMenuHandle);
+    if ( a_pMenu != m_menu)
+    {
+        if ( NULL != a_pMenu->m_hMenuHandle)
+        {
+            m_menu = a_pMenu;
 
-                if (false == fResult) {
-                    MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
-                }
-                else {
-                    //todo:
-                    //this->addChildrenWindow(pMenu);
-                    //DrawMenuBar(this->hWinHandle);
-                    m_menu->m_hParentWindow = this->m_hWinHandle;
-                    DrawMenuBar(this->m_hWinHandle);
-                }
+            if ( FALSE == ::SetMenu( this->m_hWinHandle, a_pMenu->m_hMenuHandle))
+            {
+                MSG_ERROR( TEXT( "SetMenu failed with error =  0x%X"), GetLastError());
             }
-            else {
-                MSG_ERROR(TEXT("Provided thMenu is invalid (wrong handle)"));
+            else
+            {
+                m_menu->m_hParentWindow = this->m_hWinHandle;
+                DrawMenuBar( this->m_hWinHandle);
             }
         }
-    }
-    else {
-        MSG_ERROR(TEXT("Empty input pointer!"));
+        else
+        {
+            MSG_ERROR( TEXT( "Provided thMenu is invalid (wrong handle)"));
+        }
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-void thForm::ClearMenu(void)
+void thForm::ClearMenu()
 {
     TH_ENTER_OBJECT_FUNCTION;
-    BOOL fResult = false;
 
-    fResult = ::SetMenu(this->m_hWinHandle, NULL);
-
-    if (false == fResult) {
-        MSG_ERROR(TEXT("SetMenu failed with error =  0x%X"), GetLastError());
+    if ( FALSE == ::SetMenu(this->m_hWinHandle, NULL))
+    {
+        MSG_ERROR( TEXT( "SetMenu failed with error =  0x%X"), GetLastError());
     }
-    else {
+    else
+    {
         this->m_menu->m_hParentWindow = NULL;
         m_menu = NULL;
     }
@@ -353,18 +267,17 @@ void thForm::ClearMenu(void)
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-BOOL thForm::IsMenuEnabled(void)
+BOOL thForm::IsMenuEnabled()
 {
     TH_ENTER_OBJECT_FUNCTION;
-    BOOL    fResult = false;
-    HMENU   hMenu = 0;
 
-    hMenu = GetMenu(this->m_hWinHandle);
+    BOOL result = false;
 
-    if (hMenu) {
-        fResult = true;
+    if ( GetMenu( this->m_hWinHandle))
+    {
+        result = true;
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
-    return fResult;
+    return result;
 }

@@ -1,4 +1,5 @@
 #include "thWindow.h"
+
 #include "thForm.h"
 #include "thMDIClient.h"
 #include "thMDIChild.h"
@@ -7,19 +8,19 @@
 #define MAX_NUMBER_OF_DIGITS_FOR_INDEX 6
 
 /* Prototypes */
-LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK WinProc( HWND, UINT, WPARAM, LPARAM);
 
 thWindow::thWindow( thWindow * a_pParent, int a_posX, int a_posY)
     :
-    m_pParent(nullptr),
-    m_hWinHandle(NULL),
-    PopupMenu(nullptr),
-    Text(*this),
-    Width(*this),
-    Height(*this),
-    X(*this),
-    Y(*this),
-    Font(*this)
+    m_pParent( nullptr),
+    m_hWinHandle( NULL),
+    PopupMenu( nullptr),
+    Text( *this),
+    Width( *this),
+    Height( *this),
+    X( *this),
+    Y( *this),
+    Font( *this)
 {
     TH_ENTER_FUNCTION;
 
@@ -49,9 +50,6 @@ thWindow::thWindow( thWindow * a_pParent, int a_posX, int a_posY)
 
 thWindow::~thWindow()
 {
-    TH_ENTER_OBJECT_FUNCTION;
-
-    TH_LEAVE_OBJECT_FUNCTION;
 }
 
 void thWindow::create()
@@ -127,66 +125,50 @@ void thWindow::create()
 
 LRESULT thWindow::onCreate()
 {
-    TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0;
-
-    TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return 0;
 }
 
 // NCCreate must return 1! If not, CreateWindowEx won't create window and will return NULL
 LRESULT thWindow::onNCCreate()
 {
-    //TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 1;
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return 1;
 }
 
 LRESULT thWindow::onClose()
 {
-    TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0;
-    TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return 0;
 }
 
 LRESULT thWindow::onDestroy()
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     LRESULT tResult = 0;
 
-    if (OnDestroy) {
-        tResult = OnDestroy(this, {});
+    if ( OnDestroy)
+    {
+        tResult = OnDestroy( this, {});
 
         if ( 0 != tResult)
         {
-            PostQuitMessage(0);
+            PostQuitMessage( 0);
         }
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
+
     return tResult;
 }
 
 thWindow * thWindow::GetParent() const
 {
-    TH_ENTER_OBJECT_FUNCTION;
-    TH_LEAVE_OBJECT_FUNCTION;
     return this->m_pParent;
 }
 
 // a_lParam is pointer to char* ended with \0
-LRESULT thWindow::onSetText(LPARAM a_lParam)
+LRESULT thWindow::onSetText( LPARAM a_lParam)
 {
-    TH_ENTER_OBJECT_FUNCTION;
-    thString name = this->m_name;
-
-    LRESULT tResult = 0;
-
-
-    TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return 0;
 }
 
 // If an application processes this message, it should return zero.
@@ -194,64 +176,78 @@ LRESULT thWindow::onSetText(LPARAM a_lParam)
 // a_lParam - high-order word is new height
 LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 {
-    //TH_ENTER_OBJECT_FUNCTION;
-    LRESULT tResult = 0;
+    LRESULT result = 0;
 
     // loop through this window children
-    for ( const auto & i: m_children) {
-        if ( nullptr == dynamic_cast< thForm*>(i) &&
-             nullptr == dynamic_cast< thMDIChild*>(i))
+    for ( const auto & i: m_children)
+    {
+        // skip thForm and thMDIChild windows
+        if ( nullptr == dynamic_cast< thForm*>( i) && nullptr == dynamic_cast< thMDIChild*>( i))
         {
             RECT rcCurPos = { 0 };
 
-            i->GetRect(rcCurPos);
+            i->GetRect( rcCurPos);
 
             LONG newX = rcCurPos.left;
             LONG newY = rcCurPos.top;
             LONG newW = i->Width;
             LONG newH = i->Height;
 
-            if (false == i->Anchors.Left) {
-                if (rcCurPos.right > i->m_rcOldPosition.right) {
-                    newX += (rcCurPos.right - i->m_rcOldPosition.right);
+            if ( false == i->Anchors.Left)
+            {
+                if ( rcCurPos.right > i->m_rcOldPosition.right)
+                {
+                    newX += ( rcCurPos.right - i->m_rcOldPosition.right);
                 }
-                else {
-                    newX -= (i->m_rcOldPosition.right - rcCurPos.right);
+                else
+                {
+                    newX -= ( i->m_rcOldPosition.right - rcCurPos.right);
                 }
 
-                if (i->m_pParent) {
-                    rcCurPos.right = i->m_pParent->Width - (newX + (LONG)i->Width);
+                if ( i->m_pParent)
+                {
+                    rcCurPos.right = i->m_pParent->Width - (newX + static_cast< LONG>( i->Width));
                 }
             }
 
-            if (false == i->Anchors.Top) {
-                if (rcCurPos.bottom > i->m_rcOldPosition.bottom) {
-                    newY += (rcCurPos.bottom - i->m_rcOldPosition.bottom);
+            if ( false == i->Anchors.Top)
+            {
+                if ( rcCurPos.bottom > i->m_rcOldPosition.bottom)
+                {
+                    newY += ( rcCurPos.bottom - i->m_rcOldPosition.bottom);
                 }
-                else {
-                    newY -= (i->m_rcOldPosition.bottom - rcCurPos.bottom);
+                else
+                {
+                    newY -= ( i->m_rcOldPosition.bottom - rcCurPos.bottom);
                 }
 
-                if (i->m_pParent) {
-                    rcCurPos.bottom = i->m_pParent->Height - (newX + (LONG)i->Height);
+                if ( i->m_pParent)
+                {
+                    rcCurPos.bottom = i->m_pParent->Height - ( newX + static_cast< LONG>( i->Height));
                 }
             }
 
-            if (true == i->Anchors.Right) {
-                if (rcCurPos.right > i->m_rcOldPosition.right) {
-                    newW += (rcCurPos.right - i->m_rcOldPosition.right);
+            if ( true == i->Anchors.Right)
+            {
+                if ( rcCurPos.right > i->m_rcOldPosition.right)
+                {
+                    newW += ( rcCurPos.right - i->m_rcOldPosition.right);
                 }
-                else {
-                    newW -= (i->m_rcOldPosition.right - rcCurPos.right);
+                else
+                {
+                    newW -= ( i->m_rcOldPosition.right - rcCurPos.right);
                 }
             }
 
-            if (true == i->Anchors.Bottom) {
-                if (rcCurPos.bottom > i->m_rcOldPosition.bottom) {
-                    newH += (rcCurPos.bottom - i->m_rcOldPosition.bottom);
+            if ( true == i->Anchors.Bottom)
+            {
+                if ( rcCurPos.bottom > i->m_rcOldPosition.bottom)
+                {
+                    newH += ( rcCurPos.bottom - i->m_rcOldPosition.bottom);
                 }
-                else {
-                    newH -= (i->m_rcOldPosition.bottom - rcCurPos.bottom);
+                else
+                {
+                    newH -= ( i->m_rcOldPosition.bottom - rcCurPos.bottom);
                 }
             }
 
@@ -264,13 +260,15 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
                 newH,
                 SWP_NOZORDER);
 
-            if (FALSE == fResult) {
-                MSG_ERROR(TEXT("SetWindowPos failed with error = 0x%X"), GetLastError());
+            if ( FALSE == fResult)
+            {
+                MSG_ERROR( TEXT( "SetWindowPos failed with error = 0x%X"), GetLastError());
             }
 
-            tResult = 1; // this will resize all children manually, so dont send WM_SIZE to children
+            result = 1; // this will resize all children manually, so dont send WM_SIZE to children
             
-            thMDIClient * mdi = dynamic_cast< thMDIClient*>(i);
+            thMDIClient * mdi = dynamic_cast< thMDIClient*>( i);
+
             if ( nullptr != mdi)
             { 
                 return 1;
@@ -278,13 +276,11 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
         }
         else
         {
-            // if child is of type thForm or thMDIChild
-            tResult = 0;
+            result = 0;
         }
     }
 
-    //TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
 
@@ -292,55 +288,57 @@ LRESULT thWindow::onResize(HWND a_hwnd, WPARAM a_wParam, LPARAM a_lParam)
 // a_lParam - low-order word is X, high-order word is Y
 // return 0 will process this message further in Z-axis
 // return 1 will stop processing this msg
-LRESULT thWindow::onContextMenu(WPARAM a_wParam, LPARAM a_lParam)
+LRESULT thWindow::onContextMenu( WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
 
-    LRESULT tResult = 1;
+    LRESULT result = 1;
     POINT   point = { 0 };
     HWND    hwnd = 0;
 
-    hwnd = reinterpret_cast<HWND>(a_wParam);
-    point = { GET_X_LPARAM(a_lParam), GET_Y_LPARAM(a_lParam) };
+    hwnd = reinterpret_cast< HWND>( a_wParam);
+    point = { GET_X_LPARAM( a_lParam), GET_Y_LPARAM( a_lParam) };
 
-    if (PopupMenu) {
-        PopupMenu->Show(hwnd, point);
+    if (PopupMenu)
+    {
+        PopupMenu->Show( hwnd, point);
     }
 
 
     TH_LEAVE_OBJECT_FUNCTION;
-    return tResult;
+    return result;
 }
 
-// thForm need specialised version
-LRESULT thWindow::onGetMinMax(LPARAM a_lParam)
+// thForm need specialized version
+LRESULT thWindow::onGetMinMax( LPARAM a_lParam)
 {
     constexpr LRESULT message_not_proccessed{ 0U};
     constexpr LRESULT message_proccessed{ 1U};
 
     LRESULT      result = message_proccessed;
-    MINMAXINFO * sInfo = reinterpret_cast<MINMAXINFO*>(a_lParam);
+    MINMAXINFO * sInfo = reinterpret_cast< MINMAXINFO*>( a_lParam);
 
-    if (sInfo) {
-        if (this->Constraints.MaxWidth)
+    if ( sInfo)
+    {
+        if ( this->Constraints.MaxWidth)
         {
             sInfo->ptMaxTrackSize.x = this->Constraints.MaxWidth;
             result = message_not_proccessed;
         }
 
-        if (this->Constraints.MaxHeight)
+        if ( this->Constraints.MaxHeight)
         {
             sInfo->ptMaxTrackSize.y = this->Constraints.MaxHeight;
             result = message_not_proccessed;
         }
 
-        if (this->Constraints.MinWidth)
+        if ( this->Constraints.MinWidth)
         {
             sInfo->ptMinTrackSize.x = this->Constraints.MinWidth;
             result = message_not_proccessed;
         }
 
-        if (this->Constraints.MinHeight)
+        if ( this->Constraints.MinHeight)
         {
             sInfo->ptMinTrackSize.y = this->Constraints.MinHeight;
             result = message_not_proccessed;
@@ -375,11 +373,12 @@ LRESULT thWindow::processMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPA
         {
             result = this->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
 
-            if ( message_not_proccessed == result) {
+            if ( message_not_proccessed == result)
+            {
                 result = this->processMenuCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
             }
-            break;
         }
+        break;
 #if 0
     case WM_MENUCOMMAND:
         tResult = this->processMenuCommandMessage(a_hwnd, a_uMsg, a_wParam, a_lParam);
@@ -402,9 +401,8 @@ LRESULT thWindow::processMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPA
             }
 
             result = this->onDestroy();
-
-            break;
         }
+        break;
     case WM_CREATE:
         result = this->onCreate();
         break;
@@ -454,15 +452,17 @@ LRESULT thWindow::processCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wPar
 LRESULT thWindow::processMenuCommandMessage( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    constexpr LRESULT message_not_proccessed{ 0U};
 
+    constexpr LRESULT message_not_proccessed{ 0U};
     LRESULT result = message_not_proccessed;
 
-    if ( PopupMenu) {
+    if ( PopupMenu)
+    {
         result = PopupMenu->processCommandMessage( a_hwnd, a_uMsg, a_wParam, a_lParam);
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
+
     return result;
 }
 
@@ -488,17 +488,19 @@ LRESULT thWindow::processNotifyMessage(HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam
 void thWindow::createDebugName()
 {
     TH_ENTER_OBJECT_FUNCTION;
+
     TCHAR   szNameIndex[MAX_NUMBER_OF_DIGITS_FOR_INDEX] = { 0 }; // up to 5 digtits
-    int     dIndex = 0;
+    int     index = this->getDebugIndex();
 
-    dIndex = this->getDebugIndex();
+    if ( -1 == _stprintf_s( szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, TEXT( "%d"), index))
+    {
+        MSG_ERROR( TEXT( "Window index buffer overflow"));
+    }
+    else
+    {
+        this->m_name += thString( szNameIndex);
+    }
 
-    if (-1 == _stprintf_s(szNameIndex, MAX_NUMBER_OF_DIGITS_FOR_INDEX, TEXT("%d"), dIndex)) {
-        MSG_ERROR(TEXT("CRITICAL_ERROR - window index buffer overflow"));
-    }
-    else {
-        this->m_name += thString(szNameIndex);
-    }
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
@@ -506,18 +508,22 @@ void thWindow::addChildrenWindow(thWindow * a_pChildren)
 {
     TH_ENTER_OBJECT_FUNCTION;
 
-    if ( a_pChildren) {
+    if ( a_pChildren)
+    {
         bool isDublicateFound = false;
 
         // check for dublicates
-        for (const auto & i: m_children) {
-            if (a_pChildren == i) {
+        for ( const auto & i: m_children)
+        {
+            if ( a_pChildren == i)
+            {
                 isDublicateFound = true;
                 break;
             }
         }
 
-        if ( false == isDublicateFound) {
+        if ( false == isDublicateFound)
+        {
             this->m_children.push_back( a_pChildren);
         }
     }
@@ -525,17 +531,22 @@ void thWindow::addChildrenWindow(thWindow * a_pChildren)
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-void thWindow::removeChildrenWindow(thWindow * a_pChildren)
+void thWindow::removeChildrenWindow( thWindow * a_pChildren)
 {
     TH_ENTER_OBJECT_FUNCTION;
 
-    if ( a_pChildren) {
+    if ( a_pChildren)
+    {
         int position = 0;
-        for ( const auto & i: m_children) {
-            if ( a_pChildren == i) {
+
+        for ( const auto & i: m_children)
+        {
+            if ( a_pChildren == i)
+            {
                 m_children.erase( m_children.begin() + position);
                 break;
             }
+
             ++position;
         }
     }
@@ -543,13 +554,15 @@ void thWindow::removeChildrenWindow(thWindow * a_pChildren)
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
+thWindow * thWindow::findChildrenByID( const WORD a_searchedId)
 {
     TH_ENTER_OBJECT_FUNCTION;
     thWindow * pFoundChildren = nullptr;
 
-    for (const auto & i : m_children) {
-        if ( a_searchedId == static_cast<WORD>(i->m_id)) {
+    for ( const auto & i : m_children)
+    {
+        if ( a_searchedId == static_cast< WORD>( i->m_id))
+        {
             pFoundChildren = i;
             break;
         }
@@ -559,18 +572,21 @@ thWindow * thWindow::findChildrenByID(const WORD a_searchedId)
     return pFoundChildren;
 }
 
+// developer is responsible for de-allocating memory
 #if 0
 void thWindow::destroyChildren()
 {
     TH_ENTER_OBJECT_FUNCTION;
-    std::vector<thWindow*>::iterator i;
+    std::vector< thWindow*>::iterator i;
 
     i = this->m_children.begin();
 
-    for (; i != m_children.end(); i++) {
-        if (NULL != (*i)) {
-            delete (*i);
-            (*i) = NULL;
+    for (; i != m_children.end(); i++)
+    {
+        if ( NULL != ( *i))
+        {
+            delete ( *i);
+            ( *i) = NULL;
         }
     }
     TH_LEAVE_OBJECT_FUNCTION;
@@ -580,7 +596,8 @@ void thWindow::destroyChildren()
 void thWindow::Show(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    ShowWindow(this->m_hWinHandle, SW_SHOWNORMAL);
+
+    ShowWindow( this->m_hWinHandle, SW_SHOWNORMAL);
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
@@ -588,7 +605,8 @@ void thWindow::Show(void)
 void thWindow::Hide(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    ShowWindow(this->m_hWinHandle, SW_HIDE);
+
+    ShowWindow( this->m_hWinHandle, SW_HIDE);
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
@@ -596,7 +614,8 @@ void thWindow::Hide(void)
 void thWindow::Enable(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    EnableWindow(this->m_hWinHandle, TRUE);
+
+    EnableWindow( this->m_hWinHandle, TRUE);
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
@@ -604,7 +623,8 @@ void thWindow::Enable(void)
 void thWindow::Disable(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    EnableWindow(this->m_hWinHandle, FALSE);
+
+    EnableWindow( this->m_hWinHandle, FALSE);
 
     TH_LEAVE_OBJECT_FUNCTION;
 }
@@ -612,12 +632,10 @@ void thWindow::Disable(void)
 void thWindow::Destroy(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    BOOL fResult = FALSE;
 
-    fResult = DestroyWindow(this->m_hWinHandle);
-
-    if (FALSE == fResult) {
-        MSG_ERROR(TEXT("DestroyWindow failed with error = 0x%X"), GetLastError());
+    if ( FALSE == DestroyWindow( this->m_hWinHandle))
+    {
+        MSG_ERROR( TEXT( "DestroyWindow failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
@@ -626,12 +644,10 @@ void thWindow::Destroy(void)
 void thWindow::SetFocus(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    HWND fResult = NULL;
 
-    fResult = ::SetFocus(this->m_hWinHandle);
-
-    if (NULL == fResult) {
-        MSG_ERROR(TEXT("SetFocus failed with error = 0x%X"), GetLastError());
+    if ( NULL == ::SetFocus(this->m_hWinHandle))
+    {
+        MSG_ERROR( TEXT( "SetFocus failed with error = 0x%X"), GetLastError());
     }
 
     TH_LEAVE_OBJECT_FUNCTION;
@@ -641,29 +657,33 @@ void thWindow::SetFocus(void)
 void thWindow::StoreCurrentRect(void)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    this->GetRect(this->m_rcOldPosition);
+
+    this->GetRect( this->m_rcOldPosition);
+
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-// store current window position in argument
-// @param [out] a_rcOutput
-void thWindow::GetRect(RECT & a_rcOutput)
+// store current window position in an argument
+void thWindow::GetRect( RECT & a_rcOutput)
 {
     TH_ENTER_OBJECT_FUNCTION;
-    if (m_pParent) {
+
+    if ( m_pParent)
+    {
         a_rcOutput.left = this->X;
         a_rcOutput.top = this->Y;
-        a_rcOutput.bottom = m_pParent->Height - (this->Y + (LONG)this->Height);
-        a_rcOutput.right = m_pParent->Width - (this->X + (LONG)this->Width);
+        a_rcOutput.bottom = m_pParent->Height - (this->Y + static_cast<LONG>( this->Height));
+        a_rcOutput.right = m_pParent->Width - (this->X + static_cast<LONG>( this->Width));
 #if 0
-        MSG_SUCCESS(TEXT("Window %s position: L=%d, T=%d, B=%d, R=%d"), this->m_name.c_str(),
+        MSG_SUCCESS( TEXT( "Window %s position: L=%d, T=%d, B=%d, R=%d"), this->m_name.c_str(),
             a_rcOutput.left, a_rcOutput.top, a_rcOutput.bottom, a_rcOutput.right);
 #endif
     }
+
     TH_LEAVE_OBJECT_FUNCTION;
 }
 
-const HWND thWindow::GetHandle(void) const
+const HWND thWindow::GetHandle() const
 {
      return this->m_hWinHandle; 
 }
@@ -708,7 +728,12 @@ LRESULT CALLBACK WinProc( HWND a_hwnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lP
 
 // Children Window Procedure
 LRESULT CALLBACK ChildWindProc(
-    HWND a_hWnd, UINT a_uMsg, WPARAM a_wParam, LPARAM a_lParam, UINT_PTR a_uIdSubclass, DWORD_PTR a_dwRefData
+    HWND        a_hWnd,
+    UINT        a_uMsg,
+    WPARAM      a_wParam,
+    LPARAM      a_lParam,
+    UINT_PTR    a_uIdSubclass,
+    DWORD_PTR   a_dwRefData
 )
 {
     constexpr LRESULT message_not_proccessed{ 0U};

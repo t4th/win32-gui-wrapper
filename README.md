@@ -52,7 +52,7 @@ form->Show();
 - C++ Builder, QT or other popular frameworks use code generation for static object creation. In my code I had to workaround such problems with dynamic objects and elements, like event callbacks
 
 ## TODO
-- architecture overview
+- ~~architecture overview~~
 - documentation
 - ~~create examples (calculator)~~
 - implement proper error handling

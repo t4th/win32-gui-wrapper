@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\code\src\thApplication.cpp" />
     <ClCompile Include="..\code\src\thButton.cpp" />
     <ClCompile Include="..\code\src\thCheckBox.cpp" />
     <ClCompile Include="..\code\src\thComboBox.cpp" />
@@ -61,7 +60,6 @@
     <ClCompile Include="..\external\simple_grid\simpleGrid.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\code\inc\thApplication.h" />
     <ClInclude Include="..\code\inc\thButton.h" />
     <ClInclude Include="..\code\inc\thCheckBox.h" />
     <ClInclude Include="..\code\inc\thComboBox.h" />
