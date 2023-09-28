@@ -80,30 +80,30 @@ Simplest window:
 ```c++
 #include "thWin32App.h" // master header of win32 gui wrapper
 
- int main()
+int main()
 {
     thWin32App app; // application instance
-    thForm * p_mainWindow = new thForm();
+    
+    thForm * form = new thForm();
 
-    p_mainWindow->Width = 300;
-    p_mainWindow->Height = 200;
-    p_mainWindow->Text = TEXT( "Application Example"); // window caption
+    form->Width = 300;
+    form->Height = 200;
+    form->Text = TEXT( "Application Example"); // window caption
 
     // register callback needed to quit application when main window is destroyed
-    p_mainWindow->OnDestroy = []( thObject *, thEventParams_t)
+    form->OnDestroy = []( thObject *, thEventParams_t)
     {
         constexpr const thResult_t quit_application = 1;
         return quit_application;
     };
 
-    p_mainWindow->Show();
+    form->Show();
 
     app.Run(); // this function exits when main window is destroyed and return 1
 
-    delete p_mainWindow;
+    delete form;
 
     return 0;
-}
 ```
 
 ## Example
