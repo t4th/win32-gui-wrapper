@@ -7,6 +7,7 @@
 #pragma comment(lib, "Comctl32.lib") /* win32 common controls */
 
 #include <vector>
+#include <memory>
 
 /* String type */
 #include "thString.h"
