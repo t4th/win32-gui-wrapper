@@ -19,6 +19,8 @@ class thIcon : public thFile
 {
 
 };
+
+https://learn.microsoft.com/en-us/windows/win32/menurc/icons
 */
 
 class thImageList : public thObject
