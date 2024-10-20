@@ -104,7 +104,7 @@ void thWindow::create()
             this->Font.SetName( TH_DEF_APP_FONT_NAME);
             this->Font.SetSize( TH_DEF_APP_FONT_SIZE);
 
-            const LONG_PTR const pUserData = GetWindowLongPtr( m_hWinHandle, GWLP_USERDATA);
+            const LONG_PTR pUserData = GetWindowLongPtr( m_hWinHandle, GWLP_USERDATA);
 
             if ( NULL == pUserData)
             {

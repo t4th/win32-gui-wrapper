@@ -18,13 +18,97 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\code\src\thApplication.cpp" />
+    <ClCompile Include="..\..\code\src\thButton.cpp" />
+    <ClCompile Include="..\..\code\src\thCheckBox.cpp" />
+    <ClCompile Include="..\..\code\src\thComboBox.cpp" />
+    <ClCompile Include="..\..\code\src\thComboBoxItems.cpp" />
+    <ClCompile Include="..\..\code\src\thCommonDialog.cpp" />
+    <ClCompile Include="..\..\code\src\thEditBox.cpp" />
+    <ClCompile Include="..\..\code\src\thFile.cpp" />
+    <ClCompile Include="..\..\code\src\thFont.cpp" />
+    <ClCompile Include="..\..\code\src\thForm.cpp" />
+    <ClCompile Include="..\..\code\src\thGroupBox.cpp" />
+    <ClCompile Include="..\..\code\src\thHeight.cpp" />
+    <ClCompile Include="..\..\code\src\thImageList.cpp" />
+    <ClCompile Include="..\..\code\src\thLabel.cpp" />
+    <ClCompile Include="..\..\code\src\thListBox.cpp" />
+    <ClCompile Include="..\..\code\src\thListBoxItems.cpp" />
+    <ClCompile Include="..\..\code\src\thListView.cpp" />
+    <ClCompile Include="..\..\code\src\thListViewColumn.cpp" />
+    <ClCompile Include="..\..\code\src\thListViewItem.cpp" />
+    <ClCompile Include="..\..\code\src\thLogger.cpp" />
+    <ClCompile Include="..\..\code\src\thMDIChild.cpp" />
+    <ClCompile Include="..\..\code\src\thMDIClient.cpp" />
+    <ClCompile Include="..\..\code\src\thMemo.cpp" />
+    <ClCompile Include="..\..\code\src\thMenu.cpp" />
+    <ClCompile Include="..\..\code\src\thMenuCommon.cpp" />
+    <ClCompile Include="..\..\code\src\thObject.cpp" />
+    <ClCompile Include="..\..\code\src\thPopupMenu.cpp" />
+    <ClCompile Include="..\..\code\src\thPosX.cpp" />
+    <ClCompile Include="..\..\code\src\thPosY.cpp" />
+    <ClCompile Include="..\..\code\src\thRadioButton.cpp" />
+    <ClCompile Include="..\..\code\src\thString.cpp" />
+    <ClCompile Include="..\..\code\src\thText.cpp" />
+    <ClCompile Include="..\..\code\src\thToolbar.cpp" />
+    <ClCompile Include="..\..\code\src\thWidth.cpp" />
+    <ClCompile Include="..\..\code\src\thWin32App.cpp" />
+    <ClCompile Include="..\..\code\src\thWin32Logger.cpp" />
+    <ClCompile Include="..\..\code\src\thWindow.cpp" />
+    <ClCompile Include="source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\code\inc\thApplication.h" />
+    <ClInclude Include="..\..\code\inc\thButton.h" />
+    <ClInclude Include="..\..\code\inc\thCheckBox.h" />
+    <ClInclude Include="..\..\code\inc\thComboBox.h" />
+    <ClInclude Include="..\..\code\inc\thComboBoxItems.h" />
+    <ClInclude Include="..\..\code\inc\thCommonDialog.h" />
+    <ClInclude Include="..\..\code\inc\thConfig.h" />
+    <ClInclude Include="..\..\code\inc\thEditBox.h" />
+    <ClInclude Include="..\..\code\inc\thFile.h" />
+    <ClInclude Include="..\..\code\inc\thFont.h" />
+    <ClInclude Include="..\..\code\inc\thForm.h" />
+    <ClInclude Include="..\..\code\inc\thGroupBox.h" />
+    <ClInclude Include="..\..\code\inc\thHeight.h" />
+    <ClInclude Include="..\..\code\inc\thImageList.h" />
+    <ClInclude Include="..\..\code\inc\thItemList.h" />
+    <ClInclude Include="..\..\code\inc\thLabel.h" />
+    <ClInclude Include="..\..\code\inc\thListBox.h" />
+    <ClInclude Include="..\..\code\inc\thListBoxItems.h" />
+    <ClInclude Include="..\..\code\inc\thListView.h" />
+    <ClInclude Include="..\..\code\inc\thListViewColumn.h" />
+    <ClInclude Include="..\..\code\inc\thListViewItem.h" />
+    <ClInclude Include="..\..\code\inc\thLogger.h" />
+    <ClInclude Include="..\..\code\inc\thMDIChild.h" />
+    <ClInclude Include="..\..\code\inc\thMDIClient.h" />
+    <ClInclude Include="..\..\code\inc\thMemo.h" />
+    <ClInclude Include="..\..\code\inc\thMenu.h" />
+    <ClInclude Include="..\..\code\inc\thMenuCommon.h" />
+    <ClInclude Include="..\..\code\inc\thObject.h" />
+    <ClInclude Include="..\..\code\inc\thParam.h" />
+    <ClInclude Include="..\..\code\inc\thPopupMenu.h" />
+    <ClInclude Include="..\..\code\inc\thPosX.h" />
+    <ClInclude Include="..\..\code\inc\thPosY.h" />
+    <ClInclude Include="..\..\code\inc\thRadioButton.h" />
+    <ClInclude Include="..\..\code\inc\thResizable.h" />
+    <ClInclude Include="..\..\code\inc\thString.h" />
+    <ClInclude Include="..\..\code\inc\thText.h" />
+    <ClInclude Include="..\..\code\inc\thToolbar.h" />
+    <ClInclude Include="..\..\code\inc\thTypes.h" />
+    <ClInclude Include="..\..\code\inc\thWidth.h" />
+    <ClInclude Include="..\..\code\inc\thWin32App.h" />
+    <ClInclude Include="..\..\code\inc\thWin32Logger.h" />
+    <ClInclude Include="..\..\code\inc\thWindow.h" />
+    <ClInclude Include="..\..\code\inc\thWindowStyles.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{39F70F34-A863-4F2D-9559-E320DAA47291}</ProjectGuid>
-    <RootNamespace>project</RootNamespace>
+    <ProjectGuid>{a991aca3-da69-42ef-9309-42797476b609}</ProjectGuid>
+    <RootNamespace>template</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>calculator_example</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,32 +155,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;SCI_LEXER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>NotSet</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SciLexer.lib;Win32_gui.lib;imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib\scintilla;..\..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,16 +178,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SciLexer.lib;Win32_gui.lib;imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib\scintilla;..\..\..\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,14 +192,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>NotSet</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Win32_gui.lib;SciLexer.lib;imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\lib\scintilla;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,21 +209,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\..\code\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Win32_gui.lib;SciLexer.lib;imm32.lib;winmm.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\lib\scintilla;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\main.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

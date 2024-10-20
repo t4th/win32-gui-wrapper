@@ -3,6 +3,8 @@
 #include "thMenu.h"
 #include "thMDIClient.h"
 
+LRESULT CALLBACK MDIChildProc(HWND, UINT, WPARAM, LPARAM);
+
 class thMDIChild : public thWindow
 {
     friend LRESULT CALLBACK MDIChildProc(HWND, UINT, WPARAM, LPARAM);

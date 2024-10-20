@@ -19,6 +19,7 @@ int thToolbarItem::m_indexPool = 1;
 int thToolbar::m_indexPool = 1;
 
 /* Prototypes */
+LRESULT CALLBACK ChildWindProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 
 thToolbar::thToolbar( thWindow * a_pParent, int a_posX, int a_posY)
     :

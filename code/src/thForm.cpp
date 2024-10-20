@@ -12,6 +12,7 @@
 int thForm::m_indexPool = 1;
 
 /* Prototypes */
+LRESULT CALLBACK WinProc(HWND, UINT, WPARAM, LPARAM);
 
 // TODO: fix this.
 // Main window pointer workaround.

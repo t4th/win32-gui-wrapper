@@ -13,6 +13,9 @@ constexpr int DEFAULT_HEIGHT = 150;
 /* Local Memory */
 int thListView::m_indexPool = 1;
 
+/* Prototypes */
+LRESULT CALLBACK ChildWindProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+
 thListView::thListView( thWindow * a_pParent, int a_posX, int a_posY)
     :
     thWindow( a_pParent, a_posX, a_posY),

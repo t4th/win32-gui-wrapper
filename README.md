@@ -1,14 +1,8 @@
 ## Experimental win32 GUI wrapper in C++
-This is fun little project I did when learning win32 GUI API and C++.
-I was pretty satisfied with the result, but it was just **prove of concept** learning material, and it was never supposed to reach 1.0.
-Still, it is now good source of some win32 API examples. I remember being the most proud of working re-sizing and MDI :).
+This is a fun little project that I created around 2011, while I was learning windows native GUI and C++.
+Even though it is just a **prove of concept** learning material that was never supposed to reach 1.0, it is still a good source of win32 API usage examples.
+I remember being the most proud about re-sizing of dynamically created objects and working MDI :).
 
-## Update
-21/03/2021
-Due to some new stars I added some architecture overview, smart pointers where applicable and calculator example. Still, this project was done on the fly and it is obvious when reading the source code. There are no clear instance owners and memory leaks are guaranteed.
-
-1/7/2021
-I have created this project when I was pretty much C++ beginner and Win32 was already called ancient. Still, I got some stars recently, which motivated me to check it again :). Since I am way more experienced than 10 years ago, I found quite the amount of bugs and bad practices, which hopefully I will fix in my spare time.
 
 ## Goal
 Normally win32 applications are built around sequential message dispatcher.
@@ -68,8 +62,11 @@ Since this is Windows only, use free Visual Studio Community to open solution fi
 - build (ctrl+shift+b) all and Run (F5)
 - amount of logs is configured with TH_DEBUG_LEVEL in thConfig.h. Set it to 1 for optimal logs and 2 for ALL logs. It can slow application startup due to amount of logs.
 
-Note1: win32 code is using many different static libraries. You can check these in example project options under linker->input additional dependencies.
-Note2: the project is using some C++17 features
+Note1: win32 code is using many different static libraries (configuration-properties->linker->input):
+Win32_gui.lib;SciLexer.lib;imm32.lib;winmm.lib;Ws2_32.lib
+Note2: the project is using C++17
+
+I have also added project template in **example\solution_template** which is building code directly from source (not as a lib). This project is not including thObjects based on external source: thRichEdit and thStringGrid.
 
 ### Use in your project
 Easiest way is to copy example project and modify.
@@ -111,6 +108,8 @@ int main()
 To try examples, in Solution Explorer select choosen one as Startup Project and press F5:
 ![Alt arch](/doc/doc1.png?raw=true)
 
+Or open **example\solution_template** to experiment from scratch.
+
 ### Basic components
 Example using different kind of windows objects, like: MDI, buttons, combobox, etc.
 ![Alt arch](/doc/basic_example.png?raw=true)
@@ -118,6 +117,9 @@ Example using different kind of windows objects, like: MDI, buttons, combobox, e
 ### Calculator
 Example int32 calculator.
 ![Alt arch](/doc/calc_example.png?raw=true)
+
+### solution_template
+Located in **example\solution_template** is an empty, buildable from source template (not a static lib) to experiment upon.
 
 ## External
 Program uses Scintilla as thRichEdit component and SimpleGrid as thStringGrid.

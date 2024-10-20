@@ -15,6 +15,9 @@ int thMDIClient::m_indexPool = 1;
 // TODO: fix this workaound, because Win32 message dispatcher was designed for only 1 MDI Client.
 thMDIClient * g_pMDI_client = nullptr;
 
+/* Prototypes */
+LRESULT CALLBACK ChildWindProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
+
 // TODO: Creating protection for creating only 1 MDI client.
 
 thMDIClient::thMDIClient( thForm * a_pParent, int a_posX, int a_posY)
