@@ -39,7 +39,6 @@ form->Show();
 - As native GUI it is very responsive
 
 ##### Bad
-- Lots of bad programming habits issues: naming and capsulation
 - C++ API is mixed with native Windows types
 - Only basic features (missing accelerators support, etc.)
 - No good error handling in operator overloads, since I didn't want to use try-catch like Borland C++

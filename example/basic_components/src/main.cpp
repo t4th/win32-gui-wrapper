@@ -101,6 +101,7 @@ class ThirdWindow
         std::unique_ptr< thButton>      m_addSubtemButton;
         std::unique_ptr< thListBox>     m_listBox;
         std::unique_ptr< thListView>    m_listView;
+        std::unique_ptr< thLabel>       m_label;
 
         std::unique_ptr< thPopupMenu>   m_popupMenu;
         std::unique_ptr< thPopupMenu>   m_popupSubMenu;
@@ -343,13 +344,13 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
                         // interpret as wide string; - 10 bytes of BOM header
                         MSG_LOG( TEXT( "UNICODE"));
 
-                        // Brute force memory copy, since its just an examples.
+                        // Brute force memory copy, since its just an example.
                         thString text( reinterpret_cast< TCHAR*>( read_buffer.get()), number_of_bytes_read);
 
                         #ifdef UNICODE
                             newRichEdit.Text = text;
                         #else
-                            pNewchild->pRichEdit->Text = WStringToString(text);
+                            newRichEdit.Text = text;
                         #endif
                     }
                     else
@@ -357,13 +358,13 @@ thResult_t MainWindow::FileOpen_onClick( thObject * sender, thEventParams_t info
                         // interpret as ANSI string
                         MSG_LOG( TEXT( "ASCII"));
 
-                        // Brute force memory copy, since its just an examples.
+                        // Brute force memory copy, since its just an example.
                         std::string text( reinterpret_cast< char*>( read_buffer.get()), number_of_bytes_read);
 
                         #ifdef UNICODE
                             newRichEdit.Text = StringToWString(text);
                         #else
-                            pNewchild->pRichEdit->Text = text;
+                            newRichEdit.Text = text;
                         #endif
                     }
                 }
@@ -378,6 +379,7 @@ SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
 {
     thForm & parentWindow = *m_myApp.m_mainWindow->m_mainForm;
 
+    // Create main Form
     m_mainForm = std::make_unique< thForm>( &parentWindow);
     m_mainForm->Width = 300;
     m_mainForm->Height = 300;
@@ -387,35 +389,42 @@ SecondWindow::SecondWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_mainForm->Resizable = false;
     m_mainForm->OnClose = std::bind( &SecondWindow::Form_onClose, this, std::placeholders::_1, std::placeholders::_2);
 
+    // Create toolbar
     m_toolbar = std::make_unique< thToolbar>( m_mainForm.get());
     m_toolbar->Items.Add( TEXT( "Button 0"));
     m_toolbar->Items[ 0]->OnClick = std::bind( &SecondWindow::ToolbarButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
+    // Create toolbar button
     m_toolbar->Items.Add( TEXT( "fake name"));
     m_toolbar->Items[ 1]->Text = TEXT( "Button 1");
     m_toolbar->Items[ 1]->OnClick = std::bind( &SecondWindow::ToolbarButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
 
+    // Create toolbar button
     m_toolbar->Items.Add( TEXT( "Button 2"));
     m_toolbar->Items[ 2]->OnClick = std::bind( &SecondWindow::ToolbarButton_onClick, this, std::placeholders::_1, std::placeholders::_2);
-            
+    
+    // Create radio button 0
     m_radioButton0 = std::make_unique< thRadioButton>( m_mainForm.get(), 5, 35);
     m_radioButton0->Text = TEXT( "French Script MT");
-    m_radioButton0->Width = 200;
+    m_radioButton0->Width = m_mainForm->Width - 1;
     m_radioButton0->Font.SetName( TEXT( "French Script MT"));
     m_radioButton0->Font.SetSize( 20);
-            
+
+    // Create radio button 1
     m_radioButton1 = std::make_unique< thRadioButton>( m_mainForm.get(), 5, m_radioButton0->Y * 2);
     m_radioButton1->Text = TEXT( "Gill Sans Ultra Bold Condensed");
-    m_radioButton1->Width = 200;
+    m_radioButton1->Width = m_mainForm->Width - 1;
     m_radioButton1->Font.SetName( TEXT( "Gill Sans Ultra Bold Condensed"));
     m_radioButton1->Font.SetSize( 10);
 
+    // Create checkbox
     m_checkBox0 = std::make_unique< thCheckBox>( m_mainForm.get(), 5, m_radioButton0->Y * 3);
     m_checkBox0->Text = TEXT( "Wide Latin");
     m_checkBox0->Font.SetName( TEXT( "Wide Latin"));
     m_checkBox0->Font.SetSize( 13);
     m_checkBox0->Width = 200;
 
+    // Create Label
     m_label = std::make_unique< thLabel>( m_mainForm.get(), 5, m_radioButton0->Y * 4);
     m_label->Text = TEXT( "Some random text");
     m_label->Width = 200;
@@ -466,7 +475,6 @@ ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     // Create combo box.
     m_comboBox = std::make_unique< thComboBox>( m_mainForm.get(), 2, 2);
     m_comboBox->Width = m_mainForm->Width - 4;
-    m_comboBox->Height = 200;
     m_comboBox->Items.Add( TEXT( "Details"));
     m_comboBox->Items.Add( TEXT( "Icon"));
     m_comboBox->Items.Add( TEXT( "List"));
@@ -519,6 +527,11 @@ ThirdWindow::ThirdWindow( MyApplication & a_myApp) : m_myApp{ a_myApp}
     m_listView->Columns.Add( TEXT( "Column4"));
     m_listView->SetView( thListView::eViewType_t::view_details);
     m_listView->PopupMenu = m_popupMenu.get();
+
+    // create Label
+    m_label = std::make_unique< thLabel>(m_mainForm.get(), m_addItemButton->Width +5, m_listView->Height + m_comboBox->Height + 10);
+    m_label->Text = TEXT("Press right mouse button for popup menu");
+    m_label->Width = m_mainForm->Width;
 }
 
 // Hide window instead of destroying
