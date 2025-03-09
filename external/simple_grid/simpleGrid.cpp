@@ -69,7 +69,7 @@
 #include <stdio.h>
 #include <wctype.h>
 #include <math.h>
-#include "SimpleGrid.h"
+#include "simpleGrid.h"
 
 #ifdef UNICODE
     #define _tmemcpy wmemcpy
@@ -711,7 +711,7 @@ static LPGRIDCOLUMN New_Column(LPSGCOLUMN lpColumn, INT iWidth, LPVECTOR lpVecto
     lpCol->dwType = lpColumn->dwType;
     switch(lpCol->dwType)
     {
-        case GCT_ROWHEADER:
+        case (DWORD)GCT_ROWHEADER:
             lpCol->pOptional = NULL;
             break;
         case GCT_EDIT:
@@ -1753,7 +1753,7 @@ static int FindLongestLine(HDC hdc, LPTSTR text, PSIZE size)
         {
             longest = size->cx;
         }
-        p = _tcstok(_T('\0'), _T("\n"));
+        p = _tcstok(_T("\0"), _T("\n"));
     }
     //delete temptext;
     return longest;
@@ -2103,7 +2103,7 @@ static HWND CreateEdit(HINSTANCE hInstance, HWND hwndParent, INT id, BOOL fEditM
     SendMessage(hwnd, WM_SETFONT, (WPARAM)SendMessage(hwndParent, WM_GETFONT, 0L, 0L), 0L);
 
     //DWM 1.7: Store EditMode flag
-    SetProp(hwnd, EDITMODE, fEditMode ? CHECKED : UNCHECKED);
+    SetProp(hwnd, EDITMODE, (HANDLE) (fEditMode ? CHECKED : UNCHECKED));
 
     // Subclass Editor and save the OldProc
     SetProp(hwnd, WPRC, (HANDLE)GetWindowLongPtr(hwnd, GWLP_WNDPROC));
@@ -3938,7 +3938,7 @@ static LRESULT Grid_OnSetItemData(HWND hwnd, WPARAM wParam, LPARAM lParam)
             lpszValue = (LPTSTR) lpSGitem->lpCurValue;
             break;
         case GCT_CHECK:
-            lpszValue = ((BOOL) lpSGitem->lpCurValue) ? CHECKED : UNCHECKED;
+            lpszValue = (LPTSTR) (((BOOL) lpSGitem->lpCurValue) ? CHECKED : UNCHECKED);
             break;
         case GCT_IMAGE:
             _sntprintf(buf, NELEMS(buf), _T("%d"), lpSGitem->lpCurValue);//DWM 1.9: was _stprintf
