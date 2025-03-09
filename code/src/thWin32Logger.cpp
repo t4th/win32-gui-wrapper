@@ -52,7 +52,7 @@ void thWin32Logger::Printf(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
 
     std::wcout << std::endl;
@@ -73,7 +73,7 @@ void thWin32Logger::ErrorPrintf(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
 
     std::wcout << std::endl;
@@ -94,7 +94,7 @@ void thWin32Logger::WarningPrintf(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
 
     std::wcout << std::endl;
@@ -115,7 +115,7 @@ void thWin32Logger::SuccessPrintf(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
 
     std::wcout << std::endl;
@@ -136,7 +136,7 @@ void thWin32Logger::PrintfObjectEnter(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
     
     std::wcout << L"Enter" << std::endl;
@@ -160,7 +160,7 @@ void thWin32Logger::PrintfObjectLeave(const TCHAR * format, ...)
     }
 
     va_start(args, format);
-    _vtprintf(format, args);
+    _vtprintf_s(format, args);
     va_end(args);
 
     std::wcout << L"Leave" << std::endl;
