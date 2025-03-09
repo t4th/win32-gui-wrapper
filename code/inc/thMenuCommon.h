@@ -3,6 +3,7 @@
 
 class thWindow;
 class thMenu;
+class thMenuItem;
 class thMenuCommon;
 
 class thMenuText
