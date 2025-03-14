@@ -362,7 +362,7 @@ CalculatorGui::CalculatorGui()
         const auto y_position = 60 + 50 + 50 + 50;
         const auto font_size =  20;
 
-        createButton( *this, m_DivisionButton, L"÷", x_position, y_position, font_size);
+        createButton( *this, m_DivisionButton, L"Ã·", x_position, y_position, font_size);
     }
 
     // Create clear Button.
