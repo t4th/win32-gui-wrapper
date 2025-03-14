@@ -13,7 +13,7 @@
 #include <time.h>
 #include <math.h>
 #include <limits.h>
-
+#include <algorithm>
 #include <vector>
 #include <map>
 
