@@ -11,21 +11,17 @@ find_package(scintilla GLOBAL CONFIG REQUIRED NO_DEFAULT_PATH PATHS ../../../ext
 find_package(win32-gui-wrapper CONFIG REQUIRED NO_DEFAULT_PATH PATHS ../../../cmake)
 
 
-add_executable(basic_components 
+add_executable(basic_components
 ../src/main.cpp
-#compatibility.manifest # not working yet with cmake and llvm clang - but with VS and clang-cl it works
 )
+
+#Add Ressource with embeded manifest.rc
+target_sources(basic_components PRIVATE manifest.rc)
+#Add manual dependency of manifest.rc to included manifest file ... Adopt on change of manifest.rc manual.
+set_source_files_properties(manifest.rc PROPERTIES OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/compatibility.manifest )
+
 target_compile_definitions(basic_components PUBLIC UNICODE _UNICODE)
 target_link_libraries(basic_components win32-gui-wrapper scintilla)
 
 target_link_options(basic_components PUBLIC  "-Wl,-Bstatic")
 #target_link_options(basic_components PUBLIC  "-Wl,--strip-all" )
-
-# requires mt.exe or llvm-mt.exe in path.
-target_link_options(basic_components PRIVATE 
-"LINKER:/MANIFEST:EMBED" 
-# TODO: not working: require mt.exe from MS SDK
-#"LINKER:/MANIFESTINPUT:${CMAKE_CURRENT_SOURCE_DIR}/compatibility.manifest"
-# TODO: Not working... find right configuration. Error: invalid side-by-side configuration.
-#"LINKER:/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\""
-)
