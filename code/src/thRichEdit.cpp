@@ -13,7 +13,9 @@
 /* Local Memory */
 int thRichEdit::m_indexPool = 1;
 
+
 /* Prototypes */
+LRESULT CALLBACK ChildWindProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 
 static const char g_cppKeyWords[] =
 

@@ -1,6 +1,6 @@
 #include "thListView.h"
 
-#include < array>
+#include <array>
 
 /* Defines */
 #define CLASS_NAME TEXT( "thListView")

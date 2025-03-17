@@ -10,16 +10,7 @@ class MainWindow;
 class SecondWindow;
 class ThirdWindow;
 
-// Define application as a whole.
-class MyApplication : public thWin32App
-{
-    public:
-        MyApplication();
-
-        std::unique_ptr< MainWindow>      m_mainWindow;
-        std::unique_ptr< SecondWindow>    m_secondWindow;
-        std::unique_ptr< ThirdWindow>     m_thirdWindow;
-};
+class MyApplication;
 
 // Define main program window. It is responsible for creating all window items and memory managment.
 class MainWindow
@@ -111,6 +102,16 @@ class ThirdWindow
         thResult_t ComboBox1_onSelChange( thObject * sender, thEventParams_t info);
         thResult_t AddItemButton_onClick( thObject * sender, thEventParams_t info);
         thResult_t AddSubtemButton_onClick(thObject * const sender, thEventParams_t info);
+};
+// Define application as a whole.
+class MyApplication : public thWin32App
+{
+    public:
+        MyApplication();
+
+        std::unique_ptr< MainWindow>      m_mainWindow;
+        std::unique_ptr< SecondWindow>    m_secondWindow;
+        std::unique_ptr< ThirdWindow>     m_thirdWindow;
 };
 
 MyApplication::MyApplication()

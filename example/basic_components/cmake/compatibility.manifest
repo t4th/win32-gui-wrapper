@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- see https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests -->
+
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <!-- <application xmlns="urn:schemas-microsoft-com:asm.v3"> -->
+    <application>
+      <!--The
+      ID below indicates application support for Windows 10/11 -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+    </application>
+  </compatibility>
+  <!-- <ultraHighResolutionScrollingAware>true</ultraHighResolutionScrollingAware> -->
+  <dependency>
+    <dependentAssembly>
+      <assemblyIdentity
+        type="win32"
+        name="Microsoft.Windows.Common-Controls"
+        version="6.0.0.0"
+        processorArchitecture="*"
+        publicKeyToken="6595b64144ccf1df"
+        language="*"
+      />
+    </dependentAssembly>
+  </dependency>
+  <assemblyIdentity
+    type="win32"
+    name="Microsoft.Windows.Common-Controls"
+    version="6.0.0.0"
+    processorArchitecture="*"
+    publicKeyToken="6595b64144ccf1df"
+  />
+</assembly>

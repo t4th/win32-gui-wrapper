@@ -1,5 +1,5 @@
 #pragma once
-#include "thParam.h"
+#include "thSetGetStyle.h"
 
 /*
         thForm window styles

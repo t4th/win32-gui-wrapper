@@ -1,3 +1,4 @@
+#include "thTypes.h"
 #include "thStringGrid.h"
 #include "simpleGrid.h"
 
@@ -13,6 +14,7 @@
 int thStringGrid::m_indexPool = 1;
 
 /* Prototypes */
+LRESULT CALLBACK ChildWindProc(HWND, UINT, WPARAM, LPARAM, UINT_PTR, DWORD_PTR);
 
 #define NELEMS(a)  (sizeof(a) / sizeof((a)[0]))
 BOOL Main_OnCreate(HWND hGrid, LPCREATESTRUCT lpCreateStruct, DWORD id)
